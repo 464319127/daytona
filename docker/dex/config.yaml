@@ -1,5 +1,5 @@
 # config.yaml
-issuer: http://localhost:5556/dex
+issuer: https://10-127-2-18.sslip.io:8999/dex
 storage:
   type: sqlite3
   config:
@@ -14,8 +14,13 @@ staticClients:
     redirectURIs:
       - 'http://localhost:3000'
       - 'http://localhost:3000/api/oauth2-redirect.html'
+      - 'https://10-127-2-18.sslip.io:8999'
+      - 'https://10-127-2-18.sslip.io:8999/api/oauth2-redirect.html'
+      - 'https://10-127-2-18.sslip.io:8999/callback'
+      - 'https://10-127-2-18.sslip.io:8999/dashboard'
       - 'http://localhost:3009/callback'
       - 'http://proxy.localhost:4000/callback'
+      - 'https://proxy.10-127-2-18.sslip.io:8999/callback'
     name: 'Daytona'
     public: true
 enablePasswordDB: true
