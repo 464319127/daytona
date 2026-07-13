@@ -49,7 +49,7 @@ const columns: ColumnDef<EndpointOut>[] = [
     cell: ({ row }) => (
       <div className="w-full truncate flex items-center gap-2 group/copy-button">
         <span className="truncate block">{row.original.url}</span>
-        <CopyButton value={row.original.url} size="icon-xs" autoHide tooltipText="Copy URL" />
+        <CopyButton value={row.original.url} size="icon-xs" autoHide tooltipText="复制 URL" />
       </div>
     ),
   },
@@ -59,7 +59,7 @@ const columns: ColumnDef<EndpointOut>[] = [
     size: 100,
     cell: ({ row }) => (
       <Badge variant={row.original.disabled ? 'secondary' : 'success'}>
-        {row.original.disabled ? 'Disabled' : 'Active'}
+        {row.original.disabled ? '已禁用' : '活跃'}
       </Badge>
     ),
   },
@@ -92,13 +92,13 @@ const columns: ColumnDef<EndpointOut>[] = [
         <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu" disabled={isLoading}>
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单" disabled={isLoading}>
                 <MoreHorizontal className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => onDisable(row.original)} disabled={isLoading}>
-                {row.original.disabled ? 'Enable' : 'Disable'}
+                {row.original.disabled ? '启用' : '禁用'}
               </DropdownMenuItem>
               <DropdownMenuItem variant="destructive" onClick={() => onDelete(row.original)} disabled={isLoading}>
                 Delete

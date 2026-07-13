@@ -77,7 +77,7 @@ export function SnapshotFilter({
 
   return (
     <Command>
-      <CommandInput placeholder="Search...">
+      <CommandInput placeholder="搜索...">
         <CommandInputButton
           className="text-sm text-muted-foreground hover:text-primary px-2"
           onClick={() => onFilterChange(undefined)}
@@ -95,7 +95,7 @@ export function SnapshotFilter({
           </div>
         ) : (
           <>
-            <CommandEmpty>No snapshots found.</CommandEmpty>
+            <CommandEmpty>未找到快照。</CommandEmpty>
             <CommandGroup>
               {snapshots.map((snapshot) => (
                 <CommandCheckboxItem
@@ -110,7 +110,7 @@ export function SnapshotFilter({
               ))}
             </CommandGroup>
             {snapshotsDataHasMore && (
-              <div className="p-2 text-xs text-muted-foreground text-center">Search to load more results</div>
+              <div className="p-2 text-xs text-muted-foreground text-center">搜索以加载更多结果</div>
             )}
           </>
         )}

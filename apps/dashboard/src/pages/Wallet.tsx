@@ -85,9 +85,9 @@ const Wallet = () => {
         organizationId: selectedOrganization.id,
         automaticTopUp,
       })
-      toast.success('Automatic top up set successfully')
+      toast.success('自动充值设置已保存')
     } catch (error) {
-      toast.error('Failed to set automatic top up', {
+      toast.error('自动充值设置失败', {
         description: String(error),
       })
     }
@@ -113,7 +113,7 @@ const Wallet = () => {
       setCouponCode('')
     } catch (error) {
       setRedeemCouponError(String(error))
-      console.error('Failed to redeem coupon:', error)
+      console.error('兑换优惠券失败：', error)
     }
   }, [selectedOrganization, couponCode, redeemCouponMutation])
 
@@ -165,7 +165,7 @@ const Wallet = () => {
       }
     } catch (error) {
       newWindow?.close()
-      toast.error('Failed to initiate top-up', {
+      toast.error('发起充值失败', {
         description: String(error),
       })
     }
@@ -188,7 +188,7 @@ const Wallet = () => {
         }
       } catch (error) {
         newWindow?.close()
-        toast.error('Failed to open invoice', {
+        toast.error('打开发票失败', {
           description: String(error),
         })
       }
@@ -231,7 +231,7 @@ const Wallet = () => {
       <PageHeader />
 
       <PageContent>
-        <PageIntro title="Wallet" />
+        <PageIntro title="钱包" />
         {walletQuery.isLoading && (
           <div className="flex flex-col gap-6">
             <Card className="flex flex-col gap-4">
@@ -267,17 +267,17 @@ const Wallet = () => {
                 {!user.profile.email_verified && (
                   <Alert variant="info">
                     <TriangleAlertIcon />
-                    <AlertTitle>Verify your email</AlertTitle>
+                    <AlertTitle>验证邮箱</AlertTitle>
                     <AlertDescription>
                       {(wallet.balanceCents ?? 0) > 0 ? (
                         <>
-                          Please verify your email address to complete your account setup.
-                          <br />A verification email was sent to you.
+                          请验证邮箱地址以完成账号设置。
+                          <br />验证邮件已发送。
                         </>
                       ) : (
                         <>
-                          Verify your email address to recieve $100 of credits.
-                          <br />A verification email was sent to you.
+                          验证邮箱地址即可获得 100 美元额度。
+                          <br />验证邮件已发送。
                         </>
                       )}
                     </AlertDescription>
@@ -286,7 +286,7 @@ const Wallet = () => {
                 {showCreditCardBonusPrompt && (
                   <Alert variant="neutral">
                     <SparklesIcon />
-                    <AlertDescription>Connect a credit card to receive an additional $100 of credits.</AlertDescription>
+                    <AlertDescription>绑定信用卡可额外获得 100 美元额度。</AlertDescription>
                   </Alert>
                 )}
               </>
@@ -294,20 +294,18 @@ const Wallet = () => {
             {wallet.hasFailedOrPendingInvoice && (
               <Alert variant="destructive">
                 <TriangleAlertIcon />
-                <AlertTitle>Outstanding invoices</AlertTitle>
+                <AlertTitle>待处理发票</AlertTitle>
                 <AlertDescription>
-                  You have failed or pending invoices that need to be resolved before adding new funds. Please review
-                  your invoices below and complete or void any outstanding payments.
+                  你有失败或待处理的发票，需要先处理才能继续充值。请检查下方发票，并完成或作废所有待处理付款。
                 </AlertDescription>
               </Alert>
             )}
             {wallet.automaticTopUp?.disabled && (
               <Alert variant="destructive">
                 <TriangleAlertIcon />
-                <AlertTitle>Automatic top-up disabled</AlertTitle>
+                <AlertTitle>自动充值已停用</AlertTitle>
                 <AlertDescription>
-                  Your automatic top-up was disabled because of a failed payment. Please update your payment method and
-                  enable it again manually below.
+                  自动充值因付款失败而停用。请更新付款方式，然后在下方手动重新启用。
                 </AlertDescription>
               </Alert>
             )}
@@ -315,21 +313,21 @@ const Wallet = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  Overview
-                  {isPostPaid && <Badge variant="secondary">Post-paid</Badge>}
+                  概览
+                  {isPostPaid && <Badge variant="secondary">后付费</Badge>}
                 </CardTitle>
               </CardHeader>
               <CardContent className="">
                 <div className="flex items-start sm:flex-row flex-col gap-4 sm:items-end justify-between">
                   <div className="flex gap-4 sm:gap-12 sm:flex-row flex-col">
                     <div className="flex flex-col gap-1">
-                      <div className="">Current balance</div>
+                      <div className="">当前余额</div>
                       <div className="text-xl text-foreground font-semibold">
                         {formatAmount(wallet.ongoingBalanceCents ?? 0)}
                       </div>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <div className="">Spent this month</div>
+                      <div className="">本月消费</div>
                       <div className="text-xl font-semibold">
                         {formatAmount((wallet.balanceCents ?? 0) - (wallet.ongoingBalanceCents ?? 0))}
                       </div>
@@ -342,19 +340,19 @@ const Wallet = () => {
                 <CardContent className="border-t border-border">
                   <div className="flex gap-4 md:items-center justify-between md:flex-row flex-col">
                     <div className="flex flex-col gap-1 items-start flex-1">
-                      <div className="text-sm font-medium">Redeem coupon</div>
+                      <div className="text-sm font-medium">兑换优惠券</div>
                       {redeemCouponError ? (
                         <div className="text-sm text-destructive">{redeemCouponError}</div>
                       ) : redeemCouponSuccess ? (
                         <div className="text-sm text-success">{redeemCouponSuccess}</div>
                       ) : (
-                        <div className="text-sm text-muted-foreground">Enter a coupon code to redeem your credits.</div>
+                        <div className="text-sm text-muted-foreground">输入优惠券代码以兑换额度。</div>
                       )}
                     </div>
 
                     <div className="flex gap-2 items-center">
                       <Input
-                        placeholder="Enter coupon code"
+                        placeholder="输入优惠券代码"
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value)}
                       />
@@ -363,7 +361,7 @@ const Wallet = () => {
                         onClick={handleRedeemCoupon}
                         disabled={redeemCouponMutation.isPending}
                       >
-                        {redeemCouponMutation.isPending && <Spinner />} Redeem
+                        {redeemCouponMutation.isPending && <Spinner />} 兑换
                       </Button>
                     </div>
                   </div>
@@ -381,17 +379,17 @@ const Wallet = () => {
             {!isPostPaid && (
               <Card className="w-full">
                 <CardHeader>
-                  <CardTitle>Automatic top-up</CardTitle>
+                  <CardTitle>自动充值</CardTitle>
                   <CardDescription>
-                    Set automatic top-up rules for your wallet.
+                    设置钱包自动充值规则。
                     <br />
-                    The target amount must be at least $10 higher than the threshold amount.
+                    目标金额必须至少比触发金额高 10 美元。
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex sm:flex-row flex-col gap-6">
                     <div className="flex flex-col gap-2 flex-1">
-                      <Label htmlFor="thresholdAmount">When balance is below</Label>
+                      <Label htmlFor="thresholdAmount">余额低于</Label>
                       <InputGroup>
                         <InputGroupAddon>
                           <InputGroupText>$</InputGroupText>
@@ -425,7 +423,7 @@ const Wallet = () => {
                     </div>
 
                     <div className="flex flex-col gap-2 flex-1">
-                      <Label htmlFor="targetAmount">Bring balance to</Label>
+                      <Label htmlFor="targetAmount">充值至</Label>
                       <InputGroup>
                         <InputGroupAddon>
                           <InputGroupText>$</InputGroupText>
@@ -467,11 +465,11 @@ const Wallet = () => {
                 <CardFooter className="flex justify-between gap-2">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <InfoIcon className="w-4 h-4 shrink-0" />{' '}
-                    <span className="text-sm ">Setting both values to 0 will disable automatic top-ups.</span>
+                    <span className="text-sm ">将两个值都设为 0 会停用自动充值。</span>
                   </div>
                   <div className="flex gap-2 items-center ml-auto">
                     <Button onClick={handleSetAutomaticTopUp} disabled={automaticTopUpSaveDisabled}>
-                      {setAutomaticTopUpMutation.isPending && <Spinner />} Save
+                      {setAutomaticTopUpMutation.isPending && <Spinner />} 保存
                     </Button>
                   </div>
                 </CardFooter>
@@ -480,15 +478,15 @@ const Wallet = () => {
 
             <Card className="w-full">
               <CardHeader>
-                <CardTitle>One time top-up</CardTitle>
+                <CardTitle>单次充值</CardTitle>
                 <CardDescription>
-                  Add funds to your wallet instantly. Select a preset amount or enter a custom value.
+                  立即为钱包充值。请选择预设金额或输入自定义金额。
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 gap-10 items-center lg:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <Label className="text-sm font-medium">Select amount</Label>
+                    <Label className="text-sm font-medium">选择金额</Label>
                     <div className="grid grid-cols-1 xxs:grid-cols-4 overflow-hidden rounded-md border border-input">
                       {[25, 500, 1000, 2000].map((amount) => (
                         <Button
@@ -509,12 +507,12 @@ const Wallet = () => {
                   </div>
                   <div className="flex items-center gap-3 lg:hidden">
                     <div className="flex-1 h-px bg-border" />
-                    <span className="text-sm text-muted-foreground">or</span>
+                    <span className="text-sm text-muted-foreground">或</span>
                     <div className="flex-1 h-px bg-border" />
                   </div>
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="customTopUpAmount" className="text-sm font-medium">
-                      Enter custom amount
+                      输入自定义金额
                     </Label>
                     <InputGroup>
                       <InputGroupAddon>
@@ -550,26 +548,25 @@ const Wallet = () => {
                 ) : showMissingPaymentMethodTopUpMessage ? (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <CreditCardIcon className="w-4 h-4 shrink-0" />
-                    <span>Add a payment method to top up.</span>
+                    <span>请添加付款方式后再充值。</span>
                   </div>
                 ) : (
                   <div className="text-sm text-muted-foreground">
-                    You will be redirected to Stripe to complete the payment.
+                    即将跳转到 Stripe 完成付款。
                   </div>
                 )}
                 <Button onClick={handleTopUpWallet} disabled={!topUpEnabled} size="sm">
                   {topUpWalletMutation.isPending && <Spinner />}
-                  Top up
+                  充值
                 </Button>
               </CardFooter>
             </Card>
 
             <Card className="w-full">
               <CardHeader>
-                <CardTitle>Invoices</CardTitle>
+                <CardTitle>发票</CardTitle>
                 <CardDescription>
-                  View and download your billing invoices. All invoices are automatically generated and sent to your
-                  billing emails.
+                  查看和下载账单发票。所有发票均会自动生成并发送到你的账单邮箱。
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -589,8 +586,8 @@ const Wallet = () => {
             {selectedOrganization && (
               <Card className="w-full">
                 <CardHeader>
-                  <CardTitle>Charges</CardTitle>
-                  <CardDescription>All payment attempts on your organization, including failed ones.</CardDescription>
+                  <CardTitle>付款记录</CardTitle>
+                  <CardDescription>组织的所有付款尝试，包括失败的付款。</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ChargesTable data={chargesQuery.charges} loading={chargesQuery.isLoading} />
@@ -611,13 +608,13 @@ function WalletErrorState({ onRetry, retrying }: { onRetry: () => void; retrying
         <EmptyMedia variant="icon" className="bg-destructive-background text-destructive">
           <TriangleAlertIcon />
         </EmptyMedia>
-        <EmptyTitle className="text-destructive">Failed to load wallet</EmptyTitle>
-        <EmptyDescription>Something went wrong while fetching your wallet. Please try again.</EmptyDescription>
+        <EmptyTitle className="text-destructive">加载钱包失败</EmptyTitle>
+        <EmptyDescription>获取钱包信息时出错，请重试。</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant="secondary" size="sm" onClick={onRetry} disabled={retrying}>
           {retrying && <Spinner />}
-          Retry
+          重试
         </Button>
       </EmptyContent>
     </Empty>

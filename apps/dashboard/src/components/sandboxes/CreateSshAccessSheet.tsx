@@ -43,7 +43,7 @@ const iconProps = {
 }
 
 const formSchema = z.object({
-  expiryMinutes: z.number().int('Must be a whole number').min(1, 'Minimum 1 minute').max(1440, 'Maximum 1440 minutes'),
+  expiryMinutes: z.number().int('必须为整数').min(1, '最少 1 分钟').max(1440, '最多 1440 分钟'),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -79,7 +79,7 @@ export function CreateSshAccessSheet({ sandboxId, open, onOpenChange }: CreateSs
         })
         setSshAccess(result)
       } catch (error) {
-        handleApiError(error, 'Failed to create SSH access')
+        handleApiError(error, '创建 SSH 访问失败')
       }
     },
   })
@@ -101,9 +101,9 @@ export function CreateSshAccessSheet({ sandboxId, open, onOpenChange }: CreateSs
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-dvw sm:w-[400px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>{sshAccess ? 'SSH Access Created' : 'Create SSH Access'}</SheetTitle>
+          <SheetTitle>{sshAccess ? 'SSH 访问已创建' : '创建 SSH 访问'}</SheetTitle>
           <SheetDescription className="sr-only">
-            {sshAccess ? 'Your SSH access has been created successfully.' : 'Set the expiration time for SSH access.'}
+            {sshAccess ? 'SSH 访问创建成功。' : '设置 SSH 访问的过期时间。'}
           </SheetDescription>
         </SheetHeader>
         <div className="flex-1 overflow-y-auto">
@@ -127,7 +127,7 @@ export function CreateSshAccessSheet({ sandboxId, open, onOpenChange }: CreateSs
                   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                   return (
                     <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>Expiry</FieldLabel>
+                      <FieldLabel htmlFor={field.name}>有效期</FieldLabel>
                       <InputGroup>
                         <NumericFormat
                           customInput={InputGroupInput}
@@ -142,7 +142,7 @@ export function CreateSshAccessSheet({ sandboxId, open, onOpenChange }: CreateSs
                           onValueChange={({ floatValue }) => field.handleChange(floatValue ?? 0)}
                         />
                         <InputGroupAddon align="inline-end">
-                          <InputGroupText>min</InputGroupText>
+                          <InputGroupText>分钟</InputGroupText>
                         </InputGroupAddon>
                       </InputGroup>
                       {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
@@ -157,7 +157,7 @@ export function CreateSshAccessSheet({ sandboxId, open, onOpenChange }: CreateSs
         </div>
         <SheetFooter className="mt-auto border-t border-border p-4 px-5">
           <Button variant="secondary" onClick={() => onOpenChange(false)}>
-            Close
+            关闭
           </Button>
           {!sshAccess && (
             <form.Subscribe
@@ -165,7 +165,7 @@ export function CreateSshAccessSheet({ sandboxId, open, onOpenChange }: CreateSs
               children={([canSubmit, isSubmitting]) => (
                 <Button type="submit" form="create-ssh-form" disabled={!canSubmit || isSubmitting}>
                   {isSubmitting && <Spinner />}
-                  Create
+                  创建
                 </Button>
               )}
             />
@@ -183,16 +183,16 @@ function SshAccessCreated({ sshAccess }: { sshAccess: SshAccessDto }) {
     <div className="space-y-4">
       <Alert variant="warning">
         <InfoIcon />
-        <AlertDescription>Store the token safely — you won't be able to view it again.</AlertDescription>
+        <AlertDescription>请妥善保存令牌，之后将无法再次查看。</AlertDescription>
       </Alert>
       <Field>
-        <FieldLabel htmlFor="ssh-command">SSH Command</FieldLabel>
+        <FieldLabel htmlFor="ssh-command">SSH 命令</FieldLabel>
         <InputGroup className="pr-1">
           <InputGroupInput id="ssh-command" value={sshAccess.sshCommand} readOnly />
           <InputGroupButton
             variant="ghost"
             size="icon-xs"
-            aria-label="Copy SSH command"
+            aria-label="复制 SSH 命令"
             onClick={() => copyCommand(sshAccess.sshCommand)}
           >
             <AnimatePresence initial={false} mode="wait">

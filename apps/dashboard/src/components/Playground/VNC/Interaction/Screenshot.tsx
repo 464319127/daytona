@@ -39,14 +39,14 @@ const VNCScreenshotOperations: React.FC<VNCInteractionOptionsSectionComponentPro
   const screenshotRegion = VNCInteractionOptionsParamsState['screenshotRegionConfig']
 
   const screenshotOptionsNumberParametersFormData: (NumberParameterFormItem & { key: 'quality' | 'scale' })[] = [
-    { label: 'Scale', key: 'scale', min: 0.1, max: 1, placeholder: '0.5', step: 0.1 },
-    { label: 'Quality', key: 'quality', min: 1, max: 100, placeholder: '95' },
+    { label: '缩放', key: 'scale', min: 0.1, max: 1, placeholder: '0.5', step: 0.1 },
+    { label: '质量', key: 'quality', min: 1, max: 100, placeholder: '95' },
   ]
 
   const screenshotFormatFormData: ParameterFormItem & { key: 'format' } = {
-    label: 'Format',
+    label: '格式',
     key: 'format',
-    placeholder: 'Select screenshot image format',
+    placeholder: '选择截图图片格式',
   }
 
   const screenshotFormatOptions = [
@@ -65,9 +65,9 @@ const VNCScreenshotOperations: React.FC<VNCInteractionOptionsSectionComponentPro
   ]
 
   const screenshotShowCursorFormData: ParameterFormItem & { key: 'showCursor' } = {
-    label: 'Show cursor',
+    label: '显示光标',
     key: 'showCursor',
-    placeholder: 'Show cursor in screenshot',
+    placeholder: '在截图中显示光标',
   }
 
   const screenshotOptionsFormData: ParameterFormData<CustomizedScreenshotOptions> = [
@@ -77,17 +77,17 @@ const VNCScreenshotOperations: React.FC<VNCInteractionOptionsSectionComponentPro
   ]
 
   const screenshotRegionNumberParametersFormData: (NumberParameterFormItem & { key: keyof ScreenshotRegion })[] = [
-    { label: 'Top left X', key: 'x', min: 0, max: Infinity, placeholder: '100', required: true },
-    { label: 'Top left Y', key: 'y', min: 0, max: Infinity, placeholder: '100', required: true },
-    { label: 'Width', key: 'width', min: 0, max: Infinity, placeholder: '300', required: true },
-    { label: 'Height', key: 'height', min: 0, max: Infinity, placeholder: '200', required: true },
+    { label: '左上角 X', key: 'x', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: '左上角 Y', key: 'y', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: '宽度', key: 'width', min: 0, max: Infinity, placeholder: '300', required: true },
+    { label: '高度', key: 'height', min: 0, max: Infinity, placeholder: '200', required: true },
   ]
 
   const screenshotActionsFormData: ScreenshotActionFormData<ScreenshotRegion | CustomizedScreenshotOptions>[] = [
     {
       methodName: ScreenshotActions.TAKE_COMPRESSED,
       label: 'takeCompressed()',
-      description: 'Takes a compressed screenshot of the entire screen',
+      description: '截取整个屏幕的压缩截图',
       parametersFormItems: screenshotOptionsFormData,
       parametersState: screenshotOptions,
       onChangeParamsValidationDisabled: true,
@@ -106,7 +106,7 @@ const VNCScreenshotOperations: React.FC<VNCInteractionOptionsSectionComponentPro
     {
       methodName: ScreenshotActions.TAKE_FULL_SCREEN,
       label: 'takeFullScreen()',
-      description: 'Takes a screenshot of the entire screen',
+      description: '截取整个屏幕',
       parametersFormItems: [screenshotShowCursorFormData],
       parametersState: screenshotOptions,
       onChangeParamsValidationDisabled: true,
@@ -190,7 +190,7 @@ const VNCScreenshotOperations: React.FC<VNCInteractionOptionsSectionComponentPro
       <div className="space-y-2">
         <div className="w-full">
           <Label htmlFor="screenshot-options" className="text-sm text-muted-foreground">
-            Screenshot Options
+            截图选项
           </Label>
         </div>
         <div id="screenshot-options" className="space-y-2">
@@ -247,7 +247,7 @@ const VNCScreenshotOperations: React.FC<VNCInteractionOptionsSectionComponentPro
       <div className="space-y-2">
         <div className="w-full">
           <Label htmlFor="screenshot-options" className="text-sm text-muted-foreground">
-            Screenshot Region
+            截图区域
           </Label>
         </div>
         <div id="screenshot-region" className="space-y-2">

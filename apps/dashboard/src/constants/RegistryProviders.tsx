@@ -22,7 +22,7 @@ export const REGISTRY_PROVIDER_VALUES: readonly RegistryProvider[] = [
 
 // Full names — used for aria-label / tooltip / Zod error messages.
 export const REGISTRY_PROVIDER_LABELS: Record<RegistryProvider, string> = {
-  generic: 'Generic',
+  generic: '通用',
   dockerhub: 'Docker Hub',
   gcp: 'Google Artifact Registry',
   ghcr: 'GitHub Container Registry',
@@ -34,7 +34,7 @@ export const REGISTRY_PROVIDER_LABELS: Record<RegistryProvider, string> = {
 // legible across themes; the multi-color marks render as-is.
 const ICON_CLASS = 'h-4 w-4'
 export const REGISTRY_PROVIDER_TAB_CONTENT: Record<RegistryProvider, ReactNode> = {
-  generic: 'Generic',
+  generic: '通用',
   dockerhub: <img src={dockerIcon} alt="" className={ICON_CLASS} />,
   gcp: <img src={googleIcon} alt="" className={ICON_CLASS} />,
   ghcr: <img src={githubIcon} alt="" className={`${ICON_CLASS} dark:invert`} />,
@@ -67,79 +67,79 @@ export interface ProviderFormSpec {
 export const REGISTRY_PROVIDER_SPECS: Record<RegistryProvider, ProviderFormSpec> = {
   generic: {
     url: {
-      label: 'Registry URL',
+      label: '镜像仓库 URL',
       placeholder: 'https://registry.example.com',
-      helper: 'Defaults to docker.io when left blank.',
+      helper: '留空时默认为 docker.io。',
     },
-    username: { required: true, label: 'Username' },
-    password: { required: true, label: 'Password', secret: true },
+    username: { required: true, label: '用户名' },
+    password: { required: true, label: '密码', secret: true },
     project: {
-      label: 'Project',
+      label: '项目',
       placeholder: 'my-project',
-      helper: 'Leave empty for private Docker Hub entries.',
+      helper: 'Docker Hub 私有仓库可留空。',
     },
   },
   dockerhub: {
     // Always docker.io — auto-filled, no input.
-    url: { hidden: true, label: 'Registry URL', defaultValue: 'docker.io' },
+    url: { hidden: true, label: '镜像仓库 URL', defaultValue: 'docker.io' },
     username: {
       required: true,
-      label: 'Username',
-      helper: 'Your Docker Hub username.',
+      label: '用户名',
+      helper: '你的 Docker Hub 用户名。',
     },
     password: {
       required: true,
-      label: 'Personal Access Token',
+      label: '个人访问令牌',
       secret: true,
       helper: (
         <>
-          Use a{' '}
+          请使用{' '}
           <a href="https://docs.docker.com/security/access-tokens/" target="_blank" rel="noopener noreferrer">
             Docker Hub PAT
           </a>
-          , not your account password.
+          ，不要使用账号密码。
         </>
       ),
     },
-    project: { hidden: true, label: 'Project' },
+    project: { hidden: true, label: '项目' },
   },
   gcp: {
     url: {
       required: true,
-      label: 'Registry URL',
+      label: '镜像仓库 URL',
       placeholder: 'https://us-central1-docker.pkg.dev',
-      helper: 'Base URL for your region.',
+      helper: '所在区域的基础 URL。',
     },
     // Always _json_key for service-account auth — auto-filled, no input.
-    username: { hidden: true, label: 'Username', defaultValue: '_json_key' },
+    username: { hidden: true, label: '用户名', defaultValue: '_json_key' },
     password: {
       required: true,
-      label: 'Service Account JSON Key',
+      label: '服务账号 JSON 密钥',
       multiline: true,
       placeholder: '{\n  "type": "service_account",\n  ...\n}',
-      helper: 'Paste the full contents of your service account key JSON file.',
+      helper: '粘贴服务账号密钥 JSON 文件的完整内容。',
     },
     project: {
-      label: 'Google Cloud Project ID',
+      label: 'Google Cloud 项目 ID',
       placeholder: 'my-gcp-project',
-      helper: 'Your GCP project ID.',
+      helper: '你的 GCP 项目 ID。',
     },
   },
   ghcr: {
     // Always ghcr.io — auto-filled, no input.
-    url: { hidden: true, label: 'Registry URL', defaultValue: 'ghcr.io' },
+    url: { hidden: true, label: '镜像仓库 URL', defaultValue: 'ghcr.io' },
     username: {
       required: true,
-      label: 'GitHub Username',
-      helper: 'The account with access to the image.',
+      label: 'GitHub 用户名',
+      helper: '拥有该镜像访问权限的账号。',
     },
     password: {
       required: true,
-      label: 'Personal Access Token',
+      label: '个人访问令牌',
       secret: true,
       helper: (
         <>
-          Use a{' '}
+          使用具有{' '}
           <a
             href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens"
             target="_blank"
@@ -147,36 +147,36 @@ export const REGISTRY_PROVIDER_SPECS: Record<RegistryProvider, ProviderFormSpec>
           >
             GitHub PAT
           </a>{' '}
-          with <code>read:packages</code> scope.
+          ，并授予 <code>read:packages</code> 权限。
         </>
       ),
     },
-    project: { hidden: true, label: 'Project' },
+    project: { hidden: true, label: '项目' },
   },
   ecr: {
     url: {
       required: true,
-      label: 'Registry URL',
+      label: '镜像仓库 URL',
       placeholder: '123456789012.dkr.ecr.us-east-1.amazonaws.com',
     },
     username: {
       required: true,
-      label: 'Role ARN',
+      label: '角色 ARN',
       placeholder: 'arn:aws:iam::123456789012:role/daytona-ecr-puller',
       helper: (
         <>
-          Daytona will assume this role on every pull.{' '}
+          Daytona 会在每次拉取时担任此角色。{' '}
           <a
             href={`${DAYTONA_DOCS_URL}/snapshots#amazon-elastic-container-registry-ecr`}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Set up the role ↗
+            设置角色 ↗
           </a>
         </>
       ),
     },
-    password: { hidden: true, label: 'Password' },
-    project: { hidden: true, label: 'Project' },
+    password: { hidden: true, label: '密码' },
+    project: { hidden: true, label: '项目' },
   },
 }

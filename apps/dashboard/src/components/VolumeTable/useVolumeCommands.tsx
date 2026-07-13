@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0
  */
 
-import { pluralize } from '@/lib/utils'
 import { VolumeDto, VolumeState } from '@daytona/api-client'
 import { CheckSquare2Icon, MinusSquareIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import { useMemo } from 'react'
@@ -52,7 +51,7 @@ export function useVolumeCommands({
     if (writePermitted && onCreateVolume) {
       commands.push({
         id: 'create-volume',
-        label: 'Create Volume',
+        label: '创建卷',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: onCreateVolume,
       })
@@ -61,7 +60,7 @@ export function useVolumeCommands({
     if (selectableCount !== selectedCount) {
       commands.push({
         id: 'select-all-volumes',
-        label: 'Select All Volumes',
+        label: '选择全部卷',
         icon: <CheckSquare2Icon className="w-4 h-4" />,
         onSelect: () => toggleAllRowsSelected(true),
         chainable: true,
@@ -71,7 +70,7 @@ export function useVolumeCommands({
     if (selectedCount > 0) {
       commands.push({
         id: 'deselect-all-volumes',
-        label: 'Deselect All Volumes',
+        label: '取消选择全部卷',
         icon: <MinusSquareIcon className="w-4 h-4" />,
         onSelect: () => toggleAllRowsSelected(false),
         chainable: true,
@@ -81,7 +80,7 @@ export function useVolumeCommands({
     if (deletePermitted && bulkActionCounts.deletable > 0) {
       commands.push({
         id: 'delete-volumes',
-        label: `Delete ${pluralize(bulkActionCounts.deletable, 'Volume', 'Volumes')}`,
+        label: `删除 ${bulkActionCounts.deletable} 个卷`,
         icon: <TrashIcon className="w-4 h-4" />,
         onSelect: onDelete,
       })
@@ -99,5 +98,5 @@ export function useVolumeCommands({
     onCreateVolume,
   ])
 
-  useRegisterCommands(rootCommands, { groupId: 'volume-actions', groupLabel: 'Volume actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'volume-actions', groupLabel: '卷操作', groupOrder: 0 })
 }

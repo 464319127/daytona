@@ -34,7 +34,6 @@ import { useSelectedOrganization } from '@/hooks/useSelectedOrganization'
 import { useSnapshotWsSync } from '@/hooks/useSnapshotWsSync'
 import { createBulkActionToast } from '@/lib/bulk-action-toast'
 import { handleApiError } from '@/lib/error-handling'
-import { pluralize } from '@/lib/utils'
 import {
   GetAllSnapshotsOrderEnum,
   GetAllSnapshotsSortEnum,
@@ -168,7 +167,7 @@ const Snapshots: React.FC = () => {
 
   useEffect(() => {
     if (snapshotsDataError) {
-      handleApiError(snapshotsDataError, 'Failed to fetch snapshots')
+      handleApiError(snapshotsDataError, '获取 Snapshot 失败')
     }
   }, [snapshotsDataError])
 
@@ -291,9 +290,9 @@ const Snapshots: React.FC = () => {
         setOrderedSnapshotItems(null)
         setSnapshotIdParam(null)
       }
-      toast.success(`Deleting snapshot ${snapshot.name}`)
+      toast.success(`正在删除快照 ${snapshot.name}`)
     } catch (error) {
-      handleApiError(error, 'Failed to delete snapshot')
+      handleApiError(error, '删除 Snapshot 失败')
       updateSnapshotInCache(snapshot.id, { state: snapshot.state })
     } finally {
       setLoadingSnapshots((prev) => ({ ...prev, [snapshot.id]: false }))
@@ -310,9 +309,9 @@ const Snapshots: React.FC = () => {
         organizationId: selectedOrganization?.id,
       })
       await markAllSnapshotQueriesAsStale(true)
-      toast.success(`Activating snapshot ${snapshot.name}`)
+      toast.success(`正在启用快照 ${snapshot.name}`)
     } catch (error) {
-      handleApiError(error, 'Failed to activate snapshot')
+      handleApiError(error, '启用 Snapshot 失败')
       updateSnapshotInCache(snapshot.id, { state: snapshot.state })
     } finally {
       setLoadingSnapshots((prev) => ({ ...prev, [snapshot.id]: false }))
@@ -329,9 +328,9 @@ const Snapshots: React.FC = () => {
         organizationId: selectedOrganization?.id,
       })
       await markAllSnapshotQueriesAsStale(true)
-      toast.success(`Deactivating snapshot ${snapshot.name}`)
+      toast.success(`正在停用快照 ${snapshot.name}`)
     } catch (error) {
-      handleApiError(error, 'Failed to deactivate snapshot')
+      handleApiError(error, '停用 Snapshot 失败')
       updateSnapshotInCache(snapshot.id, { state: snapshot.state })
     } finally {
       setLoadingSnapshots((prev) => ({ ...prev, [snapshot.id]: false }))
@@ -374,13 +373,13 @@ const Snapshots: React.FC = () => {
       let successCount = 0
       let failureCount = 0
 
-      const totalLabel = pluralize(ids.length, 'snapshot', 'snapshots')
+      const totalLabel = `${ids.length} 个 Snapshot`
       const onCancel = () => {
         isCancelled = true
       }
 
-      const bulkToast = createBulkActionToast(`${actionName} 0 of ${totalLabel}.`, {
-        action: { label: 'Cancel', onClick: onCancel },
+      const bulkToast = createBulkActionToast(`${actionName} 0 / ${totalLabel}`, {
+        action: { label: '取消', onClick: onCancel },
       })
 
       try {
@@ -388,8 +387,8 @@ const Snapshots: React.FC = () => {
           if (isCancelled) break
 
           processedCount += 1
-          bulkToast.loading(`${actionName} ${processedCount} of ${totalLabel}.`, {
-            action: { label: 'Cancel', onClick: onCancel },
+          bulkToast.loading(`${actionName} ${processedCount} / ${totalLabel}`, {
+            action: { label: '取消', onClick: onCancel },
           })
 
           setLoadingSnapshots((prev) => ({ ...prev, [id]: true }))
@@ -411,7 +410,7 @@ const Snapshots: React.FC = () => {
         bulkToast.result({ successCount, failureCount }, toastMessages)
       } catch (error) {
         console.error(`${actionName} snapshots failed`, error)
-        bulkToast.error(`${actionName} snapshots failed.`)
+        bulkToast.error(`${actionName} Snapshot 失败。`)
       }
 
       return { successCount, failureCount }
@@ -422,7 +421,7 @@ const Snapshots: React.FC = () => {
   const handleBulkDelete = (snapshots: SnapshotDto[]) =>
     executeBulkAction({
       ids: snapshots.map((s) => s.id),
-      actionName: 'Deleting',
+      actionName: '正在删除',
       optimisticState: SnapshotState.REMOVING,
       apiCall: (id) =>
         deleteSnapshotMutation.mutateAsync({
@@ -430,17 +429,17 @@ const Snapshots: React.FC = () => {
           organizationId: selectedOrganization?.id,
         }),
       toastMessages: {
-        successTitle: `${pluralize(snapshots.length, 'Snapshot', 'Snapshots')} deleted.`,
-        errorTitle: `Failed to delete ${pluralize(snapshots.length, 'snapshot', 'snapshots')}.`,
-        warningTitle: 'Failed to delete some snapshots.',
-        canceledTitle: 'Delete canceled.',
+        successTitle: `已删除 ${snapshots.length} 个 Snapshot。`,
+        errorTitle: `删除 ${snapshots.length} 个 Snapshot 失败。`,
+        warningTitle: '部分 Snapshot 删除失败。',
+        canceledTitle: '已取消删除。',
       },
     })
 
   const handleBulkDeactivate = (snapshots: SnapshotDto[]) =>
     executeBulkAction({
       ids: snapshots.map((s) => s.id),
-      actionName: 'Deactivating',
+      actionName: '正在停用',
       optimisticState: SnapshotState.INACTIVE,
       apiCall: (id) =>
         deactivateSnapshotMutation.mutateAsync({
@@ -448,17 +447,17 @@ const Snapshots: React.FC = () => {
           organizationId: selectedOrganization?.id,
         }),
       toastMessages: {
-        successTitle: `${pluralize(snapshots.length, 'Snapshot', 'Snapshots')} deactivated.`,
-        errorTitle: `Failed to deactivate ${pluralize(snapshots.length, 'snapshot', 'snapshots')}.`,
-        warningTitle: 'Failed to deactivate some snapshots.',
-        canceledTitle: 'Deactivate canceled.',
+        successTitle: `已停用 ${snapshots.length} 个 Snapshot。`,
+        errorTitle: `停用 ${snapshots.length} 个 Snapshot 失败。`,
+        warningTitle: '部分 Snapshot 停用失败。',
+        canceledTitle: '已取消停用。',
       },
     })
 
   const handleBulkActivate = (snapshots: SnapshotDto[]) =>
     executeBulkAction({
       ids: snapshots.map((s) => s.id),
-      actionName: 'Activating',
+      actionName: '正在启用',
       optimisticState: SnapshotState.ACTIVE,
       apiCall: (id) =>
         activateSnapshotMutation.mutateAsync({
@@ -466,10 +465,10 @@ const Snapshots: React.FC = () => {
           organizationId: selectedOrganization?.id,
         }),
       toastMessages: {
-        successTitle: `${pluralize(snapshots.length, 'Snapshot', 'Snapshots')} activated.`,
-        errorTitle: `Failed to activate ${pluralize(snapshots.length, 'snapshot', 'snapshots')}.`,
-        warningTitle: 'Failed to activate some snapshots.',
-        canceledTitle: 'Activate canceled.',
+        successTitle: `已启用 ${snapshots.length} 个 Snapshot。`,
+        errorTitle: `启用 ${snapshots.length} 个 Snapshot 失败。`,
+        warningTitle: '部分 Snapshot 启用失败。',
+        canceledTitle: '已取消启用。',
       },
     })
 
@@ -523,7 +522,7 @@ const Snapshots: React.FC = () => {
 
       <PageContent size="full" className="flex-1 overflow-hidden">
         <PageIntro
-          title="Snapshots"
+          title="Snapshot"
           actions={
             writePermitted ? (
               <CreateSnapshotSheet ref={dialogRef} onSnapshotCreated={handleSnapshotCreated} />
@@ -593,15 +592,15 @@ const Snapshots: React.FC = () => {
           >
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Confirm Snapshot Deletion</DialogTitle>
+                <DialogTitle>确认删除快照</DialogTitle>
                 <DialogDescription>
-                  Are you sure you want to delete this snapshot? This action cannot be undone.
+                  确定要删除此快照吗？此操作无法撤销。
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button type="button" variant="secondary">
-                    Cancel
+                    取消
                   </Button>
                 </DialogClose>
                 <Button
@@ -610,7 +609,7 @@ const Snapshots: React.FC = () => {
                   disabled={loadingSnapshots[snapshotToDelete.id]}
                 >
                   {loadingSnapshots[snapshotToDelete.id] && <Spinner />}
-                  Delete
+                  删除
                 </Button>
               </DialogFooter>
             </DialogContent>

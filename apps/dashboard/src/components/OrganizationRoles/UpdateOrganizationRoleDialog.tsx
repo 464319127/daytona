@@ -99,8 +99,8 @@ export const UpdateOrganizationRoleDialog: React.FC<UpdateOrganizationRoleDialog
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Role</DialogTitle>
-          <DialogDescription>Modify permissions for the custom organization role.</DialogDescription>
+          <DialogTitle>编辑角色</DialogTitle>
+          <DialogDescription>修改自定义组织角色的权限。</DialogDescription>
         </DialogHeader>
         <form
           id="edit-role-form"
@@ -111,20 +111,20 @@ export const UpdateOrganizationRoleDialog: React.FC<UpdateOrganizationRoleDialog
           }}
         >
           <div className="space-y-3">
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
+            <Label htmlFor="name">名称</Label>
+            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="名称" />
           </div>
           <div className="space-y-3">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">描述</Label>
             <Input
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description"
+              placeholder="描述"
             />
           </div>
           <div className="space-y-3">
-            <Label htmlFor="permissions">Permissions</Label>
+            <Label htmlFor="permissions">权限</Label>
             <div className="space-y-6">
               {ORGANIZATION_ROLE_PERMISSIONS_GROUPS.map((group) => {
                 const groupIsChecked = isGroupChecked(group)

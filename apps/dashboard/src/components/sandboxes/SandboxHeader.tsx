@@ -61,12 +61,12 @@ export function SandboxHeader({
           <div className="min-w-0">
             <div className="flex items-center gap-1 min-w-0">
               <h2 className="text-base font-medium truncate">{sandbox.name || sandbox.id}</h2>
-              <CopyButton value={sandbox.name || sandbox.id} tooltipText="Copy name" size="icon-xs" />
+              <CopyButton value={sandbox.name || sandbox.id} tooltipText="复制名称" size="icon-xs" />
             </div>
             <div className="flex items-center gap-1 min-w-0">
               <span className="text-xs text-muted-foreground shrink-0">UUID</span>
               <span className="text-sm text-muted-foreground font-mono truncate">{sandbox.id}</span>
-              <CopyButton value={sandbox.id} tooltipText="Copy ID" size="icon-xs" />
+              <CopyButton value={sandbox.id} tooltipText="复制 ID" size="icon-xs" />
             </div>
           </div>
         ) : null}
@@ -98,7 +98,7 @@ export function SandboxHeader({
                 onRevokeSshAccess={onRevokeSshAccess}
                 onScreenRecordings={onScreenRecordings}
               />
-              <Button variant="ghost" size="icon-sm" onClick={onRefresh} disabled={isFetching} title="Refresh">
+              <Button variant="ghost" size="icon-sm" onClick={onRefresh} disabled={isFetching} title="刷新">
                 {isFetching ? <Spinner className="size-4" /> : <RefreshCw className="size-4" />}
               </Button>
             </div>

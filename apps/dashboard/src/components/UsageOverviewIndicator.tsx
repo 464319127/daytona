@@ -20,7 +20,7 @@ export function UsageOverviewIndicator({
       {isLive && <LiveIndicatorDot />}
       <ResourceLabel value={usage.currentCpuUsage} total={usage.totalCpuQuota} unit="vCPU" />
       <ResourceLabel value={usage.currentMemoryUsage} total={usage.totalMemoryQuota} unit="GiB" name="RAM" />
-      <ResourceLabel value={usage.currentDiskUsage} total={usage.totalDiskQuota} unit="GiB" name="Storage" />
+      <ResourceLabel value={usage.currentDiskUsage} total={usage.totalDiskQuota} unit="GiB" name="存储" />
     </div>
   )
 }

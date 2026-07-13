@@ -201,7 +201,7 @@ const AuditLogs: React.FC = () => {
 
   useEffect(() => {
     if (error) {
-      handleApiError(error, 'Failed to fetch audit logs', { toastId: 'audit-logs-fetch' })
+      handleApiError(error, '获取审计日志失败', { toastId: 'audit-logs-fetch' })
     }
   }, [error])
 
@@ -231,7 +231,7 @@ const AuditLogs: React.FC = () => {
       <PageHeader />
 
       <PageContent size="full" className="overflow-hidden">
-        <PageIntro title="Audit Logs" />
+        <PageIntro title="审计日志" />
         <div className="flex min-h-0 flex-1 flex-col gap-4">
           <AuditLogTable
             data={data.items}

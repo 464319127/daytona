@@ -32,8 +32,8 @@ import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 import { getMaskedToken } from '@/lib/utils'
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  regionId: z.string().min(1, 'Region is required'),
+  name: z.string().min(1, '名称为必填项'),
+  regionId: z.string().min(1, '区域为必填项'),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -127,11 +127,11 @@ export const CreateRunnerSheet: React.FC<CreateRunnerSheetProps> = ({ regions, o
 
       <SheetContent className="w-dvw sm:w-[500px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>{createdRunner ? 'Runner Created' : 'Create Runner'}</SheetTitle>
+          <SheetTitle>{createdRunner ? 'Runner 已创建' : '创建 Runner'}</SheetTitle>
           <SheetDescription className="sr-only">
             {createdRunner
-              ? 'Your runner token has been created successfully.'
-              : 'Add configuration for a new runner in your selected region.'}
+              ? 'Runner 令牌创建成功。'
+              : '在所选区域中添加新 Runner 的配置。'}
           </SheetDescription>
         </SheetHeader>
 
@@ -155,7 +155,7 @@ export const CreateRunnerSheet: React.FC<CreateRunnerSheetProps> = ({ regions, o
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor={field.name}>Region</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>区域</FieldLabel>
                         <Select
                           value={field.state.value}
                           onValueChange={(value) => {
@@ -163,7 +163,7 @@ export const CreateRunnerSheet: React.FC<CreateRunnerSheetProps> = ({ regions, o
                           }}
                         >
                           <SelectTrigger className="h-8" id={field.name} aria-invalid={isInvalid}>
-                            <SelectValue placeholder="Select a region" />
+                            <SelectValue placeholder="选择区域" />
                           </SelectTrigger>
                           <SelectContent>
                             {regions.map((region) => (
@@ -186,7 +186,7 @@ export const CreateRunnerSheet: React.FC<CreateRunnerSheetProps> = ({ regions, o
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>名称</FieldLabel>
                         <Input
                           aria-invalid={isInvalid}
                           id={field.name}
@@ -210,7 +210,7 @@ export const CreateRunnerSheet: React.FC<CreateRunnerSheetProps> = ({ regions, o
 
         <SheetFooter className="border-t border-border p-4 px-5">
           <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
-            {createdRunner ? 'Close' : 'Cancel'}
+            {createdRunner ? '关闭' : '取消'}
           </Button>
           {!createdRunner && (
             <form.Subscribe
@@ -218,7 +218,7 @@ export const CreateRunnerSheet: React.FC<CreateRunnerSheetProps> = ({ regions, o
               children={([canSubmit, isSubmitting]) => (
                 <Button type="submit" form="create-runner-form" variant="default" disabled={!canSubmit || isSubmitting}>
                   {isSubmitting && <Spinner />}
-                  Create
+                  创建
                 </Button>
               )}
             />
@@ -247,11 +247,11 @@ function CreatedRunnerDisplay({ createdRunner }: { createdRunner: CreateRunnerRe
     <div className="space-y-6">
       <Alert variant="warning">
         <InfoIcon />
-        <AlertDescription>You can only view this token once. Store it safely.</AlertDescription>
+        <AlertDescription>此令牌只能查看一次，请妥善保存。</AlertDescription>
       </Alert>
       <FieldGroup className="gap-4">
         <Field>
-          <FieldLabel htmlFor="runner-token">Runner Token</FieldLabel>
+          <FieldLabel htmlFor="runner-token">Runner 令牌</FieldLabel>
 
           <InputGroup className="pr-1 flex-1">
             <InputGroupInput
@@ -262,7 +262,7 @@ function CreatedRunnerDisplay({ createdRunner }: { createdRunner: CreateRunnerRe
             <InputGroupButton
               variant="ghost"
               size="icon-xs"
-              aria-label={tokenRevealed ? 'Hide runner token' : 'Show runner token'}
+              aria-label={tokenRevealed ? '隐藏 Runner 令牌' : '显示 Runner 令牌'}
               aria-pressed={tokenRevealed}
               onClick={() => setTokenRevealed(!tokenRevealed)}
             >
@@ -271,7 +271,7 @@ function CreatedRunnerDisplay({ createdRunner }: { createdRunner: CreateRunnerRe
             <InputGroupButton
               variant="ghost"
               size="icon-xs"
-              aria-label="Copy runner token"
+              aria-label="复制 Runner 令牌"
               onClick={() => copyToken(createdRunner.apiKey)}
             >
               <AnimatePresence initial={false} mode="wait">

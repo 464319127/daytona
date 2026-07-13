@@ -59,19 +59,19 @@ export function EventDetailsSheet({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-dvw sm:w-[520px] p-0 flex flex-col gap-0 [&>button]:hidden" side="right">
         <SheetHeader className="flex flex-row items-center justify-between p-4 px-5 space-y-0">
-          <SheetTitle>Event Details</SheetTitle>
+          <SheetTitle>事件详情</SheetTitle>
           <div className="flex items-center">
             <Button variant="ghost" size="icon-sm" disabled={!hasPrev} onClick={() => onNavigate('prev')}>
               <ChevronUp className="size-4" />
-              <span className="sr-only">Previous event</span>
+              <span className="sr-only">上一个事件</span>
             </Button>
             <Button variant="ghost" size="icon-sm" disabled={!hasNext} onClick={() => onNavigate('next')}>
               <ChevronDown className="size-4" />
-              <span className="sr-only">Next event</span>
+              <span className="sr-only">下一个事件</span>
             </Button>
             <Button variant="ghost" size="icon-sm" onClick={() => onOpenChange(false)}>
               <X className="size-4" />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">关闭</span>
             </Button>
           </div>
         </SheetHeader>
@@ -79,26 +79,26 @@ export function EventDetailsSheet({
         <Separator />
         <ScrollArea fade="mask" className="flex-1 min-h-0">
           <div className="flex flex-col px-5 py-4 gap-3">
-            <span className="text-base font-medium">Overview</span>
+            <span className="text-base font-medium">概览</span>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Message ID</span>
+              <span className="text-sm text-muted-foreground">消息 ID</span>
               <div className="flex items-center gap-1 group/copy-button">
                 <span className="text-sm font-mono">{event.id}</span>
-                <CopyButton value={event.id} size="icon-xs" tooltipText="Copy Message ID" />
+                <CopyButton value={event.id} size="icon-xs" tooltipText="复制消息 ID" />
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Status</span>
+              <span className="text-sm text-muted-foreground">状态</span>
               <Badge variant={event.status === 0 ? 'success' : event.status === 1 ? 'secondary' : 'destructive'}>
-                {event.status === 0 ? 'Success' : event.status === 1 ? 'Pending' : 'Failed'}
+                {event.status === 0 ? '成功' : event.status === 1 ? '待处理' : '失败'}
               </Badge>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Event Type</span>
+              <span className="text-sm text-muted-foreground">事件类型</span>
               <Badge variant="secondary">{event.eventType}</Badge>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Sent</span>
+              <span className="text-sm text-muted-foreground">发送时间</span>
               <TimestampTooltip
                 timestamp={event.timestamp instanceof Date ? event.timestamp.toISOString() : String(event.timestamp)}
               >
@@ -107,7 +107,7 @@ export function EventDetailsSheet({
             </div>
             {event.nextAttempt && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Next Attempt</span>
+                <span className="text-sm text-muted-foreground">下次尝试</span>
                 <TimestampTooltip
                   timestamp={
                     event.nextAttempt instanceof Date ? event.nextAttempt.toISOString() : String(event.nextAttempt)
@@ -121,7 +121,7 @@ export function EventDetailsSheet({
             )}
             {event.channels && event.channels.length > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Channels</span>
+                <span className="text-sm text-muted-foreground">渠道</span>
                 <div className="flex items-center gap-1 flex-wrap justify-end">
                   {event.channels.map((channel) => (
                     <Badge key={channel} variant="outline" className="font-normal text-xs">
@@ -133,7 +133,7 @@ export function EventDetailsSheet({
             )}
             {event.tags && event.tags.length > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Tags</span>
+                <span className="text-sm text-muted-foreground">标签</span>
                 <div className="flex items-center gap-1 flex-wrap justify-end">
                   {event.tags.map((tag) => (
                     <Badge key={tag} variant="outline" className="font-normal text-xs">
@@ -145,16 +145,16 @@ export function EventDetailsSheet({
             )}
             {event.eventId && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Event ID</span>
+                <span className="text-sm text-muted-foreground">事件 ID</span>
                 <div className="flex items-center gap-1 group/copy-button">
                   <span className="text-sm font-mono">{event.eventId}</span>
-                  <CopyButton value={event.eventId} size="icon-xs" tooltipText="Copy Event ID" />
+                  <CopyButton value={event.eventId} size="icon-xs" tooltipText="复制事件 ID" />
                 </div>
               </div>
             )}
             <Button variant="outline" size="sm" className="w-full mt-1" onClick={() => handleReplay(event.id)}>
               <RefreshCw className="size-3.5 mr-1.5" />
-              Replay
+              重放
             </Button>
           </div>
 
@@ -162,8 +162,8 @@ export function EventDetailsSheet({
 
           <div className="flex flex-col px-5 py-4">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-base font-medium">Payload</span>
-              {hasPayload && <CopyButton value={payload} size="icon-xs" tooltipText="Copy Payload" />}
+              <span className="text-base font-medium">载荷</span>
+              {hasPayload && <CopyButton value={payload} size="icon-xs" tooltipText="复制载荷" />}
             </div>
             {hasPayload ? (
               <pre className="text-sm font-mono bg-muted/80 p-3 rounded-md overflow-auto whitespace-pre-wrap break-all">
@@ -171,7 +171,7 @@ export function EventDetailsSheet({
               </pre>
             ) : (
               <div className="text-sm bg-muted/80 p-3 rounded-md">
-                <span className="italic text-muted-foreground">This event has no payload</span>
+                <span className="italic text-muted-foreground">此事件没有载荷</span>
               </div>
             )}
           </div>

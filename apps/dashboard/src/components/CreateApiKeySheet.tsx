@@ -53,7 +53,7 @@ const isDeletePermission = (permission: CreateApiKeyPermissionsEnum) => permissi
 const IMPLICIT_READ_RESOURCES = ['Sandboxes', 'Snapshots', 'Registries', 'Regions']
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, '名称为必填项'),
   expiresAt: z.date().optional(),
   permissions: z.array(z.enum(CreateApiKeyPermissionsEnum)),
 })
@@ -103,7 +103,7 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
     },
     onSubmit: async ({ value }) => {
       if (!organizationId) {
-        toast.error('Select an organization to create an API key.')
+        toast.error('请选择一个组织以创建 API 密钥。')
         return
       }
 
@@ -115,9 +115,9 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
           expiresAt: value.expiresAt ?? null,
         })
 
-        toast.success('API key created successfully')
+        toast.success('API 密钥已成功创建')
       } catch (error) {
-        handleApiError(error, 'Failed to create API key')
+        handleApiError(error, '创建 API 密钥失败')
       }
     },
   })
@@ -148,11 +148,11 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
 
       <SheetContent className="w-dvw sm:w-[500px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>{createdKey ? 'API Key Created' : 'Create API Key'}</SheetTitle>
+          <SheetTitle>{createdKey ? 'API 密钥已创建' : '创建 API 密钥'}</SheetTitle>
           <SheetDescription className="sr-only">
             {createdKey
-              ? 'Your API key has been created successfully.'
-              : 'Choose which actions this API key will be authorized to perform.'}
+              ? 'API 密钥已成功创建。'
+              : '选择此 API 密钥有权执行的操作。'}
           </SheetDescription>
         </SheetHeader>
         <ScrollArea fade="mask" className="flex-1 min-h-0">
@@ -176,7 +176,7 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
                   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                   return (
                     <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>Key Name</FieldLabel>
+                      <FieldLabel htmlFor={field.name}>密钥名称</FieldLabel>
                       <Input
                         aria-invalid={isInvalid}
                         id={field.name}
@@ -184,7 +184,7 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="Name"
+                        placeholder="名称"
                       />
                       {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                         <FieldError errors={field.state.meta.errors} />
@@ -197,14 +197,14 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
               <form.Field name="expiresAt">
                 {(field) => (
                   <Field>
-                    <FieldLabel htmlFor={field.name}>Expires</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>到期时间</FieldLabel>
                     <DatePicker
                       id={field.name}
                       value={field.state.value}
                       onChange={field.handleChange}
                       disabledBefore={new Date()}
                     />
-                    <FieldDescription>Optional expiration date for the API key.</FieldDescription>
+                    <FieldDescription>可选的 API 密钥到期日期。</FieldDescription>
                   </Field>
                 )}
               </form.Field>
@@ -225,29 +225,28 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
                   }
                 }}
               >
-                <Label className="mb-1">Permissions</Label>
+                <Label className="mb-1">权限</Label>
 
                 <TabsList className="bg-muted w-full [&>*]:flex-1">
-                  <TabsTrigger value="full-access">Full Access</TabsTrigger>
-                  <TabsTrigger value="sandbox-access">Sandboxes</TabsTrigger>
-                  <TabsTrigger value="restricted-access">Restricted </TabsTrigger>
+                  <TabsTrigger value="full-access">完整权限</TabsTrigger>
+                  <TabsTrigger value="sandbox-access">沙箱权限</TabsTrigger>
+                  <TabsTrigger value="restricted-access">自定义权限</TabsTrigger>
                 </TabsList>
                 <TabsContent value="sandbox-access" className="w-full">
                   <Alert variant="info">
                     <InfoIcon />
-                    <AlertTitle>Sandboxes Access</AlertTitle>
+                    <AlertTitle>沙箱权限</AlertTitle>
                     <AlertDescription>
-                      This key grants read and write access to the Sandboxes resource.
+                      此密钥拥有沙箱资源的读取和写入权限。
                     </AlertDescription>
                   </Alert>
                 </TabsContent>
                 <TabsContent value="full-access" className="w-full">
                   <Alert variant="info">
                     <InfoIcon />
-                    <AlertTitle>Full Access</AlertTitle>
+                    <AlertTitle>完整权限</AlertTitle>
                     <AlertDescription>
-                      This key grants full access to all resources. For better security, we recommend creating a
-                      restricted key.
+                      此密钥拥有所有资源的完整权限。为提高安全性，建议创建自定义权限密钥。
                     </AlertDescription>
                   </Alert>
                 </TabsContent>
@@ -292,38 +291,38 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
                                     {hasImplicitRead ? (
                                       <ToggleGroupItem
                                         value=""
-                                        aria-label="Implicit read access"
+                                        aria-label="默认读取权限"
                                         className="min-w-[64px]"
                                         disabled
                                         data-state="on"
                                       >
-                                        Read*
+                                        读取*
                                       </ToggleGroupItem>
                                     ) : (
                                       <ToggleGroupItem
                                         value={readPermission ?? ''}
-                                        aria-label="Toggle read"
+                                        aria-label="切换读取权限"
                                         className="min-w-[64px]"
                                         disabled={!readPermission}
                                       >
-                                        {readPermission ? 'Read' : '-'}
+                                        {readPermission ? '读取' : '-'}
                                       </ToggleGroupItem>
                                     )}
                                     <ToggleGroupItem
                                       value={writePermission ?? ''}
-                                      aria-label="Toggle write"
+                                      aria-label="切换写入权限"
                                       className="min-w-[64px]"
                                       disabled={!writePermission}
                                     >
-                                      {writePermission ? 'Write' : '-'}
+                                      {writePermission ? '写入' : '-'}
                                     </ToggleGroupItem>
                                     <ToggleGroupItem
                                       value={deletePermission ?? ''}
-                                      aria-label="Toggle delete"
+                                      aria-label="切换删除权限"
                                       className="min-w-[64px]"
                                       disabled={!deletePermission}
                                     >
-                                      {deletePermission ? 'Delete' : '-'}
+                                      {deletePermission ? '删除' : '-'}
                                     </ToggleGroupItem>
                                   </ToggleGroup>
                                 </div>
@@ -334,7 +333,7 @@ export const CreateApiKeySheet: React.FC<CreateApiKeySheetProps> = ({
                             <FieldError errors={field.state.meta.errors} />
                           )}
                           <p className="text-sm text-muted-foreground mt-3">
-                            *Read access is always granted for these resources.
+                            *这些资源始终拥有读取权限。
                           </p>
                         </Field>
                       )}
@@ -391,11 +390,11 @@ function CreatedKeyDisplay({ createdKey, apiUrl }: { createdKey: ApiKeyResponse;
     <div className="space-y-6">
       <Alert variant="warning">
         <InfoIcon />
-        <AlertDescription>You can only view this key once. Store it safely.</AlertDescription>
+        <AlertDescription>此密钥只显示一次，请妥善保存。</AlertDescription>
       </Alert>
       <FieldGroup className="gap-4">
         <Field>
-          <FieldLabel htmlFor="api-key">API Key</FieldLabel>
+          <FieldLabel htmlFor="api-key">API 密钥</FieldLabel>
 
           <InputGroup className="pr-1 flex-1">
             <InputGroupInput
@@ -406,7 +405,7 @@ function CreatedKeyDisplay({ createdKey, apiUrl }: { createdKey: ApiKeyResponse;
             <InputGroupButton
               variant="ghost"
               size="icon-xs"
-              aria-label={apiKeyRevealed ? 'Hide API key' : 'Show API key'}
+              aria-label={apiKeyRevealed ? '隐藏 API 密钥' : '显示 API 密钥'}
               aria-pressed={apiKeyRevealed}
               onClick={() => setApiKeyRevealed(!apiKeyRevealed)}
             >
@@ -415,7 +414,7 @@ function CreatedKeyDisplay({ createdKey, apiUrl }: { createdKey: ApiKeyResponse;
             <InputGroupButton
               variant="ghost"
               size="icon-xs"
-              aria-label="Copy API key"
+              aria-label="复制 API 密钥"
               onClick={() => copyApiKey(createdKey.value)}
             >
               <AnimatePresence initial={false} mode="wait">
@@ -437,7 +436,7 @@ function CreatedKeyDisplay({ createdKey, apiUrl }: { createdKey: ApiKeyResponse;
             <InputGroupButton
               variant="ghost"
               size="icon-xs"
-              aria-label="Copy API URL"
+              aria-label="复制 API URL"
               onClick={() => copyApiUrl(apiUrl)}
             >
               <AnimatePresence initial={false} mode="wait">

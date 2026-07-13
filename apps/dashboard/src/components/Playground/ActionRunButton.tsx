@@ -24,7 +24,7 @@ const PlaygroundActionRunButton: React.FC<PlaygroundActionRunButtonProps> = ({
     <TooltipButton
       disabled={isDisabled}
       variant="outline"
-      tooltipText="Run"
+      tooltipText="运行"
       onClick={onRunActionClick}
       className={cn('w-8 h-8', className)}
     >

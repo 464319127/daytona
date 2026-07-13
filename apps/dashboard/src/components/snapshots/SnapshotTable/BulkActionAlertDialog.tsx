@@ -27,21 +27,21 @@ interface BulkActionData {
 }
 
 function getBulkActionData(action: SnapshotBulkAction, count: number): BulkActionData {
-  const countText = count === 1 ? 'this snapshot' : `these ${count} selected snapshots`
+  const countText = count === 1 ? '此 Snapshot' : `选中的 ${count} 个 Snapshot`
 
   switch (action) {
     case SnapshotBulkAction.Delete:
       return {
-        title: 'Delete Snapshots',
-        description: `Are you sure you want to delete ${countText}? This action cannot be undone.`,
-        buttonLabel: 'Delete',
+        title: '删除 Snapshot',
+        description: `确定要删除${countText}吗？此操作无法撤销。`,
+        buttonLabel: '删除',
         buttonVariant: 'destructive',
       }
     case SnapshotBulkAction.Deactivate:
       return {
-        title: 'Deactivate Snapshots',
-        description: `Are you sure you want to deactivate ${countText}? Deactivated snapshots can be reactivated later.`,
-        buttonLabel: 'Deactivate',
+        title: '停用 Snapshot',
+        description: `确定要停用${countText}吗？停用后仍可重新启用。`,
+        buttonLabel: '停用',
       }
   }
 }
@@ -72,7 +72,7 @@ export function SnapshotBulkActionAlertDialog({
             <AlertDialogDescription>{data.description}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction onClick={onConfirm} variant={data.buttonVariant}>
               {data.buttonLabel}
             </AlertDialogAction>

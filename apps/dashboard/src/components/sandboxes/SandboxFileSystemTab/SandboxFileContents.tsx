@@ -124,7 +124,7 @@ function DirectoryContentsSkeleton() {
         <EmptyMedia variant="icon">
           <Spinner />
         </EmptyMedia>
-        <EmptyTitle>Loading directory</EmptyTitle>
+        <EmptyTitle>正在加载目录</EmptyTitle>
       </EmptyHeader>
     </Empty>
   )
@@ -199,8 +199,8 @@ function SandboxFileContentsBody({
           <EmptyMedia variant="icon">
             <FileTextIcon className="size-4" />
           </EmptyMedia>
-          <EmptyTitle>Select a file</EmptyTitle>
-          <EmptyDescription>Choose a file from the tree to preview its contents.</EmptyDescription>
+          <EmptyTitle>选择文件</EmptyTitle>
+          <EmptyDescription>从文件树中选择一个文件以预览其内容。</EmptyDescription>
         </EmptyHeader>
       </Empty>
     )
@@ -219,7 +219,7 @@ function SandboxFileContentsBody({
               <EmptyMedia variant="icon">
                 <UploadIcon className="size-4" />
               </EmptyMedia>
-              <EmptyTitle>Click to upload or drop files</EmptyTitle>
+              <EmptyTitle>点击上传或拖放文件</EmptyTitle>
               <EmptyDescription className="text-xs">{selectedNode.path}</EmptyDescription>
             </EmptyHeader>
           </Empty>
@@ -252,7 +252,7 @@ function SandboxFileContentsBody({
     return (
       <Empty className="h-full min-h-[220px] rounded-md border border-dashed">
         <EmptyHeader>
-          <EmptyTitle>Preview skipped</EmptyTitle>
+          <EmptyTitle>已跳过预览</EmptyTitle>
           <EmptyDescription>
             This file is {formatBytes(previewState.size)}. Preview is only available for files up to 10 MB.
           </EmptyDescription>
@@ -284,8 +284,8 @@ function SandboxFileContentsBody({
     return (
       <Empty className="h-full min-h-[220px] rounded-md border border-dashed">
         <EmptyHeader>
-          <EmptyTitle>Binary file</EmptyTitle>
-          <EmptyDescription>This file looks binary, so a text preview is not shown.</EmptyDescription>
+          <EmptyTitle>二进制文件</EmptyTitle>
+          <EmptyDescription>此文件似乎是二进制文件，因此不显示文本预览。</EmptyDescription>
         </EmptyHeader>
       </Empty>
     )
@@ -385,7 +385,7 @@ export function SandboxFileContents({
   const canCreateFolderInSelectedDirectory =
     Boolean(selectedNode?.isDir) && !(previewState.status === 'error' && !previewState.canRetry)
   const selectedCodeLanguage = nodePath ? getCodeLanguage(nodePath) : null
-  const headerText = selectedNode?.path ?? 'Contents'
+  const headerText = selectedNode?.path ?? '内容'
   const [isWrapEnabled, setIsWrapEnabled] = useState(true)
   const showWrapToggle =
     Boolean(selectedNode && nodePath && !selectedNode.isDir) &&
@@ -404,7 +404,7 @@ export function SandboxFileContents({
         {selectedNode ? (
           <>
             <TooltipButton
-              tooltipText="Previous file"
+              tooltipText="上一个文件"
               variant="ghost"
               size="icon-sm"
               onClick={onNavigatePrevious}
@@ -413,7 +413,7 @@ export function SandboxFileContents({
               <ArrowUpIcon className="size-4" />
             </TooltipButton>
             <TooltipButton
-              tooltipText="Next file"
+              tooltipText="下一个文件"
               variant="ghost"
               size="icon-sm"
               onClick={onNavigateNext}
@@ -421,7 +421,7 @@ export function SandboxFileContents({
             >
               <ArrowDownIcon className="size-4" />
             </TooltipButton>
-            <TooltipButton tooltipText="Close contents" variant="ghost" size="icon-sm" onClick={onClose}>
+            <TooltipButton tooltipText="关闭内容" variant="ghost" size="icon-sm" onClick={onClose}>
               <XIcon className="size-4" />
             </TooltipButton>
           </>
@@ -440,21 +440,21 @@ export function SandboxFileContents({
                       variant="outline"
                       pressed={isWrapEnabled}
                       onPressedChange={setIsWrapEnabled}
-                      aria-label="Toggle wrapped lines"
+                      aria-label="切换自动换行"
                     >
                       <TextWrapIcon className="size-4" />
                     </Toggle>
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <div>{isWrapEnabled ? 'Disable wrapped lines' : 'Enable wrapped lines'}</div>
+                  <div>{isWrapEnabled ? '禁用自动换行' : '启用自动换行'}</div>
                 </TooltipContent>
               </Tooltip>
             ) : null}
             <ButtonGroup>
               {previewState.status === 'ready' && previewState.kind === 'text' ? (
                 <TooltipButton
-                  tooltipText="Copy contents"
+                  tooltipText="复制内容"
                   variant="outline"
                   size="icon-sm"
                   onClick={async () => {
@@ -470,18 +470,18 @@ export function SandboxFileContents({
                   </AnimatePresence>
                 </TooltipButton>
               ) : !selectedNode.isDir ? (
-                <TooltipButton tooltipText="Download" variant="outline" size="icon-sm" onClick={onDownload}>
+                <TooltipButton tooltipText="下载" variant="outline" size="icon-sm" onClick={onDownload}>
                   <DownloadIcon className="size-4" />
                 </TooltipButton>
               ) : null}
               {previewState.status === 'ready' && previewState.kind === 'text' && !selectedNode.isDir ? (
-                <TooltipButton tooltipText="Download" variant="outline" size="icon-sm" onClick={onDownload}>
+                <TooltipButton tooltipText="下载" variant="outline" size="icon-sm" onClick={onDownload}>
                   <DownloadIcon className="size-4" />
                 </TooltipButton>
               ) : null}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon-sm" className="text-muted-foreground" aria-label="More actions">
+                  <Button variant="outline" size="icon-sm" className="text-muted-foreground" aria-label="更多操作">
                     <EllipsisIcon className="size-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -497,7 +497,7 @@ export function SandboxFileContents({
                   <DropdownMenuItem onClick={onRefresh} disabled={isContentsRefreshing}>
                     Refresh
                   </DropdownMenuItem>
-                  {!selectedNode.isDir ? <DropdownMenuItem onClick={onDownload}>Download</DropdownMenuItem> : null}
+                  {!selectedNode.isDir ? <DropdownMenuItem onClick={onDownload}>下载</DropdownMenuItem> : null}
                   {previewState.status === 'ready' && previewState.kind === 'text' ? (
                     <DropdownMenuItem
                       onClick={async () => {

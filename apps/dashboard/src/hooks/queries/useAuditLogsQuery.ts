@@ -31,7 +31,7 @@ export function useAuditLogsQuery(
     queryKey: queryKeys.audit.logs(selectedOrganization?.id ?? '', params),
     queryFn: async () => {
       if (!selectedOrganization) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const response = await auditApi.getOrganizationAuditLogs(

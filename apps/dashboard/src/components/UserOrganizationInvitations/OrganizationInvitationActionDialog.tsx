@@ -55,18 +55,18 @@ export const OrganizationInvitationActionDialog: React.FC<OrganizationInvitation
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Organization Invitation</DialogTitle>
-          <DialogDescription>Would you like to accept or decline this invitation?</DialogDescription>
+          <DialogTitle>组织邀请</DialogTitle>
+          <DialogDescription>你要接受还是拒绝此邀请？</DialogDescription>
         </DialogHeader>
         <div>
           <div className="grid grid-cols-[120px_1fr] gap-2">
-            <span className="text-muted-foreground">Organization:</span>
+            <span className="text-muted-foreground">组织：</span>
             <span className="font-medium">{invitation.organizationName}</span>
 
-            <span className="text-muted-foreground">Invited by:</span>
+            <span className="text-muted-foreground">邀请人：</span>
             <span className="font-medium">{invitation.invitedBy || 'Not specified'}</span>
 
-            <span className="text-muted-foreground">Expires:</span>
+            <span className="text-muted-foreground">到期时间：</span>
             <span className="font-medium">
               {new Date(invitation.expiresAt).toLocaleString('default', {
                 year: 'numeric',

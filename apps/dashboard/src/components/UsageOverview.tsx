@@ -25,13 +25,13 @@ export function UsageOverview({
   return (
     <div className={cn('flex gap-4 [&>*]:flex-1 flex-col lg:flex-row', className)}>
       <ResourceUsageItem
-        label="Compute"
+        label="计算"
         value={<UsageValue current={usageOverview.currentCpuUsage} total={usageOverview.totalCpuQuota} unit="vCPU" />}
       >
         <QuotaLine current={usageOverview.currentCpuUsage} total={usageOverview.totalCpuQuota} />
       </ResourceUsageItem>
       <ResourceUsageItem
-        label="Memory"
+        label="内存"
         value={
           <UsageValue current={usageOverview.currentMemoryUsage} total={usageOverview.totalMemoryQuota} unit="GiB" />
         }
@@ -39,7 +39,7 @@ export function UsageOverview({
         <QuotaLine current={usageOverview.currentMemoryUsage} total={usageOverview.totalMemoryQuota} />
       </ResourceUsageItem>
       <ResourceUsageItem
-        label="Storage"
+        label="存储"
         value={<UsageValue current={usageOverview.currentDiskUsage} total={usageOverview.totalDiskQuota} unit="GiB" />}
       >
         <QuotaLine current={usageOverview.currentDiskUsage} total={usageOverview.totalDiskQuota} />
@@ -106,11 +106,11 @@ function GpuZeroQuotaValue({
   }
 
   if (isWindows) {
-    return <span className="text-xs text-muted-foreground text-nowrap">Coming soon</span>
+    return <span className="text-xs text-muted-foreground text-nowrap">即将推出</span>
   }
 
   if (hasGpuQuotaInClass) {
-    return <span className="text-xs text-muted-foreground text-nowrap">Unavailable in region</span>
+    return <span className="text-xs text-muted-foreground text-nowrap">此区域不可用</span>
   }
 
   return (

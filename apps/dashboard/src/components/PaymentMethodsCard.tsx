@@ -26,20 +26,20 @@ export function PaymentMethodsCard({ organizationId }: PaymentMethodsCardProps) 
     <Card>
       <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
         <div className="flex flex-col gap-1.5">
-          <CardTitle>Payment methods</CardTitle>
-          <CardDescription>Cards on file. The default is used for automatic charges and invoices.</CardDescription>
+          <CardTitle>付款方式</CardTitle>
+          <CardDescription>已保存的银行卡。默认卡用于自动扣款和发票付款。</CardDescription>
         </div>
         {portalUrl ? (
           <Button variant="secondary" size="sm" asChild>
             <a href={portalUrl} target="_blank" rel="noopener noreferrer">
               <PencilIcon />
-              Edit
+              编辑
             </a>
           </Button>
         ) : (
           <Button variant="secondary" size="sm" disabled>
             <PencilIcon />
-            Edit
+            编辑
           </Button>
         )}
       </CardHeader>
@@ -52,7 +52,7 @@ export function PaymentMethodsCard({ organizationId }: PaymentMethodsCardProps) 
             ))}
           </div>
         ) : methods.length === 0 ? (
-          <p className="p-4 text-sm text-muted-foreground">No cards on file yet.</p>
+          <p className="p-4 text-sm text-muted-foreground">尚未添加银行卡。</p>
         ) : (
           <ul className="divide-y divide-border">
             {methods.map((method, index) => (
@@ -72,16 +72,16 @@ function PaymentMethodRow({ method }: { method: PaymentMethod }) {
     <div className="flex items-center gap-3 min-w-0">
       <CreditCardIcon className="w-4 h-4 text-muted-foreground shrink-0" />
       <div className="flex items-center gap-2 flex-wrap min-w-0">
-        <span className="text-sm font-medium capitalize truncate">{method.brand ?? 'Card'}</span>
+        <span className="text-sm font-medium capitalize truncate">{method.brand ?? '银行卡'}</span>
         {method.last4 && <span className="text-sm text-muted-foreground truncate">•••• {method.last4}</span>}
         {method.expMonth && method.expYear && (
           <span className="text-xs text-muted-foreground">
-            Exp {String(method.expMonth).padStart(2, '0')}/{String(method.expYear).slice(-2)}
+            有效期至 {String(method.expMonth).padStart(2, '0')}/{String(method.expYear).slice(-2)}
           </span>
         )}
         {method.isDefault && (
           <Badge variant="secondary" className="uppercase text-[10px]">
-            Default
+            默认
           </Badge>
         )}
       </div>

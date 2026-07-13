@@ -108,12 +108,12 @@ export function SandboxActionsSegmented({
               size="icon-sm"
               onClick={onArchive}
               disabled={actionsLocked}
-              aria-label="Archive sandbox"
+              aria-label="归档 Sandbox"
             >
               <Archive className="size-4" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Archive</TooltipContent>
+          <TooltipContent>归档</TooltipContent>
         </Tooltip>
       )}
       {showDelete && (
@@ -124,13 +124,13 @@ export function SandboxActionsSegmented({
               size="icon-sm"
               onClick={onDelete}
               disabled={actionsLocked}
-              aria-label="Delete sandbox"
+              aria-label="删除 Sandbox"
               className="text-destructive-foreground hover:bg-destructive/10 hover:text-destructive-foreground"
             >
               <Trash2 className="size-4" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Delete</TooltipContent>
+          <TooltipContent>删除</TooltipContent>
         </Tooltip>
       )}
     </ButtonGroup>

@@ -83,19 +83,19 @@ export function DeleteNodeDialog({
     <AlertDialog open={isOpen} onOpenChange={handleOpenChange}>
       <AlertDialogContent className="max-w-sm sm:max-w-sm">
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete {target?.isDir ? 'directory' : 'file'}?</AlertDialogTitle>
+          <AlertDialogTitle>删除{target?.isDir ? '目录' : '文件'}？</AlertDialogTitle>
           <AlertDialogDescription className="break-words">
             {target ? (
               <>
-                <span>This will permanently delete</span>
+                <span>这将永久删除</span>
                 <span className="mt-2 block break-all whitespace-normal text-foreground">{target.path}</span>
-                {target.isDir ? <span className="mt-2 block">Its contents will be removed too.</span> : null}
+                {target.isDir ? <span className="mt-2 block">其中的内容也会被删除。</span> : null}
               </>
             ) : null}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>取消</AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
             disabled={isPending}
@@ -104,7 +104,7 @@ export function DeleteNodeDialog({
               await handleConfirmDelete()
             }}
           >
-            {isPending ? 'Deleting…' : 'Delete'}
+            {isPending ? '删除中…' : '删除'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

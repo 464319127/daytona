@@ -81,7 +81,7 @@ function InfoRow({
 function CopyValue({
   value,
   displayValue = value,
-  tooltipText = 'Copy',
+  tooltipText = '复制',
   className,
 }: {
   value: string
@@ -123,7 +123,7 @@ function getStateBadgeVariant(state: SnapshotState): BadgeProps['variant'] {
 
 function getStateLabel(state: SnapshotState) {
   if (state === SnapshotState.REMOVING) {
-    return 'Deleting'
+    return '正在删除'
   }
 
   return String(state)
@@ -168,20 +168,20 @@ function SnapshotSheetSkeleton() {
           </div>
         ))}
       </InfoSection>
-      <InfoSection title="Resources">
+      <InfoSection title="资源">
         <div className="flex flex-wrap gap-2 py-1">
           <Skeleton className="h-7 w-16" />
           <Skeleton className="h-7 w-20" />
           <Skeleton className="h-7 w-16" />
         </div>
       </InfoSection>
-      <InfoSection title="Regions">
+      <InfoSection title="区域">
         <div className="flex flex-wrap gap-2">
           <Skeleton className="h-6 w-24" />
           <Skeleton className="h-6 w-20" />
         </div>
       </InfoSection>
-      <InfoSection title="Timestamps">
+      <InfoSection title="时间信息">
         {timestampRows.map((row) => (
           <div key={row} className="flex items-center justify-between gap-3 py-1">
             <Skeleton className="h-4 w-20 shrink-0" />
@@ -207,11 +207,11 @@ function SnapshotSheetEmptyState({ error }: { error: boolean }) {
         >
           <Icon className="size-4" />
         </EmptyMedia>
-        <EmptyTitle>{error ? 'Failed to load snapshot' : 'Snapshot not found'}</EmptyTitle>
+        <EmptyTitle>{error ? '加载 Snapshot 失败' : '未找到 Snapshot'}</EmptyTitle>
         <EmptyDescription>
           {error
-            ? 'Something went wrong while fetching this snapshot.'
-            : 'This snapshot may have been deleted or you may not have access to it.'}
+            ? '获取此 Snapshot 时出现错误。'
+            : '此 Snapshot 可能已被删除，或你没有访问权限。'}
         </EmptyDescription>
       </EmptyHeader>
     </Empty>
@@ -273,20 +273,20 @@ export function SnapshotSheet({
       >
         <SheetHeader className="flex flex-row items-center justify-between p-4 px-5 space-y-0">
           <div className="min-w-0">
-            <SheetTitle>Snapshot Details</SheetTitle>
+            <SheetTitle>快照详情</SheetTitle>
           </div>
           <div className="flex items-center justify-end shrink-0">
             <Button variant="ghost" size="icon-sm" disabled={!hasPrev} onClick={() => onNavigate('prev')}>
               <ChevronUp className="size-4" />
-              <span className="sr-only">Previous snapshot</span>
+              <span className="sr-only">上一个快照</span>
             </Button>
             <Button variant="ghost" size="icon-sm" disabled={!hasNext} onClick={() => onNavigate('next')}>
               <ChevronDown className="size-4" />
-              <span className="sr-only">Next snapshot</span>
+              <span className="sr-only">下一个快照</span>
             </Button>
             <Button variant="ghost" size="icon-sm" onClick={() => handleOpenChange(false)}>
               <X className="size-4" />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">关闭</span>
             </Button>
           </div>
         </SheetHeader>
@@ -301,20 +301,20 @@ export function SnapshotSheet({
           ) : (
             <>
               <InfoSection>
-                <InfoRow label="Name" className="-mr-2">
-                  <CopyValue value={activeSnapshot.name} tooltipText="Copy name" />
+                <InfoRow label="名称" className="-mr-2">
+                  <CopyValue value={activeSnapshot.name} tooltipText="复制名称" />
                 </InfoRow>
                 <InfoRow label="ID" className="-mr-2">
                   <CopyValue
                     value={activeSnapshot.id}
                     displayValue={truncateUUID(activeSnapshot.id)}
-                    tooltipText="Copy ID"
+                    tooltipText="复制 ID"
                     className="font-mono text-muted-foreground"
                   />
                 </InfoRow>
-                <InfoRow label="Image" className="-mr-2">
+                <InfoRow label="镜像" className="-mr-2">
                   {activeSnapshot.imageName ? (
-                    <CopyValue value={activeSnapshot.imageName} tooltipText="Copy image" className="font-mono" />
+                    <CopyValue value={activeSnapshot.imageName} tooltipText="复制镜像" className="font-mono" />
                   ) : activeSnapshot.buildInfo ? (
                     <Badge variant="secondary" className="rounded-sm px-1 font-medium">
                       DECLARATIVE BUILD
@@ -323,22 +323,22 @@ export function SnapshotSheet({
                     <EmptyValue />
                   )}
                 </InfoRow>
-                <InfoRow label="Size">{formatSnapshotSize(activeSnapshot.size) ?? <EmptyValue />}</InfoRow>
+                <InfoRow label="大小">{formatSnapshotSize(activeSnapshot.size) ?? <EmptyValue />}</InfoRow>
                 {activeSnapshot.entrypoint?.length ? (
-                  <InfoRow label="Entrypoint" className="items-start -mr-2">
+                  <InfoRow label="入口点" className="items-start -mr-2">
                     <CopyValue
                       value={activeSnapshot.entrypoint.join(' ')}
-                      tooltipText="Copy entrypoint"
+                      tooltipText="复制入口点"
                       className="font-mono"
                     />
                   </InfoRow>
                 ) : null}
-                <InfoRow label="State">
+                <InfoRow label="状态">
                   <SnapshotStateBadge snapshot={activeSnapshot} />
                 </InfoRow>
                 {activeSnapshot.general && (
-                  <InfoRow label="Type">
-                    <Badge variant="secondary">System</Badge>
+                  <InfoRow label="类型">
+                    <Badge variant="secondary">跟随系统</Badge>
                   </InfoRow>
                 )}
                 {showActions && (
@@ -352,7 +352,7 @@ export function SnapshotSheet({
                           onClick={() => onActivate(activeSnapshot)}
                         >
                           <Play className="size-4" />
-                          Activate
+                          启用
                         </Button>
                       )}
                       {showDeactivate && (
@@ -363,7 +363,7 @@ export function SnapshotSheet({
                           onClick={() => onDeactivate(activeSnapshot)}
                         >
                           <Pause className="size-4" />
-                          Deactivate
+                          停用
                         </Button>
                       )}
                       {showDelete && (
@@ -374,13 +374,13 @@ export function SnapshotSheet({
                               size="icon-sm"
                               disabled={actionsDisabled}
                               onClick={() => onDelete(activeSnapshot)}
-                              aria-label="Delete snapshot"
+                              aria-label="删除快照"
                               className="text-destructive-foreground hover:bg-destructive/10 hover:text-destructive-foreground"
                             >
                               <Trash2 className="size-4" />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent>Delete</TooltipContent>
+                          <TooltipContent>删除</TooltipContent>
                         </Tooltip>
                       )}
                     </ButtonGroup>
@@ -389,12 +389,12 @@ export function SnapshotSheet({
               </InfoSection>
 
               {activeSnapshot.errorReason && (
-                <InfoSection title="Error">
+                <InfoSection title="错误">
                   <p className="text-sm text-destructive-foreground break-words">{activeSnapshot.errorReason}</p>
                 </InfoSection>
               )}
 
-              <InfoSection title="Resources">
+              <InfoSection title="资源">
                 <div className="flex flex-wrap gap-2 py-1">
                   <ResourceChip resource="cpu" value={activeSnapshot.cpu} />
                   <ResourceChip resource="memory" value={activeSnapshot.mem} />
@@ -413,7 +413,7 @@ export function SnapshotSheet({
                 </div>
               </InfoSection>
 
-              <InfoSection title="Regions">
+              <InfoSection title="区域">
                 {regionNames.length ? (
                   <div className="flex flex-wrap gap-2">
                     {regionNames.map((regionName) => (
@@ -428,14 +428,14 @@ export function SnapshotSheet({
               </InfoSection>
 
               {activeSnapshot.buildInfo && (
-                <InfoSection title="Build">
-                  <TimestampRow label="Created" value={activeSnapshot.buildInfo.createdAt} />
-                  <TimestampRow label="Updated" value={activeSnapshot.buildInfo.updatedAt} />
+                <InfoSection title="构建">
+                  <TimestampRow label="创建时间" value={activeSnapshot.buildInfo.createdAt} />
+                  <TimestampRow label="更新时间" value={activeSnapshot.buildInfo.updatedAt} />
                   {!!activeSnapshot.buildInfo.contextHashes?.length && (
-                    <InfoRow label="Context hashes" className="items-start -mr-2">
+                    <InfoRow label="上下文哈希" className="items-start -mr-2">
                       <div className="flex min-w-0 flex-col items-end gap-1">
                         {activeSnapshot.buildInfo.contextHashes.map((hash) => (
-                          <CopyValue key={hash} value={hash} tooltipText="Copy hash" className="font-mono" />
+                          <CopyValue key={hash} value={hash} tooltipText="复制哈希" className="font-mono" />
                         ))}
                       </div>
                     </InfoRow>
@@ -451,10 +451,10 @@ export function SnapshotSheet({
                 </InfoSection>
               )}
 
-              <InfoSection title="Timestamps">
-                <TimestampRow label="Created" value={activeSnapshot.createdAt} />
-                <TimestampRow label="Updated" value={activeSnapshot.updatedAt} />
-                <TimestampRow label="Last used" value={activeSnapshot.lastUsedAt} />
+              <InfoSection title="时间信息">
+                <TimestampRow label="创建时间" value={activeSnapshot.createdAt} />
+                <TimestampRow label="更新时间" value={activeSnapshot.updatedAt} />
+                <TimestampRow label="上次使用" value={activeSnapshot.lastUsedAt} />
               </InfoSection>
             </>
           )}

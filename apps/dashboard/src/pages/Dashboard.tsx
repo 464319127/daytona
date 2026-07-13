@@ -34,39 +34,39 @@ function useDashboardCommands() {
     () => [
       {
         id: 'open-slack',
-        label: 'Open Slack',
+        label: '打开 Slack',
         icon: <SlackIcon className="w-4 h-4" />,
         onSelect: () => window.open(DAYTONA_SLACK_URL, '_blank'),
       },
       {
         id: 'open-docs',
-        label: 'Open Docs',
+        label: '打开文档',
         icon: <BookOpen className="w-4 h-4" />,
         onSelect: () => window.open(DAYTONA_DOCS_URL, '_blank'),
       },
       {
         id: 'search-docs',
-        label: 'Search Docs',
+        label: '搜索文档',
         icon: <BookSearchIcon className="w-4 h-4" />,
         page: 'search-docs',
       },
     ],
     [],
   )
-  useRegisterCommands(helpCommands, { groupId: 'help', groupLabel: 'Help', groupOrder: 2 })
+  useRegisterCommands(helpCommands, { groupId: 'help', groupLabel: '帮助', groupOrder: 2 })
 
   const globalCommands: CommandConfig[] = useMemo(
     () => [
       {
         id: 'toggle-theme',
-        label: 'Toggle Theme',
+        label: '切换主题',
         icon: <SunMoon className="w-4 h-4" />,
         onSelect: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
       },
     ],
     [theme, setTheme],
   )
-  useRegisterCommands(globalCommands, { groupId: 'global', groupLabel: 'Global', groupOrder: 5 })
+  useRegisterCommands(globalCommands, { groupId: 'global', groupLabel: '全局', groupOrder: 5 })
 }
 
 type DashboardProps = {

@@ -20,14 +20,14 @@ const RELOAD_DELAY = 5
 
 function AttemptStatusBadge({ status }: { status: number }) {
   const variant = status === 0 ? 'success' : status === 1 ? 'secondary' : 'destructive'
-  const label = status === 0 ? 'Success' : status === 1 ? 'Pending' : status === 3 ? 'Sending' : 'Failed'
+  const label = status === 0 ? '成功' : status === 1 ? '待处理' : status === 3 ? '发送中' : '失败'
   return <Badge variant={variant}>{label}</Badge>
 }
 
 function TriggerTypeBadge({ triggerType }: { triggerType: number }) {
   return (
     <Badge variant="outline" className="font-normal text-xs">
-      {triggerType === 1 ? 'Manual' : 'Scheduled'}
+      {triggerType === 1 ? '手动' : '计划任务'}
     </Badge>
   )
 }
@@ -38,16 +38,16 @@ function AttemptExpandedRow({ attempt }: { attempt: MessageAttemptOut }) {
     const parsed = JSON.parse(attempt.response)
     responseBody = JSON.stringify(parsed, null, 2)
   } catch {
-    responseBody = attempt.response || '(empty)'
+    responseBody = attempt.response || '（空）'
   }
 
   return (
     <div className="flex flex-col gap-3 px-3 py-3">
       <div className="flex flex-col gap-2 text-sm">
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Status Code</span>
+          <span className="text-muted-foreground">状态码</span>
           {!attempt.responseStatusCode ? (
-            <span className="text-muted-foreground italic">No Response</span>
+            <span className="text-muted-foreground italic">无响应</span>
           ) : (
             <Badge
               variant={
@@ -59,26 +59,26 @@ function AttemptExpandedRow({ attempt }: { attempt: MessageAttemptOut }) {
           )}
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Duration</span>
+          <span className="text-muted-foreground">耗时</span>
           <span className="font-mono">{attempt.responseDurationMs}ms</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Trigger</span>
+          <span className="text-muted-foreground">触发方式</span>
           <TriggerTypeBadge triggerType={attempt.triggerType} />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Endpoint ID</span>
+          <span className="text-muted-foreground">端点 ID</span>
           <div className="flex items-center gap-1 group/copy-button">
             <span className="font-mono truncate max-w-[120px]">{attempt.endpointId}</span>
-            <CopyButton value={attempt.endpointId} size="icon-xs" tooltipText="Copy Endpoint ID" />
+            <CopyButton value={attempt.endpointId} size="icon-xs" tooltipText="复制端点 ID" />
           </div>
         </div>
       </div>
 
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-sm text-muted-foreground">Response Body</span>
-          <CopyButton value={attempt.response || ''} size="icon-xs" tooltipText="Copy Response" />
+          <span className="text-sm text-muted-foreground">响应正文</span>
+          <CopyButton value={attempt.response || ''} size="icon-xs" tooltipText="复制响应" />
         </div>
         <pre className="scrollbar-sm text-xs font-mono bg-muted/80 p-2.5 rounded-md overflow-auto whitespace-pre-wrap break-all max-h-[200px]">
           {responseBody}
@@ -139,7 +139,7 @@ export function MessageAttemptsTable({ messageId, reloadKey }: { messageId: stri
 
   const header = (
     <div className="flex items-center gap-2 mb-3">
-      <span className="text-base font-medium">Delivery Attempts</span>
+      <span className="text-base font-medium">投递尝试</span>
       <AnimatePresence>
         {countdown !== null && (
           <motion.span
@@ -151,7 +151,7 @@ export function MessageAttemptsTable({ messageId, reloadKey }: { messageId: stri
             className="flex items-center gap-1.5 text-xs text-muted-foreground"
           >
             <LoaderCircle className="size-3 animate-spin" />
-            Reloading in {countdown}...
+            {countdown} 秒后重新加载...
           </motion.span>
         )}
       </AnimatePresence>
@@ -175,7 +175,7 @@ export function MessageAttemptsTable({ messageId, reloadKey }: { messageId: stri
     return (
       <div>
         {header}
-        <div className="text-sm text-muted-foreground">Failed to load message attempts.</div>
+        <div className="text-sm text-muted-foreground">加载消息投递尝试失败。</div>
       </div>
     )
   }
@@ -188,7 +188,7 @@ export function MessageAttemptsTable({ messageId, reloadKey }: { messageId: stri
         {header}
         <Empty className="border-none py-8">
           <EmptyHeader>
-            <EmptyTitle>No delivery attempts yet.</EmptyTitle>
+            <EmptyTitle>暂无投递尝试。</EmptyTitle>
           </EmptyHeader>
         </Empty>
       </div>
@@ -203,9 +203,9 @@ export function MessageAttemptsTable({ messageId, reloadKey }: { messageId: stri
           <TableHeader>
             <TableRow>
               <TableHead className="px-3 w-[28px]" />
-              <TableHead className="px-3">Status</TableHead>
+              <TableHead className="px-3">状态</TableHead>
               <TableHead className="px-3">URL</TableHead>
-              <TableHead className="px-3">Sent</TableHead>
+              <TableHead className="px-3">发送时间</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

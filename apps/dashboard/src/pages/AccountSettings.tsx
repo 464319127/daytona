@@ -22,7 +22,7 @@ const AccountSettings: React.FC = () => {
       <PageHeader />
 
       <PageContent>
-        <PageIntro title="Account Settings" />
+        <PageIntro title="账户设置" />
         <div className="flex flex-col gap-6">
           {config.linkedAccountsEnabled && <LinkedAccounts />}
 
@@ -31,7 +31,7 @@ const AccountSettings: React.FC = () => {
               <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-2">
                 <div className="text-sm">
                   <div className="text-muted-foreground">
-                    <p className="font-semibold text-foreground">Privacy Preferences</p>
+                    <p className="font-semibold text-foreground">隐私偏好</p>
                     Manage which tracking technologies are used for analytics and marketing.
                   </div>
                 </div>

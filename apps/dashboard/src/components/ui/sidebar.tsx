@@ -197,8 +197,8 @@ const Sidebar = React.forwardRef<
             side={side}
           >
             <VisuallyHidden>
-              <SheetTitle>Sidebar</SheetTitle>
-              <SheetDescription>Includes navigation to different pages in the application.</SheetDescription>
+              <SheetTitle>侧边栏</SheetTitle>
+              <SheetDescription>包含应用中不同页面的导航。</SheetDescription>
             </VisuallyHidden>
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>
@@ -261,7 +261,7 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
     return (
       <TooltipButton
         ref={ref}
-        tooltipText="Toggle Sidebar"
+        tooltipText="切换侧边栏"
         data-sidebar="trigger"
         variant="ghost"
         size="icon"
@@ -288,10 +288,10 @@ const SidebarRail = React.forwardRef<HTMLButtonElement, React.ComponentProps<'bu
       <button
         ref={ref}
         data-sidebar="rail"
-        aria-label="Toggle Sidebar"
+        aria-label="切换侧边栏"
         tabIndex={-1}
         onClick={toggleSidebar}
-        title="Toggle Sidebar"
+        title="切换侧边栏"
         className={cn(
           'absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-out after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex',
           '[[data-side=left]_&]:cursor-w-resize [[data-side=right]_&]:cursor-e-resize',

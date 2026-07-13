@@ -25,37 +25,37 @@ const SandboxFileSystem: React.FC = () => {
   const deleteFileParams = sandboxParametersState['deleteFileParams']
 
   const listFilesDirectoryFormData: ParameterFormItem & { key: 'directoryPath' } = {
-    label: 'Directory location',
+    label: '目录位置',
     key: 'directoryPath',
-    placeholder: 'Directory path to list',
+    placeholder: '要列出的目录路径',
     required: true,
   }
 
   const createFolderParamsFormData: ParameterFormData<CreateFolderParams> = [
     {
-      label: 'Folder location',
+      label: '文件夹位置',
       key: 'folderDestinationPath',
-      placeholder: 'Path where the directory should be created',
+      placeholder: '要创建目录的路径',
       required: true,
     },
     {
-      label: 'Permissions',
+      label: '权限',
       key: 'permissions',
-      placeholder: 'Directory permissions in octal format (e.g. "755")',
+      placeholder: '八进制格式的目录权限（例如 "755"）',
       required: true,
     },
   ]
 
   const deleteFileLocationFormData: ParameterFormItem & { key: 'filePath' } = {
-    label: 'File location',
+    label: '文件位置',
     key: 'filePath',
-    placeholder: 'Path to the file or directory to delete',
+    placeholder: '要删除的文件或目录路径',
     required: true,
   }
   const deleteFileRecursiveFormData: ParameterFormItem & { key: 'recursive' } = {
-    label: 'Delete directory',
+    label: '删除目录',
     key: 'recursive',
-    placeholder: 'If the file is a directory, this must be true to delete it.',
+    placeholder: '如果目标是目录，必须启用此项才能删除。',
   }
 
   const fileSystemActionsFormData: FileSystemActionFormData<ListFilesParams | CreateFolderParams | DeleteFileParams>[] =
@@ -63,21 +63,21 @@ const SandboxFileSystem: React.FC = () => {
       {
         methodName: FileSystemActions.CREATE_FOLDER,
         label: 'createFolder()',
-        description: 'Creates a new directory in the Sandbox at the specified path with the given permissions',
+        description: '使用指定权限在 Sandbox 的指定路径创建新目录',
         parametersFormItems: createFolderParamsFormData,
         parametersState: createFolderParams,
       },
       {
         methodName: FileSystemActions.LIST_FILES,
         label: 'listFiles()',
-        description: 'Lists files and directories in a given path and returns their information',
+        description: '列出指定路径中的文件和目录并返回其信息',
         parametersFormItems: [listFilesDirectoryFormData],
         parametersState: listFilesParams,
       },
       {
         methodName: FileSystemActions.DELETE_FILE,
         label: 'deleteFile()',
-        description: 'Deletes a file from the Sandbox',
+        description: '从 Sandbox 中删除文件',
         parametersFormItems: [deleteFileLocationFormData, deleteFileRecursiveFormData],
         parametersState: deleteFileParams,
       },

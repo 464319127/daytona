@@ -61,7 +61,7 @@ import { useSelectedOrganization } from '@/hooks/useSelectedOrganization'
 import { createBulkActionToast } from '@/lib/bulk-action-toast'
 import { handleApiError } from '@/lib/error-handling'
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/local-storage'
-import { formatDuration, pluralize } from '@/lib/utils'
+import { formatDuration } from '@/lib/utils'
 import {
   ListSandboxesResponse,
   OrganizationRolePermissionsEnum,
@@ -493,7 +493,7 @@ const Sandboxes: React.FC = () => {
 
   useEffect(() => {
     if (sandboxesDataError) {
-      handleApiError(sandboxesDataError, 'Failed to fetch sandboxes')
+      handleApiError(sandboxesDataError, '获取 Sandbox 失败')
     }
   }, [sandboxesDataError])
 
@@ -628,7 +628,7 @@ const Sandboxes: React.FC = () => {
         const portPreviewUrl = await getPortPreviewUrl(sandboxId, 6080)
         return `${portPreviewUrl}/vnc.html`
       } catch (error) {
-        handleApiError(error, 'Failed to construct VNC URL')
+        handleApiError(error, '生成 VNC URL 失败')
         return null
       }
     },
@@ -638,7 +638,7 @@ const Sandboxes: React.FC = () => {
   const vncMutation = useMutation({
     mutationKey: mutationKeys.sandboxes.vnc(),
     mutationFn: async ({ sandboxId }: { sandboxId: string }) => {
-      toast.info('Checking VNC desktop status...')
+      toast.info('正在检查 VNC 桌面状态...')
 
       try {
         const statusResponse = await toolboxApi.getComputerUseStatusDeprecated(sandboxId, selectedOrganization?.id)
@@ -648,14 +648,14 @@ const Sandboxes: React.FC = () => {
           const vncUrl = await getVncUrl(sandboxId)
           if (vncUrl) {
             window.open(vncUrl, '_blank')
-            toast.success('Opening VNC desktop...')
+            toast.success('正在打开 VNC 桌面...')
           }
           return
         }
 
         try {
           await toolboxApi.startComputerUseDeprecated(sandboxId, selectedOrganization?.id)
-          toast.success('Starting VNC desktop...')
+          toast.success('正在启动 VNC 桌面...')
           await new Promise((resolve) => setTimeout(resolve, 5000))
 
           const newStatusResponse = await toolboxApi.getComputerUseStatusDeprecated(sandboxId, selectedOrganization?.id)
@@ -665,25 +665,25 @@ const Sandboxes: React.FC = () => {
             const vncUrl = await getVncUrl(sandboxId)
             if (vncUrl) {
               window.open(vncUrl, '_blank')
-              toast.success('VNC desktop is ready!', {
+              toast.success('VNC 桌面已就绪', {
                 action: (
                   <Button variant="secondary" onClick={() => window.open(vncUrl, '_blank')}>
-                    Open in new tab
+                    在新标签页中打开
                   </Button>
                 ),
               })
             }
           } else {
-            toast.error(`VNC desktop failed to start. Status: ${newStatus}`)
+            toast.error(`VNC 桌面启动失败，状态：${newStatus}`)
           }
         } catch (startError) {
           const errorMessage = getUnknownErrorMessage(startError)
 
           if (errorMessage === 'Computer-use functionality is not available') {
-            toast.error('Computer-use functionality is not available', {
+            toast.error('计算机操作功能不可用', {
               description: (
                 <div>
-                  <div>Computer-use dependencies are missing in the runtime environment.</div>
+                  <div>运行环境中缺少计算机操作依赖项。</div>
                   <div className="mt-2">
                     <a
                       href={`${DAYTONA_DOCS_URL}/getting-started/computer-use`}
@@ -691,18 +691,18 @@ const Sandboxes: React.FC = () => {
                       rel="noopener noreferrer"
                       className="text-primary hover:underline"
                     >
-                      See documentation on how to configure the runtime for computer-use
+                      查看如何配置计算机操作运行环境的文档
                     </a>
                   </div>
                 </div>
               ),
             })
           } else {
-            handleApiError(startError, 'Failed to start VNC desktop')
+            handleApiError(startError, '启动 VNC 桌面失败')
           }
         }
       } catch (error) {
-        handleApiError(error, 'Failed to check VNC status')
+        handleApiError(error, '检查 VNC 状态失败')
       }
     },
   })
@@ -712,13 +712,13 @@ const Sandboxes: React.FC = () => {
     mutationFn: async ({ sandboxId }: { sandboxId: string }) => {
       const sandbox = getSandboxById(sandboxId)
       if (!sandbox || sandbox.state !== SandboxState.STARTED) {
-        toast.error('Sandbox must be started to access Screen Recordings')
+        toast.error('必须先启动沙箱才能访问屏幕录像')
         return
       }
 
       const portPreviewUrl = await getPortPreviewUrl(sandboxId, 33333)
       window.open(portPreviewUrl, '_blank')
-      toast.success('Opening Screen Recordings dashboard...')
+      toast.success('正在打开屏幕录像控制台...')
     },
   })
 
@@ -744,7 +744,7 @@ const Sandboxes: React.FC = () => {
     try {
       await refetchSandboxesData()
     } catch (error) {
-      handleApiError(error, 'Failed to refresh sandboxes')
+      handleApiError(error, '刷新沙箱失败')
     }
   }, [refetchSandboxesData])
 
@@ -775,7 +775,7 @@ const Sandboxes: React.FC = () => {
 
   useEffect(() => {
     if (snapshotsDataError) {
-      handleApiError(snapshotsDataError, 'Failed to fetch snapshots')
+      handleApiError(snapshotsDataError, '获取快照失败')
     }
   }, [snapshotsDataError])
 
@@ -811,10 +811,10 @@ const Sandboxes: React.FC = () => {
   const handleFork = async (id: string) => {
     try {
       await forkSandboxMutation.mutateAsync({ sandboxId: id })
-      toast.success('Fork started')
+      toast.success('沙箱复刻已开始')
       await markAllSandboxQueriesAsStale(true)
     } catch (error) {
-      handleApiError(error, 'Failed to fork sandbox')
+      handleApiError(error, '复刻沙箱失败')
     }
   }
 
@@ -847,16 +847,16 @@ const Sandboxes: React.FC = () => {
 
     try {
       await startSandboxMutation.mutateAsync({ sandboxId: id })
-      toast.success(`Starting sandbox with ID: ${id}`)
+      toast.success(`正在启动沙箱，ID：${id}`)
       await markAllSandboxQueriesAsStale()
     } catch (error) {
-      handleApiError(error, 'Failed to start sandbox', {
+      handleApiError(error, '启动沙箱失败', {
         action:
           error instanceof OrganizationSuspendedError &&
           config.billingApiUrl &&
           authenticatedUserOrganizationMember?.role === OrganizationUserRoleEnum.OWNER ? (
             <Button variant="secondary" onClick={() => navigate(RoutePath.BILLING_WALLET)}>
-              Go to billing
+              前往账单
             </Button>
           ) : null,
       })
@@ -873,10 +873,10 @@ const Sandboxes: React.FC = () => {
 
     try {
       await recoverSandboxMutation.mutateAsync({ sandboxId: id })
-      toast.success('Sandbox recovered. Restarting...')
+      toast.success('沙箱已恢复，正在重新启动...')
       await markAllSandboxQueriesAsStale()
     } catch (error) {
-      handleApiError(error, 'Failed to recover sandbox')
+      handleApiError(error, '恢复沙箱失败')
       revertSandboxStateOptimisticUpdate(id, previousState)
     }
   }
@@ -891,16 +891,19 @@ const Sandboxes: React.FC = () => {
     try {
       await stopSandboxMutation.mutateAsync({ sandboxId: id })
       toast.success(
-        `Stopping sandbox with ID: ${id}`,
+        `正在停止沙箱，ID：${id}`,
         sandboxToStop?.autoDeleteInterval !== undefined && sandboxToStop.autoDeleteInterval >= 0
           ? {
-              description: `This sandbox will be deleted automatically ${sandboxToStop.autoDeleteInterval === 0 ? 'upon stopping' : `in ${formatDuration(sandboxToStop.autoDeleteInterval)} unless it is started again`}.`,
+              description:
+                sandboxToStop.autoDeleteInterval === 0
+                  ? '此沙箱将在停止后自动删除。'
+                  : `除非再次启动，否则此沙箱将在 ${formatDuration(sandboxToStop.autoDeleteInterval)} 后自动删除。`,
             }
           : undefined,
       )
       await markAllSandboxQueriesAsStale()
     } catch (error) {
-      handleApiError(error, 'Failed to stop sandbox')
+      handleApiError(error, '停止沙箱失败')
       revertSandboxStateOptimisticUpdate(id, previousState)
     }
   }
@@ -922,10 +925,10 @@ const Sandboxes: React.FC = () => {
         setSandboxTabParam(null)
       }
 
-      toast.success(`Deleting sandbox with ID: ${id}`)
+      toast.success(`正在删除沙箱，ID：${id}`)
       await markAllSandboxQueriesAsStale()
     } catch (error) {
-      handleApiError(error, 'Failed to delete sandbox')
+      handleApiError(error, '删除沙箱失败')
       revertSandboxStateOptimisticUpdate(id, previousState)
     }
   }
@@ -939,10 +942,10 @@ const Sandboxes: React.FC = () => {
 
     try {
       await archiveSandboxMutation.mutateAsync({ sandboxId: id })
-      toast.success(`Archiving sandbox with ID: ${id}`)
+      toast.success(`正在归档沙箱，ID：${id}`)
       await markAllSandboxQueriesAsStale()
     } catch (error) {
-      handleApiError(error, 'Failed to archive sandbox')
+      handleApiError(error, '归档沙箱失败')
       revertSandboxStateOptimisticUpdate(id, previousState)
     }
   }
@@ -975,13 +978,13 @@ const Sandboxes: React.FC = () => {
       let successCount = 0
       let failureCount = 0
 
-      const totalLabel = pluralize(ids.length, 'sandbox', 'sandboxes')
+      const totalLabel = `${ids.length} 个 Sandbox`
       const onCancel = () => {
         isCancelled = true
       }
 
-      const bulkToast = createBulkActionToast(`${actionName} 0 of ${totalLabel}.`, {
-        action: { label: 'Cancel', onClick: onCancel },
+      const bulkToast = createBulkActionToast(`${actionName} 0 / ${totalLabel}`, {
+        action: { label: '取消', onClick: onCancel },
       })
 
       try {
@@ -989,8 +992,8 @@ const Sandboxes: React.FC = () => {
           if (isCancelled) break
 
           processedCount += 1
-          bulkToast.loading(`${actionName} ${processedCount} of ${totalLabel}.`, {
-            action: { label: 'Cancel', onClick: onCancel },
+          bulkToast.loading(`${actionName} ${processedCount} / ${totalLabel}`, {
+            action: { label: '取消', onClick: onCancel },
           })
 
           const resolvedOptimisticState =
@@ -1011,7 +1014,7 @@ const Sandboxes: React.FC = () => {
         bulkToast.result({ successCount, failureCount }, toastMessages)
       } catch (error) {
         console.error(`${actionName} sandboxes failed`, error)
-        bulkToast.error(`${actionName} sandboxes failed.`)
+        bulkToast.error(`${actionName} Sandbox 失败。`)
       }
 
       return { successCount, failureCount }
@@ -1028,43 +1031,43 @@ const Sandboxes: React.FC = () => {
   const handleBulkStart = (ids: string[]) =>
     executeBulkAction({
       ids,
-      actionName: 'Starting',
+      actionName: '正在启动',
       optimisticState: (previousState) =>
         previousState === SandboxState.ARCHIVED ? SandboxState.RESTORING : SandboxState.STARTING,
       apiCall: (id) => startSandboxMutation.mutateAsync({ sandboxId: id }),
       toastMessages: {
-        successTitle: `${pluralize(ids.length, 'sandbox', 'sandboxes')} started.`,
-        errorTitle: `Failed to start ${pluralize(ids.length, 'sandbox', 'sandboxes')}.`,
-        warningTitle: 'Failed to start some sandboxes.',
-        canceledTitle: 'Start canceled.',
+        successTitle: `已启动 ${ids.length} 个沙箱。`,
+        errorTitle: `启动 ${ids.length} 个沙箱失败。`,
+        warningTitle: '部分沙箱启动失败。',
+        canceledTitle: '已取消启动。',
       },
     })
 
   const handleBulkStop = (ids: string[]) =>
     executeBulkAction({
       ids,
-      actionName: 'Stopping',
+      actionName: '正在停止',
       optimisticState: SandboxState.STOPPING,
       apiCall: (id) => stopSandboxMutation.mutateAsync({ sandboxId: id }),
       toastMessages: {
-        successTitle: `${pluralize(ids.length, 'sandbox', 'sandboxes')} stopped.`,
-        errorTitle: `Failed to stop ${pluralize(ids.length, 'sandbox', 'sandboxes')}.`,
-        warningTitle: 'Failed to stop some sandboxes.',
-        canceledTitle: 'Stop canceled.',
+        successTitle: `已停止 ${ids.length} 个沙箱。`,
+        errorTitle: `停止 ${ids.length} 个沙箱失败。`,
+        warningTitle: '部分沙箱停止失败。',
+        canceledTitle: '已取消停止。',
       },
     })
 
   const handleBulkArchive = (ids: string[]) =>
     executeBulkAction({
       ids,
-      actionName: 'Archiving',
+      actionName: '正在归档',
       optimisticState: SandboxState.ARCHIVING,
       apiCall: (id) => archiveSandboxMutation.mutateAsync({ sandboxId: id }),
       toastMessages: {
-        successTitle: `${pluralize(ids.length, 'sandbox', 'sandboxes')} archived.`,
-        errorTitle: `Failed to archive ${pluralize(ids.length, 'sandbox', 'sandboxes')}.`,
-        warningTitle: 'Failed to archive some sandboxes.',
-        canceledTitle: 'Archive canceled.',
+        successTitle: `已归档 ${ids.length} 个沙箱。`,
+        errorTitle: `归档 ${ids.length} 个沙箱失败。`,
+        warningTitle: '部分沙箱归档失败。',
+        canceledTitle: '已取消归档。',
       },
     })
 
@@ -1073,14 +1076,14 @@ const Sandboxes: React.FC = () => {
 
     await executeBulkAction({
       ids,
-      actionName: 'Deleting',
+      actionName: '正在删除',
       optimisticState: SandboxState.DESTROYING,
       apiCall: (id) => deleteSandboxMutation.mutateAsync({ sandboxId: id }),
       toastMessages: {
-        successTitle: `${pluralize(ids.length, 'sandbox', 'sandboxes')} deleted.`,
-        errorTitle: `Failed to delete ${pluralize(ids.length, 'sandbox', 'sandboxes')}.`,
-        warningTitle: 'Failed to delete some sandboxes.',
-        canceledTitle: 'Delete canceled.',
+        successTitle: `已删除 ${ids.length} 个沙箱。`,
+        errorTitle: `删除 ${ids.length} 个沙箱失败。`,
+        warningTitle: '部分沙箱删除失败。',
+        canceledTitle: '已取消删除。',
       },
     })
 
@@ -1098,7 +1101,7 @@ const Sandboxes: React.FC = () => {
     try {
       await screenRecordingsMutation.mutateAsync({ sandboxId: id })
     } catch (error) {
-      handleApiError(error, 'Failed to open Screen Recordings')
+      handleApiError(error, '打开屏幕录像失败')
     }
   }
 
@@ -1183,14 +1186,14 @@ const Sandboxes: React.FC = () => {
     return [
       {
         id: 'create-sandbox',
-        label: 'Create Sandbox',
+        label: '创建沙箱',
         icon: <PlusIcon className="h-4 w-4" />,
         onSelect: () => createSandboxSheetRef.current?.open(),
       },
     ]
   }, [canCreateSandbox])
 
-  useRegisterCommands(rootCommands, { groupId: 'sandbox-actions', groupLabel: 'Sandbox actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'sandbox-actions', groupLabel: 'Sandbox 操作', groupOrder: 0 })
 
   useEffect(() => {
     const onboardIfNeeded = async () => {
@@ -1231,12 +1234,12 @@ const Sandboxes: React.FC = () => {
         name: snapshotName.trim(),
         includeMemory: snapshotIncludeMemory,
       })
-      toast.success('Snapshot creation started')
+      toast.success('快照创建已开始')
       setSandboxToSnapshot(null)
       setSnapshotName('')
       setSnapshotIncludeMemory(false)
     } catch (error) {
-      handleApiError(error, 'Failed to create snapshot')
+      handleApiError(error, '创建快照失败')
     }
   }
 
@@ -1245,7 +1248,7 @@ const Sandboxes: React.FC = () => {
       <PageHeader />
       <PageContent size="full" className="overflow-hidden">
         <PageIntro
-          title="Sandboxes"
+          title="沙箱"
           actions={
             <>
               {!sandboxesDataIsLoading && sandboxes.length === 0 && (
@@ -1321,13 +1324,13 @@ const Sandboxes: React.FC = () => {
           >
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Confirm Sandbox Deletion</AlertDialogTitle>
+                <AlertDialogTitle>确认删除沙箱</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Are you sure you want to delete this sandbox? This action cannot be undone.
+                  确定要删除此沙箱吗？此操作无法撤销。
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={sandboxIsLoading[sandboxToDelete]}>Cancel</AlertDialogCancel>
+                <AlertDialogCancel disabled={sandboxIsLoading[sandboxToDelete]}>取消</AlertDialogCancel>
                 <AlertDialogAction
                   variant="destructive"
                   disabled={sandboxIsLoading[sandboxToDelete]}
@@ -1336,7 +1339,7 @@ const Sandboxes: React.FC = () => {
                     await handleDelete(sandboxToDelete)
                   }}
                 >
-                  {sandboxIsLoading[sandboxToDelete] ? 'Deleting...' : 'Delete'}
+                  {sandboxIsLoading[sandboxToDelete] ? '正在删除...' : '删除'}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -1356,13 +1359,13 @@ const Sandboxes: React.FC = () => {
           >
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Create Snapshot</AlertDialogTitle>
-                <AlertDialogDescription>Enter a name for the new snapshot.</AlertDialogDescription>
+                <AlertDialogTitle>创建快照</AlertDialogTitle>
+                <AlertDialogDescription>请输入新快照的名称。</AlertDialogDescription>
               </AlertDialogHeader>
               <Input
                 value={snapshotName}
                 onChange={(event) => setSnapshotName(event.target.value)}
-                placeholder="Snapshot name"
+                placeholder="快照名称"
                 disabled={createSandboxSnapshotMutation.isPending}
               />
               {sandboxes.find((s) => s.id === sandboxToSnapshot)?.sandboxClass === SandboxClass.WINDOWS && (
@@ -1370,23 +1373,23 @@ const Sandboxes: React.FC = () => {
                   <Checkbox id="snapshot-include-memory" checked={snapshotIncludeMemory} disabled className="mt-0.5" />
                   <div className="grid gap-1 leading-none">
                     <Label htmlFor="snapshot-include-memory" className="text-sm">
-                      Include memory state
+                      包含内存状态
                     </Label>
                     <p className="text-muted-foreground text-xs">
                       {snapshotIncludeMemory
-                        ? 'Sandbox is running — memory will be captured. Stop the sandbox first for a filesystem-only snapshot.'
-                        : 'Sandbox is stopped — filesystem-only snapshot. Start the sandbox first to capture memory.'}
+                        ? '沙箱正在运行，将会捕获内存。如需仅创建文件系统快照，请先停止沙箱。'
+                        : '沙箱已停止，将创建仅包含文件系统的快照。如需捕获内存，请先启动沙箱。'}
                     </p>
                   </div>
                 </div>
               )}
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={createSandboxSnapshotMutation.isPending}>Cancel</AlertDialogCancel>
+                <AlertDialogCancel disabled={createSandboxSnapshotMutation.isPending}>取消</AlertDialogCancel>
                 <AlertDialogAction
                   disabled={!snapshotName.trim() || createSandboxSnapshotMutation.isPending}
                   onClick={handleCreateSnapshotConfirm}
                 >
-                  {createSandboxSnapshotMutation.isPending ? 'Creating...' : 'Create'}
+                  {createSandboxSnapshotMutation.isPending ? '正在创建...' : '创建'}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

@@ -132,7 +132,7 @@ export function FileTreeRow({
           {!isSearchResult && node.isDir && onToggleExpand ? (
             <button
               type="button"
-              aria-label={isExpanded ? `Collapse ${node.name || node.path}` : `Expand ${node.name || node.path}`}
+              aria-label={isExpanded ? `折叠 ${node.name || node.path}` : `展开 ${node.name || node.path}`}
               tabIndex={-1}
               className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-border"
               onClick={(event) => {

@@ -113,9 +113,9 @@ export function useSandboxSession(options?: UseSandboxSessionOptions): UseSandbo
     },
     onError: (error) => {
       if (notifyRef.current.sandbox) {
-        toast.error('Failed to create sandbox', {
+        toast.error('创建沙箱失败', {
           description: error.message,
-          action: { label: 'Try again', onClick: () => createMutation.mutate(createParams) },
+          action: { label: '重试', onClick: () => createMutation.mutate(createParams) },
         })
       }
     },
@@ -156,12 +156,12 @@ export function useSandboxSession(options?: UseSandboxSessionOptions): UseSandbo
     onMutate: () => {
       if (notifyRef.current.vnc) {
         vncToastShownRef.current = true
-        toast.loading('Starting VNC desktop...', { id: vncToastId })
+        toast.loading('正在启动 VNC 桌面...', { id: vncToastId })
       }
     },
     onSuccess: () => {
       if (vncToastShownRef.current) {
-        toast.loading('VNC desktop started, checking status...', { id: vncToastId })
+        toast.loading('VNC 桌面已启动，正在检查状态...', { id: vncToastId })
       }
     },
   })
@@ -202,13 +202,13 @@ export function useSandboxSession(options?: UseSandboxSessionOptions): UseSandbo
     if (!vncToastShownRef.current) return
 
     if (vncUrlQuery.data) {
-      toast.success('VNC desktop is ready', { id: vncToastId })
+      toast.success('VNC 桌面已就绪', { id: vncToastId })
       vncToastShownRef.current = false
     } else if (startVncMutation.error) {
-      toast.error('Failed to start VNC desktop', { id: vncToastId, description: startVncMutation.error.message })
+      toast.error('启动 VNC 桌面失败', { id: vncToastId, description: startVncMutation.error.message })
       vncToastShownRef.current = false
     } else if (vncStatusQuery.error) {
-      toast.error('VNC desktop failed to become ready', { id: vncToastId, description: vncStatusQuery.error.message })
+      toast.error('VNC 桌面未能就绪', { id: vncToastId, description: vncStatusQuery.error.message })
       vncToastShownRef.current = false
     }
   }, [vncToastId, vncUrlQuery.data, startVncMutation.error, vncStatusQuery.error])
@@ -242,7 +242,7 @@ export function useSandboxSession(options?: UseSandboxSessionOptions): UseSandbo
         queryClient.removeQueries({ queryKey: queryKeys.sandbox.vncUrl(resolvedScope, sandboxId) })
         if (notifyRef.current.vnc) {
           vncToastShownRef.current = true
-          toast.loading('Retrying VNC desktop...', { id: vncToastId })
+          toast.loading('正在重试启动 VNC 桌面...', { id: vncToastId })
         }
         startVncMutation.mutate()
       },

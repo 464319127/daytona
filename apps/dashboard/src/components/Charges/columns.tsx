@@ -38,14 +38,14 @@ export function getColumns(): ColumnDef<Charge>[] {
     {
       id: 'createdAt',
       size: 140,
-      header: ({ column }) => <SortableHeader column={column} label="Date" />,
+      header: ({ column }) => <SortableHeader column={column} label="日期" />,
       cell: ({ row }) => {
         const timestamp = parseTimestamp(row.original.createdAt)
         return (
           <div className="w-full truncate">
             <span>
               {timestamp != null
-                ? new Date(timestamp).toLocaleDateString('en-US', {
+                ? new Date(timestamp).toLocaleDateString('zh-CN', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric',
@@ -67,7 +67,7 @@ export function getColumns(): ColumnDef<Charge>[] {
       id: 'description',
       size: 320,
       minSize: 220,
-      header: ({ column }) => <SortableHeader column={column} label="Description" />,
+      header: ({ column }) => <SortableHeader column={column} label="描述" />,
       accessorKey: 'description',
       cell: ({ row }) => {
         const charge = row.original
@@ -89,7 +89,7 @@ export function getColumns(): ColumnDef<Charge>[] {
     {
       id: 'amountCents',
       size: 120,
-      header: ({ column }) => <SortableHeader column={column} label="Amount" />,
+      header: ({ column }) => <SortableHeader column={column} label="金额" />,
       cell: ({ row }) => (
         <div className="w-full truncate">
           <span>{formatAmount(row.original.amountCents ?? 0)}</span>
@@ -103,7 +103,7 @@ export function getColumns(): ColumnDef<Charge>[] {
     {
       id: 'status',
       size: 120,
-      header: ({ column }) => <SortableHeader column={column} label="Status" />,
+      header: ({ column }) => <SortableHeader column={column} label="状态" />,
       cell: ({ row }) => {
         const status = row.original.status
         return (
@@ -152,6 +152,11 @@ function statusVariant(status?: string): 'success' | 'destructive' | 'secondary'
 }
 
 function formatStatus(status?: string): string {
-  if (!status) return 'Unknown'
-  return status.charAt(0).toUpperCase() + status.slice(1)
+  if (!status) return '未知'
+  const labels: Record<string, string> = {
+    succeeded: '成功',
+    failed: '失败',
+    pending: '待处理',
+  }
+  return labels[status] ?? status
 }

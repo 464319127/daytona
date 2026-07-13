@@ -14,12 +14,12 @@ export function SandboxDetailsHeader({ sandbox, actions }: { sandbox: SandboxLis
 
   return (
     <InfoSection className="shrink-0 last:border-b">
-      <InfoRow label={hasCustomName ? 'Name' : 'Name / UUID'} className="-mr-2">
+      <InfoRow label={hasCustomName ? '名称' : '名称 / UUID'} className="-mr-2">
         <div className="flex items-center gap-1 min-w-0">
           <span className="truncate">{hasCustomName ? sandbox.name : sandbox.id}</span>
           <CopyButton
             value={hasCustomName ? sandbox.name : sandbox.id}
-            tooltipText={hasCustomName ? 'Copy name' : 'Copy name / UUID'}
+            tooltipText={hasCustomName ? '复制名称' : '复制名称 / UUID'}
             size="icon-xs"
           />
         </div>
@@ -28,7 +28,7 @@ export function SandboxDetailsHeader({ sandbox, actions }: { sandbox: SandboxLis
         <InfoRow label="UUID" className="-mr-2">
           <div className="flex items-center gap-1 min-w-0">
             <span className="truncate">{sandbox.id}</span>
-            <CopyButton value={sandbox.id} tooltipText="Copy UUID" size="icon-xs" />
+            <CopyButton value={sandbox.id} tooltipText="复制 UUID" size="icon-xs" />
           </div>
         </InfoRow>
       )}

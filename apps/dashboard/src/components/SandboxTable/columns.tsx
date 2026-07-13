@@ -116,7 +116,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
                 row.toggleSelected(!allSelected)
               })
             }}
-            aria-label="Select all"
+            aria-label="全选"
           />
         </div>
       )
@@ -142,7 +142,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
+            aria-label="选择行"
             onClick={(event) => event.stopPropagation()}
           />
         </div>
@@ -156,7 +156,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     size: 350,
     enableSorting: true,
     enableHiding: true,
-    header: ({ column }) => <SortableHeader column={column} label="Name" />,
+    header: ({ column }) => <SortableHeader column={column} label="名称" />,
     accessorKey: 'name',
     cell: ({ row }) => {
       const displayName = getDisplayName(row.original)
@@ -180,7 +180,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
       return (
         <div className="w-full truncate flex items-center gap-1 group/copy-button">
           <span className="truncate block text-muted-foreground">{truncateUUID(id)}</span>
-          <CopyButton value={id} size="icon-xs" autoHide tooltipText="Copy UUID" />
+          <CopyButton value={id} size="icon-xs" autoHide tooltipText="复制 UUID" />
         </div>
       )
     },
@@ -191,7 +191,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     minSize: 110,
     enableSorting: false,
     enableHiding: false,
-    header: () => <span>State</span>,
+    header: () => <span>状态</span>,
     cell: ({ row }) => (
       <SandboxStateCell
         state={row.original.state}
@@ -207,7 +207,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     maxSize: 64,
     enableSorting: false,
     enableHiding: false,
-    header: () => <span>Class</span>,
+    header: () => <span>规格</span>,
     cell: ({ row }) => {
       const sandboxClass = row.original.sandboxClass
       const Icon = getSandboxClassIcon(sandboxClass)
@@ -230,7 +230,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     size: 150,
     enableSorting: false,
     enableHiding: false,
-    header: () => <span>Snapshot</span>,
+    header: () => <span>快照</span>,
     cell: ({ row }) => (
       <div className="w-full truncate">
         {row.original.snapshot ? (
@@ -247,7 +247,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     size: 120,
     enableSorting: false,
     enableHiding: false,
-    header: () => <span>Region</span>,
+    header: () => <span>区域</span>,
     cell: ({ row, table }) => {
       const { getRegionName } = getMeta(table)
       return (
@@ -263,7 +263,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     size: 190,
     enableSorting: false,
     enableHiding: false,
-    header: () => <span>Resources</span>,
+    header: () => <span>资源</span>,
     cell: ({ row }) => (
       <div className="flex w-full items-center gap-2 truncate">
         <div className="whitespace-nowrap">
@@ -294,7 +294,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     maxSize: 120,
     enableSorting: false,
     enableHiding: true,
-    header: () => <span>Labels</span>,
+    header: () => <span>标签</span>,
     cell: ({ row }) => {
       const labelEntries = Object.entries(row.original.labels ?? {})
 
@@ -325,7 +325,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     maxSize: 140,
     enableSorting: true,
     enableHiding: false,
-    header: ({ column }) => <SortableHeader column={column} label="Last Event" />,
+    header: ({ column }) => <SortableHeader column={column} label="最后事件" />,
     accessorFn: (row) => getLastEvent(row).date,
     cell: ({ row }) => {
       const lastEvent = getLastEvent(row.original)
@@ -344,7 +344,7 @@ const columns: ColumnDef<SandboxListItem>[] = [
     maxSize: 180,
     enableSorting: true,
     enableHiding: false,
-    header: ({ column }) => <SortableHeader column={column} label="Created" />,
+    header: ({ column }) => <SortableHeader column={column} label="创建时间" />,
     accessorFn: (row) => (row.createdAt ? new Date(row.createdAt) : new Date()),
     cell: ({ row }) => {
       const timestamp = getRelativeTimeString(row.original.createdAt)

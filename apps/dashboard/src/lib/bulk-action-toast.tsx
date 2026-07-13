@@ -85,7 +85,7 @@ export function createBulkActionToast(initialMessage: string, options?: BulkActi
         this.error(opts.errorTitle)
       } else if (processedCount > 0) {
         this.warning(opts.warningTitle, {
-          description: `${successCount} succeeded. ${failureCount} failed.`,
+          description: `${successCount} 项成功，${failureCount} 项失败。`,
         })
       } else {
         this.info(opts.canceledTitle)

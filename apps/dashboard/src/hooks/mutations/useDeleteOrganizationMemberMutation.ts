@@ -21,7 +21,7 @@ export const useDeleteOrganizationMemberMutation = () => {
     mutationKey: mutationKeys.organization.members.remove(),
     mutationFn: async ({ organizationId, userId }) => {
       if (!organizationId) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       await organizationsApi.deleteOrganizationMember(organizationId, userId)

@@ -122,11 +122,11 @@ export function WebhooksMessagesTable() {
           debounced
           value={globalFilter ?? ''}
           onValueChange={handleChangeFilter}
-          placeholder="Search by Message ID, Event Type, or Event ID"
+          placeholder="按消息 ID、事件类型或事件 ID 搜索"
           containerClassName="max-w-sm"
         />
         {table.getColumn('eventType') && (
-          <DataTableFacetedFilter column={table.getColumn('eventType')} title="Event Type" options={eventTypeOptions} />
+          <DataTableFacetedFilter column={table.getColumn('eventType')} title="事件类型" options={eventTypeOptions} />
         )}
         <Button
           variant="ghost"
@@ -147,9 +147,9 @@ export function WebhooksMessagesTable() {
             <TableEmptyState
               overlay
               colSpan={columns.length}
-              message={hasFilters ? 'No matching messages found.' : 'No messages found.'}
+              message={hasFilters ? '未找到匹配的消息。' : '暂无消息。'}
               icon={<Mail />}
-              description={hasFilters ? null : <p>Messages will appear here when webhook events are triggered.</p>}
+              description={hasFilters ? null : <p>触发 Webhook 事件后，消息将显示在这里。</p>}
               action={
                 hasFilters ? (
                   <Button variant="outline" onClick={handleClearFilters}>

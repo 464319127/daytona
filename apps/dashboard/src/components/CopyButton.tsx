@@ -36,7 +36,7 @@ function CopyButton({
 
   return (
     <TooltipButton
-      tooltipText={tooltipText || (copied ? 'Copied' : 'Copy')}
+      tooltipText={tooltipText || (copied ? '已复制' : '复制')}
       onClick={(e) => {
         copy(value)
         onClick?.(e)

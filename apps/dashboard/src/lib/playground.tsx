@@ -9,7 +9,7 @@ import { CodeLanguage } from '@daytona/sdk'
 export const createErrorMessageOutput = (error: unknown): ReactNode => {
   return (
     <span>
-      <span className="text-red-500">Error: </span>
+      <span className="text-red-500">错误：</span>
       <span>{error instanceof Error ? error.message : String(error)}</span>
     </span>
   )

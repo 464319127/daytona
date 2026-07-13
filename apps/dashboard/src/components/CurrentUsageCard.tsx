@@ -108,7 +108,7 @@ export function CurrentUsageCard({ organizationTier }: { organizationTier?: { ti
               </ScrollArea>
               {regionsForSelectedClass.length > 0 && (
                 <div className="flex shrink-0 items-center gap-1 pb-1">
-                  <span className="text-xs text-muted-foreground">Region:</span>
+                  <span className="text-xs text-muted-foreground">区域：</span>
                   <Select
                     value={selectedRegionId}
                     onValueChange={setSelectedRegionId}
@@ -116,7 +116,7 @@ export function CurrentUsageCard({ organizationTier }: { organizationTier?: { ti
                   >
                     <SelectTrigger
                       size="xs"
-                      aria-label="Select region"
+                      aria-label="选择区域"
                       className={cn(
                         'w-auto max-w-40 gap-x-2 border-transparent bg-transparent px-2 lowercase hover:bg-accent hover:text-accent-foreground data-[state=open]:bg-accent focus-visible:border-transparent',
                         {
@@ -125,7 +125,7 @@ export function CurrentUsageCard({ organizationTier }: { organizationTier?: { ti
                         },
                       )}
                     >
-                      <SelectValue placeholder="Region" />
+                      <SelectValue placeholder="区域" />
                     </SelectTrigger>
                     <SelectContent className="min-w-24 max-w-48" align="end">
                       {regionsForSelectedClass.map((usage) => (
@@ -155,7 +155,7 @@ export function CurrentUsageCard({ organizationTier }: { organizationTier?: { ti
               })}
             >
               <div className="flex items-center gap-4">
-                <div className="text-sm font-medium">Resources</div>
+                <div className="text-sm font-medium">资源</div>
                 <LiveIndicator
                   isUpdating={usageOverviewQuery.isFetching}
                   intervalMs={10_000}
@@ -170,32 +170,32 @@ export function CurrentUsageCard({ organizationTier }: { organizationTier?: { ti
           )
         )}
         <RateLimits
-          title="Sandbox Limits"
-          description="Resources limit per sandbox."
+          title="Sandbox 限制"
+          description="每个 Sandbox 的资源上限。"
           className="border-t border-border"
           rateLimits={buildSandboxLimitItems(currentRegionUsageOverview, selectedOrganization)}
         />
 
         <RateLimits
-          title="Rate Limits"
-          description="How many requests you can make."
+          title="速率限制"
+          description="可发出的请求数量。"
           className="border-t border-border"
           rateLimits={[
             {
               value: selectedOrganization?.authenticatedRateLimit ?? config?.rateLimit?.authenticated?.limit,
-              label: 'General Requests',
+              label: '常规请求',
               ttlSeconds:
                 selectedOrganization?.authenticatedRateLimitTtlSeconds ?? config?.rateLimit?.authenticated?.ttl,
             },
             {
               value: selectedOrganization?.sandboxCreateRateLimit ?? config?.rateLimit?.sandboxCreate?.limit,
-              label: 'Sandbox Creation',
+              label: '创建 Sandbox',
               ttlSeconds:
                 selectedOrganization?.sandboxCreateRateLimitTtlSeconds ?? config?.rateLimit?.sandboxCreate?.ttl,
             },
             {
               value: selectedOrganization?.sandboxLifecycleRateLimit ?? config?.rateLimit?.sandboxLifecycle?.limit,
-              label: 'Sandbox Lifecycle',
+              label: 'Sandbox 生命周期',
               ttlSeconds:
                 selectedOrganization?.sandboxLifecycleRateLimitTtlSeconds ?? config?.rateLimit?.sandboxLifecycle?.ttl,
             },
@@ -213,13 +213,13 @@ function CurrentUsageErrorState({ onRetry, retrying }: { onRetry: () => unknown;
         <EmptyMedia variant="icon" className="bg-destructive-background text-destructive">
           <AlertCircle />
         </EmptyMedia>
-        <EmptyTitle className="text-destructive">Failed to load current usage</EmptyTitle>
-        <EmptyDescription>Something went wrong while fetching your resource usage. Please try again.</EmptyDescription>
+        <EmptyTitle className="text-destructive">加载当前用量失败</EmptyTitle>
+        <EmptyDescription>获取资源用量时出现问题，请重试。</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant="secondary" size="sm" onClick={() => onRetry()} disabled={retrying}>
           {retrying && <Spinner />}
-          Retry
+          重试
         </Button>
       </EmptyContent>
     </Empty>
@@ -329,7 +329,7 @@ function useUsageScopeSelection(
 
 type UsageScopeSeverity = 'warning' | 'destructive'
 type ResourceType = 'compute' | 'memory' | 'storage'
-type UsageResourceLabel = 'CPU' | 'Memory' | 'Storage' | 'GPU'
+type UsageResourceLabel = 'CPU' | '内存' | '存储' | 'GPU'
 
 interface UsageScopeAlert {
   key: string
@@ -394,11 +394,11 @@ function getUsageScopeAlert(usage: RegionUsageOverview): UsageScopeAlert | null 
       percentage: getUsagePercentage(usage.currentCpuUsage, usage.totalCpuQuota),
     },
     {
-      label: 'Memory' as const,
+      label: '内存' as const,
       percentage: getUsagePercentage(usage.currentMemoryUsage, usage.totalMemoryQuota),
     },
     {
-      label: 'Storage' as const,
+      label: '存储' as const,
       percentage: getUsagePercentage(usage.currentDiskUsage, usage.totalDiskQuota),
     },
     {
@@ -448,16 +448,16 @@ function buildSandboxLimitItems(region: RegionUsageOverview | null, org: Organiz
 
   const cpuBase = region?.maxCpuPerSandbox ?? org?.maxCpuPerSandbox
   const cpuGpu = gpuEnabled ? region?.maxCpuPerGpuSandbox : null
-  items.push({ resourceType: 'compute', label: 'Compute', value: cpuBase, unit: 'vCPU' })
+  items.push({ resourceType: 'compute', label: '计算', value: cpuBase, unit: 'vCPU' })
   if (cpuGpu != null && cpuGpu !== cpuBase) {
-    items.push({ resourceType: 'compute', label: 'Compute (GPU)', value: cpuGpu, unit: 'vCPU' })
+    items.push({ resourceType: 'compute', label: '计算 (GPU)', value: cpuGpu, unit: 'vCPU' })
   }
 
   const memBase = region?.maxMemoryPerSandbox ?? org?.maxMemoryPerSandbox
   const memGpu = gpuEnabled ? region?.maxMemoryPerGpuSandbox : null
-  items.push({ resourceType: 'memory', label: 'Memory', value: memBase, unit: 'GiB' })
+  items.push({ resourceType: 'memory', label: '内存', value: memBase, unit: 'GiB' })
   if (memGpu != null && memGpu !== memBase) {
-    items.push({ resourceType: 'memory', label: 'Memory (GPU)', value: memGpu, unit: 'GiB' })
+    items.push({ resourceType: 'memory', label: '内存 (GPU)', value: memGpu, unit: 'GiB' })
   }
 
   const diskBase = region?.maxDiskPerSandbox ?? org?.maxDiskPerSandbox
@@ -469,17 +469,17 @@ function buildSandboxLimitItems(region: RegionUsageOverview | null, org: Organiz
 
   items.push({
     resourceType: 'storage',
-    label: showNonEphemSplit ? 'Storage (Ephemeral)' : 'Storage',
+    label: showNonEphemSplit ? '存储（临时）' : '存储',
     value: diskBase,
     unit: 'GiB',
   })
 
   if (showStorageGpuVariant) {
-    items.push({ resourceType: 'storage', label: 'Storage (GPU)', value: diskGpu, unit: 'GiB' })
+    items.push({ resourceType: 'storage', label: '存储 (GPU)', value: diskGpu, unit: 'GiB' })
   }
 
   if (showNonEphemSplit) {
-    items.push({ resourceType: 'storage', label: 'Storage (Non-Ephemeral)', value: diskNonEphem, unit: 'GiB' })
+    items.push({ resourceType: 'storage', label: '存储（非临时）', value: diskNonEphem, unit: 'GiB' })
   }
 
   return items

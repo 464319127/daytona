@@ -30,7 +30,7 @@ export function RegionsProvider(props: Props) {
       const regions = (await regionsApi.listSharedRegions()).data
       setSharedRegions(regions)
     } catch (error) {
-      handleApiError(error, 'Failed to fetch shared regions')
+      handleApiError(error, '获取共享区域失败')
       setSharedRegions([])
     } finally {
       setLoadingSharedRegions(false)
@@ -48,7 +48,7 @@ export function RegionsProvider(props: Props) {
       setAvailableRegions(regions)
       return regions
     } catch (error) {
-      handleApiError(error, 'Failed to fetch available regions')
+      handleApiError(error, '获取可用区域失败')
       setAvailableRegions([])
       return []
     } finally {

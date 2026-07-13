@@ -39,7 +39,7 @@ function createPreviewErrorState({
   return {
     status: 'error',
     path,
-    title: isForbidden ? 'Access denied' : fallbackTitle,
+    title: isForbidden ? '访问被拒绝' : fallbackTitle,
     description: errorMessage ?? (isForbidden ? accessDeniedDescription : fallbackDescription),
     canRetry: !isForbidden,
   }
@@ -86,10 +86,10 @@ export function usePreviewState({
     previewState = { status: 'idle' }
   } else if (selectedNodeError) {
     previewState = createPreviewErrorState({
-      accessDeniedDescription: 'You do not have permission to access this location in the sandbox.',
+      accessDeniedDescription: '你无权访问此 Sandbox 中的该位置。',
       error: selectedNodeError,
-      fallbackDescription: 'Something went wrong while loading this item from the sandbox.',
-      fallbackTitle: 'Failed to load item',
+      fallbackDescription: '从 Sandbox 加载此项目时出现问题。',
+      fallbackTitle: '加载项目失败',
       path: selectedNodePath,
     })
   } else if (!selectedNode) {
@@ -107,10 +107,10 @@ export function usePreviewState({
       previewState = { status: 'loading', path: selectedNode.path }
     } else if (selectedDirectoryQuery.isError) {
       previewState = createPreviewErrorState({
-        accessDeniedDescription: 'You do not have permission to access this directory in the sandbox.',
+        accessDeniedDescription: '你无权访问此 Sandbox 中的该目录。',
         error: selectedDirectoryQuery.error,
-        fallbackDescription: 'Something went wrong while opening this directory from the sandbox.',
-        fallbackTitle: 'Failed to open directory',
+        fallbackDescription: '从 Sandbox 打开此目录时出现问题。',
+        fallbackTitle: '打开目录失败',
         path: selectedNode.path,
       })
     } else {
@@ -120,10 +120,10 @@ export function usePreviewState({
     previewState = { status: 'too-large', path: selectedNode.path, size: selectedNode.size }
   } else if (previewQuery.isError) {
     previewState = createPreviewErrorState({
-      accessDeniedDescription: 'You do not have permission to access this file in the sandbox.',
+      accessDeniedDescription: '你无权访问此 Sandbox 中的该文件。',
       error: previewQuery.error,
-      fallbackDescription: 'Something went wrong while reading this file from the sandbox.',
-      fallbackTitle: isFileReadFailedError(previewQuery.error) ? 'Failed to read file' : 'Failed to load preview',
+      fallbackDescription: '从 Sandbox 读取此文件时出现问题。',
+      fallbackTitle: isFileReadFailedError(previewQuery.error) ? '读取文件失败' : '加载预览失败',
       path: selectedNode.path,
     })
   } else if (previewQuery.isPending && !previewQuery.data) {

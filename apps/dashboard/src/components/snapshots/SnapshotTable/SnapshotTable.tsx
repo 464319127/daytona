@@ -84,31 +84,31 @@ function SnapshotStateFilterLabel({ colorClassName, label }: { colorClassName: s
 
 const SNAPSHOT_STATE_OPTIONS: FacetedFilterOption[] = [
   {
-    label: <SnapshotStateFilterLabel colorClassName="bg-success-foreground" label="Active" />,
+    label: <SnapshotStateFilterLabel colorClassName="bg-success-foreground" label="启用" />,
     value: SnapshotState.ACTIVE,
   },
   {
-    label: <SnapshotStateFilterLabel colorClassName="bg-muted-foreground" label="Inactive" />,
+    label: <SnapshotStateFilterLabel colorClassName="bg-muted-foreground" label="未启用" />,
     value: SnapshotState.INACTIVE,
   },
   {
-    label: <SnapshotStateFilterLabel colorClassName="bg-muted-foreground" label="Building" />,
+    label: <SnapshotStateFilterLabel colorClassName="bg-muted-foreground" label="构建中" />,
     value: SnapshotState.BUILDING,
   },
   {
-    label: <SnapshotStateFilterLabel colorClassName="bg-muted-foreground" label="Pending" />,
+    label: <SnapshotStateFilterLabel colorClassName="bg-muted-foreground" label="待处理" />,
     value: SnapshotState.PENDING,
   },
   {
-    label: <SnapshotStateFilterLabel colorClassName="bg-muted-foreground" label="Pulling" />,
+    label: <SnapshotStateFilterLabel colorClassName="bg-muted-foreground" label="拉取中" />,
     value: SnapshotState.PULLING,
   },
   {
-    label: <SnapshotStateFilterLabel colorClassName="bg-destructive" label="Error" />,
+    label: <SnapshotStateFilterLabel colorClassName="bg-destructive" label="错误" />,
     value: SnapshotState.ERROR,
   },
   {
-    label: <SnapshotStateFilterLabel colorClassName="bg-destructive" label="Build Failed" />,
+    label: <SnapshotStateFilterLabel colorClassName="bg-destructive" label="构建失败" />,
     value: SnapshotState.BUILD_FAILED,
   },
 ]
@@ -292,11 +292,11 @@ export function SnapshotTable({
             debounced
             value={searchValue}
             onValueChange={onSearchChange}
-            placeholder="Search by Name"
+            placeholder="按名称搜索"
             containerClassName="min-w-0 flex-1 sm:max-w-sm"
           />
           <FacetFilter
-            title="State"
+            title="状态"
             className="h-8"
             options={SNAPSHOT_STATE_OPTIONS}
             selectedValues={stateFilter}
@@ -311,7 +311,7 @@ export function SnapshotTable({
             <TableEmptyState
               overlay
               colSpan={columns.length}
-              message={hasFilters ? 'No matching snapshots found.' : 'No Snapshots yet.'}
+              message={hasFilters ? '未找到匹配的 Snapshot。' : '暂无 Snapshot。'}
               icon={<Box />}
               description={
                 hasFilters ? null : (

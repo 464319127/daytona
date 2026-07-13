@@ -85,7 +85,7 @@ function TreeNodeRow({ node, depth, onExpand }: { node: TreeNode; depth: number;
               className="text-xs text-muted-foreground py-1"
               style={{ paddingLeft: `${(depth + 1) * 20 + 8 + 16 + 8}px` }}
             >
-              No forks
+              无 Fork
             </div>
           )}
         </div>
@@ -127,7 +127,7 @@ export function ForkTreeDialog({ sandboxId, open, onClose }: ForkTreeDialogProps
           })),
         )
       } catch {
-        toast.error('Failed to load fork tree')
+        toast.error('加载 Fork 树失败')
       } finally {
         setLoading(false)
       }
@@ -171,7 +171,7 @@ export function ForkTreeDialog({ sandboxId, open, onClose }: ForkTreeDialogProps
         )
       } catch {
         setChildNodes((prev) => updateNodes(prev, nodeId, (n) => ({ ...n, loading: false })))
-        toast.error('Failed to load forks')
+        toast.error('加载 Fork 失败')
       }
     },
     [childNodes, sandboxApi, selectedOrganization?.id],
@@ -183,12 +183,12 @@ export function ForkTreeDialog({ sandboxId, open, onClose }: ForkTreeDialogProps
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <GitFork className="w-4 h-4" />
-            Fork Tree
+            Fork 树
           </DialogTitle>
         </DialogHeader>
         <div className="flex-1 overflow-y-auto -mx-6 px-6">
           {loading ? (
-            <div className="flex items-center justify-center py-8 text-muted-foreground text-sm">Loading...</div>
+            <div className="flex items-center justify-center py-8 text-muted-foreground text-sm">正在加载...</div>
           ) : (
             <div className="space-y-0.5 py-1">
               {ancestors.map((ancestor) => (
@@ -209,7 +209,7 @@ export function ForkTreeDialog({ sandboxId, open, onClose }: ForkTreeDialogProps
                   <GitFork className="w-3.5 h-3.5 text-primary flex-shrink-0" />
                   <span className="text-sm font-medium text-primary truncate flex-1">
                     {currentSandbox.name}
-                    <span className="ml-2 text-xs text-primary/60 font-normal">(current)</span>
+                    <span className="ml-2 text-xs text-primary/60 font-normal">（当前）</span>
                   </span>
                   <SandboxState state={currentSandbox.state} />
                   <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">
@@ -223,7 +223,7 @@ export function ForkTreeDialog({ sandboxId, open, onClose }: ForkTreeDialogProps
               ))}
 
               {!loading && childNodes.length === 0 && currentSandbox && ancestors.length === 0 && (
-                <div className="text-xs text-muted-foreground py-2 px-2">No forks found</div>
+                <div className="text-xs text-muted-foreground py-2 px-2">未找到 Fork</div>
               )}
             </div>
           )}

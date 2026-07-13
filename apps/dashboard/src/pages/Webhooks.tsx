@@ -37,10 +37,10 @@ const Webhooks: React.FC = () => {
           endpointId: endpoint.id,
           update: { disabled: !endpoint.disabled },
         })
-        toast.success('Endpoint updated')
+        toast.success('端点已更新')
         endpoints.reload()
       } catch (error) {
-        handleApiError(error, 'Failed to update endpoint')
+        handleApiError(error, '更新端点失败')
       } finally {
         setMutatingEndpointId(null)
       }
@@ -53,10 +53,10 @@ const Webhooks: React.FC = () => {
       setMutatingEndpointId(endpoint.id)
       try {
         await deleteMutation.mutateAsync({ endpointId: endpoint.id })
-        toast.success('Endpoint deleted')
+        toast.success('端点已删除')
         endpoints.reload()
       } catch (error) {
-        handleApiError(error, 'Failed to delete endpoint')
+        handleApiError(error, '删除端点失败')
       } finally {
         setMutatingEndpointId(null)
       }
@@ -83,7 +83,7 @@ const Webhooks: React.FC = () => {
     return [
       {
         id: 'add-endpoint',
-        label: 'Create Endpoint',
+        label: '创建端点',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: () => {
           setActiveTab('endpoints')
@@ -93,21 +93,21 @@ const Webhooks: React.FC = () => {
     ]
   }, [endpoints.error])
 
-  useRegisterCommands(rootCommands, { groupId: 'webhook-actions', groupLabel: 'Webhook actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'webhook-actions', groupLabel: 'Webhook 操作', groupOrder: 0 })
 
   if (endpoints.error) {
     return (
       <PageLayout>
         <PageHeader />
         <PageContent>
-          <PageIntro title="Webhooks" />
+          <PageIntro title="Webhook" />
           <Empty className="py-12 max-h-64 border" variant="destructive">
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <AlertCircle />
               </EmptyMedia>
-              <EmptyTitle>Failed to load webhook endpoints</EmptyTitle>
-              <EmptyDescription>Something went wrong while fetching your endpoints. Please try again.</EmptyDescription>
+              <EmptyTitle>加载 Webhook 端点失败</EmptyTitle>
+              <EmptyDescription>获取端点时出现问题。请重试。</EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button variant="secondary" size="sm" onClick={() => endpoints.reload()}>
@@ -127,7 +127,7 @@ const Webhooks: React.FC = () => {
 
       <PageContent size="full" className="overflow-hidden">
         <PageIntro
-          title="Webhooks"
+          title="Webhook"
           className="mb-8"
           actions={
             <UpsertEndpointSheet
@@ -141,8 +141,8 @@ const Webhooks: React.FC = () => {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex min-h-0 flex-1 flex-col gap-0">
             <div className="flex items-center justify-between shadow-[inset_0_-1px] shadow-border">
               <TabsList variant="underline">
-                <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
-                <TabsTrigger value="messages">Messages</TabsTrigger>
+                <TabsTrigger value="endpoints">端点</TabsTrigger>
+                <TabsTrigger value="messages">消息</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent

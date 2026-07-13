@@ -14,7 +14,7 @@ export function ChargesTableHeader({ table }: ChargesTableHeaderProps) {
     <div className="flex items-center">
       <SearchInput
         debounced
-        placeholder="Search charges..."
+        placeholder="搜索扣款记录..."
         value={globalFilter ?? ''}
         onValueChange={(value) => {
           setGlobalFilter(value)

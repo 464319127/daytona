@@ -668,8 +668,8 @@ function FileUploadItemDelete({ asChild = false, children, className, onClick, .
 
 function FileUploadDropzoneContent({
   className,
-  description = 'Drag and drop, paste, or choose files.',
-  title = 'Drop files here',
+  description = '拖放、粘贴或选择文件。',
+  title = '将文件拖放到此处',
   ...props
 }: ComponentProps<'div'> & {
   description?: string

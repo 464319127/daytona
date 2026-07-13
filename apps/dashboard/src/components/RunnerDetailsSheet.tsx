@@ -39,10 +39,10 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      toast.success('Copied to clipboard')
+      toast.success('已复制到剪贴板')
     } catch (err) {
       console.error('Failed to copy text:', err)
-      toast.error('Failed to copy to clipboard')
+      toast.error('复制到剪贴板失败')
     }
   }
 
@@ -89,7 +89,7 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-dvw sm:w-[800px] p-0 flex flex-col gap-0 [&>button]:hidden">
         <SheetHeader className="space-y-0 flex flex-row justify-between items-center p-6">
-          <SheetTitle>Runner Details</SheetTitle>
+          <SheetTitle>Runner 详情</SheetTitle>
           <div className="flex items-center">
             {deletePermitted && (
               <Button
@@ -117,13 +117,13 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
             {/* Basic Info */}
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <h3 className="text-sm text-muted-foreground">Name</h3>
+                <h3 className="text-sm text-muted-foreground">名称</h3>
                 <div className="mt-1 flex items-center gap-2">
                   <p className="text-sm font-medium truncate">{runner.name}</p>
                   <button
                     onClick={() => copyToClipboard(runner.name)}
                     className="text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="Copy name"
+                    aria-label="复制名称"
                   >
                     <Copy className="w-3 h-3" />
                   </button>
@@ -136,7 +136,7 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
                   <button
                     onClick={() => copyToClipboard(runner.id)}
                     className="text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="Copy UUID"
+                    aria-label="复制 UUID"
                   >
                     <Copy className="w-3 h-3" />
                   </button>
@@ -147,42 +147,42 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
             {/* Status */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
-                <h3 className="text-sm text-muted-foreground">State</h3>
+                <h3 className="text-sm text-muted-foreground">状态</h3>
                 <div className={`mt-1 flex items-center gap-2 ${getStateColor(runner.state)}`}>
                   {getStateIcon(runner.state)}
                   <span className="text-sm font-medium">{getStateLabel(runner.state)}</span>
                 </div>
               </div>
               <div>
-                <h3 className="text-sm text-muted-foreground">Schedulable</h3>
-                <p className="mt-1 text-sm font-medium">{runner.unschedulable ? 'No' : 'Yes'}</p>
+                <h3 className="text-sm text-muted-foreground">可调度</h3>
+                <p className="mt-1 text-sm font-medium">{runner.unschedulable ? '否' : '是'}</p>
               </div>
               <div>
-                <h3 className="text-sm text-muted-foreground">Region</h3>
+                <h3 className="text-sm text-muted-foreground">区域</h3>
                 <div className="mt-1 flex items-center gap-2">
                   <p className="text-sm font-medium truncate">{getRegionName(runner.region) ?? runner.region}</p>
                   <button
                     onClick={() => copyToClipboard(runner.region)}
                     className="text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="Copy region"
+                    aria-label="复制区域"
                   >
                     <Copy className="w-3 h-3" />
                   </button>
                 </div>
               </div>
               <div>
-                <h3 className="text-sm text-muted-foreground">Version</h3>
+                <h3 className="text-sm text-muted-foreground">版本</h3>
                 <p className="mt-1 text-sm font-medium">{runner.appVersion ?? 'N/A'}</p>
               </div>
             </div>
 
             {/* Health Metrics */}
             <div>
-              <h3 className="text-lg font-medium mb-4">Health Metrics</h3>
+              <h3 className="text-lg font-medium mb-4">健康指标</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground text-xs">Availability Score</span>
+                    <span className="text-muted-foreground text-xs">可用性评分</span>
                     <span className="text-xs">
                       {runner.availabilityScore != null ? runner.availabilityScore.toFixed(2) : 'N/A'}%
                     </span>
@@ -191,7 +191,7 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
                 </div>
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground text-xs">CPU Usage</span>
+                    <span className="text-muted-foreground text-xs">CPU 用量</span>
                     <span className="text-xs">
                       {runner.currentCpuUsagePercentage != null ? runner.currentCpuUsagePercentage.toFixed(2) : 'N/A'}%
                     </span>
@@ -200,7 +200,7 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
                 </div>
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground text-xs">Memory Usage</span>
+                    <span className="text-muted-foreground text-xs">内存用量</span>
                     <span className="text-xs">
                       {runner.currentMemoryUsagePercentage != null
                         ? runner.currentMemoryUsagePercentage.toFixed(2)
@@ -212,7 +212,7 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
                 </div>
                 <div className="flex flex-col gap-1">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground text-xs">Disk Usage</span>
+                    <span className="text-muted-foreground text-xs">磁盘用量</span>
                     <span className="text-xs">
                       {runner.currentDiskUsagePercentage != null ? runner.currentDiskUsagePercentage.toFixed(2) : 'N/A'}
                       %
@@ -221,11 +221,11 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
                   <QuotaLine current={runner.currentDiskUsagePercentage ?? 0} total={100} />
                 </div>
                 <div>
-                  <h4 className="text-muted-foreground text-xs">Active Sandboxes</h4>
+                  <h4 className="text-muted-foreground text-xs">活跃沙箱</h4>
                   <p className="mt-1 text-2xl font-semibold">{runner.currentStartedSandboxes ?? 0}</p>
                 </div>
                 <div>
-                  <h4 className="text-muted-foreground text-xs">Snapshots</h4>
+                  <h4 className="text-muted-foreground text-xs">快照</h4>
                   <p className="mt-1 text-2xl font-semibold">{runner.currentSnapshotCount ?? 0}</p>
                 </div>
               </div>
@@ -234,7 +234,7 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
             {/* Total Resources */}
             <div className="grid grid-cols-1">
               <div>
-                <h3 className="text-sm text-muted-foreground">Total Resources</h3>
+                <h3 className="text-sm text-muted-foreground">资源总量</h3>
                 <div className="mt-1 text-sm font-medium flex items-center gap-1 flex-wrap">
                   <ResourceChip resource="cpu" value={Number(runner.cpu.toFixed(2))} />
                   <ResourceChip resource="memory" value={Number(runner.memory.toFixed(2))} />
@@ -252,16 +252,16 @@ const RunnerDetailsSheet: React.FC<RunnerDetailsSheetProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {runner.lastChecked && (
                 <div>
-                  <h3 className="text-sm text-muted-foreground">Last Checked</h3>
+                  <h3 className="text-sm text-muted-foreground">上次检查</h3>
                   <p className="mt-1 text-sm font-medium">{formatTimestamp(runner.lastChecked)}</p>
                 </div>
               )}
               <div>
-                <h3 className="text-sm text-muted-foreground">Created At</h3>
+                <h3 className="text-sm text-muted-foreground">创建时间</h3>
                 <p className="mt-1 text-sm font-medium">{formatTimestamp(runner.createdAt)}</p>
               </div>
               <div>
-                <h3 className="text-sm text-muted-foreground">Last Updated</h3>
+                <h3 className="text-sm text-muted-foreground">最后更新</h3>
                 <p className="mt-1 text-sm font-medium">{getLastEvent(runner).relativeTimeString}</p>
               </div>
             </div>

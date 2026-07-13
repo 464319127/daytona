@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0
  */
 
-import { pluralize } from '@/lib/utils'
 import { SnapshotDto, SnapshotState } from '@daytona/api-client'
 import { CheckSquare2Icon, MinusSquareIcon, PauseIcon, PlayIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import { useMemo } from 'react'
@@ -67,7 +66,7 @@ export function useSnapshotsCommands({
     if (writePermitted && onCreateSnapshot) {
       commands.push({
         id: 'create-snapshot',
-        label: 'Create Snapshot',
+        label: '创建 Snapshot',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: onCreateSnapshot,
       })
@@ -76,7 +75,7 @@ export function useSnapshotsCommands({
     if (selectableCount !== selectedCount) {
       commands.push({
         id: 'select-all-snapshots',
-        label: 'Select All Snapshots',
+        label: '选择全部 Snapshot',
         icon: <CheckSquare2Icon className="w-4 h-4" />,
         onSelect: () => toggleAllRowsSelected(true),
         chainable: true,
@@ -86,7 +85,7 @@ export function useSnapshotsCommands({
     if (selectedCount > 0) {
       commands.push({
         id: 'deselect-all-snapshots',
-        label: 'Deselect All Snapshots',
+        label: '取消选择全部 Snapshot',
         icon: <MinusSquareIcon className="w-4 h-4" />,
         onSelect: () => toggleAllRowsSelected(false),
         chainable: true,
@@ -96,7 +95,7 @@ export function useSnapshotsCommands({
     if (writePermitted && bulkActionCounts.deactivatable > 0) {
       commands.push({
         id: 'deactivate-snapshots',
-        label: `Deactivate ${pluralize(bulkActionCounts.deactivatable, 'Snapshot', 'Snapshots')}`,
+        label: `停用 ${bulkActionCounts.deactivatable} 个 Snapshot`,
         icon: <PauseIcon className="w-4 h-4" />,
         onSelect: onDeactivate,
       })
@@ -105,7 +104,7 @@ export function useSnapshotsCommands({
     if (writePermitted && bulkActionCounts.activatable > 0) {
       commands.push({
         id: 'activate-snapshots',
-        label: `Activate ${pluralize(bulkActionCounts.activatable, 'Snapshot', 'Snapshots')}`,
+        label: `启用 ${bulkActionCounts.activatable} 个 Snapshot`,
         icon: <PlayIcon className="w-4 h-4" />,
         onSelect: onActivate,
       })
@@ -114,7 +113,7 @@ export function useSnapshotsCommands({
     if (deletePermitted && bulkActionCounts.deletable > 0) {
       commands.push({
         id: 'delete-snapshots',
-        label: `Delete ${pluralize(bulkActionCounts.deletable, 'Snapshot', 'Snapshots')}`,
+        label: `删除 ${bulkActionCounts.deletable} 个 Snapshot`,
         icon: <TrashIcon className="w-4 h-4" />,
         onSelect: onDelete,
       })
@@ -134,5 +133,5 @@ export function useSnapshotsCommands({
     onCreateSnapshot,
   ])
 
-  useRegisterCommands(rootCommands, { groupId: 'snapshot-actions', groupLabel: 'Snapshot actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'snapshot-actions', groupLabel: 'Snapshot 操作', groupOrder: 0 })
 }

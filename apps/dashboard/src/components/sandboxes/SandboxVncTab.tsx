@@ -72,7 +72,7 @@ export function SandboxVncTab({ sandbox }: { sandbox: SandboxListItem }) {
               <EmptyMedia variant="icon">
                 <Monitor className="size-4" />
               </EmptyMedia>
-              <EmptyTitle>Sandbox is not running</EmptyTitle>
+              <EmptyTitle>Sandbox 未运行</EmptyTitle>
               <EmptyDescription>
                 Start the sandbox to access the VNC desktop.{' '}
                 <a href={`${DAYTONA_DOCS_URL}/en/vnc-access`} target="_blank" rel="noopener noreferrer">
@@ -92,7 +92,7 @@ export function SandboxVncTab({ sandbox }: { sandbox: SandboxListItem }) {
       <div className="flex-1 flex flex-col p-4">
         <div className="flex-1 min-h-0 rounded-md border border-border flex items-center justify-center gap-2 text-muted-foreground">
           <Spinner className="size-4" />
-          <span className="text-sm">Checking VNC status...</span>
+          <span className="text-sm">正在检查 VNC 状态...</span>
         </div>
       </div>
     )
@@ -107,7 +107,7 @@ export function SandboxVncTab({ sandbox }: { sandbox: SandboxListItem }) {
               <EmptyMedia variant="icon">
                 <Monitor className="size-4" />
               </EmptyMedia>
-              <EmptyTitle>VNC not available</EmptyTitle>
+              <EmptyTitle>VNC 不可用</EmptyTitle>
               <EmptyDescription>
                 Computer-use dependencies are not installed in this sandbox.{' '}
                 <a href={`${DAYTONA_DOCS_URL}/en/vnc-access`} target="_blank" rel="noopener noreferrer">
@@ -132,7 +132,7 @@ export function SandboxVncTab({ sandbox }: { sandbox: SandboxListItem }) {
               <EmptyMedia variant="icon">
                 <Monitor className="size-4" />
               </EmptyMedia>
-              <EmptyTitle>VNC Desktop</EmptyTitle>
+              <EmptyTitle>VNC 桌面</EmptyTitle>
               <EmptyDescription>
                 Start the VNC server to access a graphical desktop.{' '}
                 <a href={`${DAYTONA_DOCS_URL}/en/vnc-access`} target="_blank" rel="noopener noreferrer">
@@ -159,10 +159,10 @@ export function SandboxVncTab({ sandbox }: { sandbox: SandboxListItem }) {
           <Spinner className="size-4" />
           <span className="text-sm">
             {startMutation.isPending
-              ? 'Starting VNC desktop...'
+              ? '正在启动 VNC 桌面...'
               : vncReady && sessionLoading
-                ? 'Getting preview URL...'
-                : 'Waiting for VNC to become ready...'}
+                ? '正在获取预览 URL...'
+                : '正在等待 VNC 就绪...'}
           </span>
         </div>
       </div>
@@ -176,8 +176,8 @@ export function SandboxVncTab({ sandbox }: { sandbox: SandboxListItem }) {
         <div className="flex-1 min-h-0 rounded-md border border-border flex">
           <Empty className="border-0">
             <EmptyHeader>
-              <EmptyTitle>Failed to connect</EmptyTitle>
-              <EmptyDescription>{anyError || 'Something went wrong while connecting to VNC.'}</EmptyDescription>
+              <EmptyTitle>连接失败</EmptyTitle>
+              <EmptyDescription>{anyError || '连接 VNC 时出现问题。'}</EmptyDescription>
             </EmptyHeader>
             <Button variant="outline" size="sm" onClick={reset}>
               <RefreshCw className="size-4" />
@@ -204,7 +204,7 @@ export function SandboxVncTab({ sandbox }: { sandbox: SandboxListItem }) {
           </Button>
         </div>
         <div className="flex-1 min-h-0 rounded-md border border-border bg-neutral-950 overflow-hidden">
-          <iframe title="VNC desktop" src={vncUrl} className="w-full h-full border-0" />
+          <iframe title="VNC 桌面" src={vncUrl} className="w-full h-full border-0" />
         </div>
       </div>
     )

@@ -43,10 +43,10 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      toast.success('Copied to clipboard')
+      toast.success('已复制到剪贴板')
     } catch (err) {
       console.error('Failed to copy text:', err)
-      toast.error('Failed to copy to clipboard')
+      toast.error('复制到剪贴板失败')
     }
   }
 
@@ -57,7 +57,7 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-dvw sm:w-[800px] p-0 flex flex-col gap-0 [&>button]:hidden">
         <SheetHeader className="space-y-0 flex flex-row justify-between items-center p-6">
-          <SheetTitle>Region Details</SheetTitle>
+          <SheetTitle>区域详情</SheetTitle>
           <div className="flex items-center">
             {writePermitted && isCustomRegion && (
               <Button variant="outline" className="w-8 h-8" onClick={() => onUpdate(region)} disabled={isLoading}>
@@ -78,13 +78,13 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
         <div className="flex-1 p-6 space-y-10 overflow-y-auto min-h-0">
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <h3 className="text-sm text-muted-foreground">Name</h3>
+              <h3 className="text-sm text-muted-foreground">名称</h3>
               <div className="mt-1 flex items-center gap-2">
                 <p className="text-sm font-medium truncate">{region.name}</p>
                 <button
                   onClick={() => copyToClipboard(region.name)}
                   className="text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label="Copy name"
+                  aria-label="复制名称"
                 >
                   <Copy className="w-3 h-3" />
                 </button>
@@ -97,7 +97,7 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
                 <button
                   onClick={() => copyToClipboard(region.id)}
                   className="text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label="Copy ID"
+                  aria-label="复制 ID"
                 >
                   <Copy className="w-3 h-3" />
                 </button>
@@ -107,13 +107,13 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
 
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <h3 className="text-sm text-muted-foreground">Created</h3>
+              <h3 className="text-sm text-muted-foreground">创建时间</h3>
               <p className="mt-1 text-sm font-medium">{formatTimestamp(region.createdAt)}</p>
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-medium">URLs</h3>
+            <h3 className="text-lg font-medium">URL</h3>
             <div className="mt-3 space-y-4">
               <div>
                 <h4 className="text-sm text-muted-foreground">Proxy URL</h4>
@@ -123,7 +123,7 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
                     <button
                       onClick={() => copyToClipboard(region.proxyUrl || '')}
                       className="text-muted-foreground hover:text-foreground transition-colors"
-                      aria-label="Copy Proxy URL"
+                      aria-label="复制 Proxy URL"
                     >
                       <Copy className="w-3 h-3" />
                     </button>
@@ -138,7 +138,7 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
                     <button
                       onClick={() => copyToClipboard(region.sshGatewayUrl || '')}
                       className="text-muted-foreground hover:text-foreground transition-colors"
-                      aria-label="Copy SSH Gateway URL"
+                      aria-label="复制 SSH Gateway URL"
                     >
                       <Copy className="w-3 h-3" />
                     </button>
@@ -153,7 +153,7 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
                     <button
                       onClick={() => copyToClipboard(region.snapshotManagerUrl || '')}
                       className="text-muted-foreground hover:text-foreground transition-colors"
-                      aria-label="Copy Snapshot Manager URL"
+                      aria-label="复制 Snapshot Manager URL"
                     >
                       <Copy className="w-3 h-3" />
                     </button>
@@ -167,7 +167,7 @@ const RegionDetailsSheet: React.FC<RegionDetailsSheetProps> = ({
             writePermitted &&
             (region.proxyUrl || region.sshGatewayUrl || region.snapshotManagerUrl) && (
               <div>
-                <h3 className="text-lg font-medium">Credentials</h3>
+                <h3 className="text-lg font-medium">凭据</h3>
                 <div className="mt-3 space-y-3">
                   {region.proxyUrl && (
                     <Button

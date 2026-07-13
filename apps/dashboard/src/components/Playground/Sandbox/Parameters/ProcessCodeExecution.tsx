@@ -22,16 +22,16 @@ const SandboxProcessCodeExecution: React.FC = () => {
   const shellCommandRunParams = sandboxParametersState['shellCommandRunParams']
 
   const codeRunLanguageCodeFormData: ParameterFormItem & { key: 'languageCode' } = {
-    label: 'Code to execute',
+    label: '要执行的代码',
     key: 'languageCode',
-    placeholder: 'Write the code you want to execute inside the sandbox',
+    placeholder: '输入要在 Sandbox 中执行的代码',
     required: true,
   }
 
   const shellCommandFormData: ParameterFormItem & { key: 'shellCommand' } = {
-    label: 'Shell command',
+    label: 'Shell 命令',
     key: 'shellCommand',
-    placeholder: 'Enter a shell command to run inside the sandbox',
+    placeholder: '输入要在 Sandbox 中运行的 Shell 命令',
     required: true,
   }
 
@@ -41,14 +41,14 @@ const SandboxProcessCodeExecution: React.FC = () => {
     {
       methodName: ProcessCodeExecutionActions.CODE_RUN,
       label: 'codeRun()',
-      description: 'Executes code in the Sandbox using the appropriate language runtime',
+      description: '使用相应语言运行时在 Sandbox 中执行代码',
       parametersFormItems: [codeRunLanguageCodeFormData],
       parametersState: codeRunParams,
     },
     {
       methodName: ProcessCodeExecutionActions.SHELL_COMMANDS_RUN,
       label: 'executeCommand()',
-      description: 'Executes a shell command in the Sandbox',
+      description: '在 Sandbox 中执行 Shell 命令',
       parametersFormItems: [shellCommandFormData],
       parametersState: shellCommandRunParams,
     },

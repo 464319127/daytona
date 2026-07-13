@@ -87,11 +87,11 @@ const Regions: React.FC = () => {
 
     try {
       const response = (await organizationsApi.createRegion(createRegionData, selectedOrganization.id)).data
-      toast.success(`Creating region ${createRegionData.name}`)
+      toast.success(`正在创建区域 ${createRegionData.name}`)
       await refreshRegions()
       return response
     } catch (error) {
-      handleApiError(error, 'Failed to create region')
+      handleApiError(error, '创建区域失败')
       return null
     }
   }
@@ -107,10 +107,10 @@ const Regions: React.FC = () => {
       await organizationsApi.deleteRegion(region.id, selectedOrganization.id)
       setRegionToDelete(null)
       setDeleteRegionDialogIsOpen(false)
-      toast.success(`Deleting region ${region.name}`)
+      toast.success(`正在删除区域 ${region.name}`)
       await refreshRegions()
     } catch (error) {
-      handleApiError(error, 'Failed to delete region')
+      handleApiError(error, '删除区域失败')
     } finally {
       setRegionIsLoading((prev) => ({ ...prev, [region.id]: false }))
     }
@@ -134,14 +134,14 @@ const Regions: React.FC = () => {
     return [
       {
         id: 'create-region',
-        label: 'Create Region',
+        label: '创建区域',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: () => createRegionSheetRef.current?.open(),
       },
     ]
   }, [writePermitted])
 
-  useRegisterCommands(rootCommands, { groupId: 'region-actions', groupLabel: 'Region actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'region-actions', groupLabel: '区域操作', groupOrder: 0 })
 
   const handleRegenerateProxyApiKey = async (region: Region) => {
     setRegionForRegenerate(region)
@@ -172,11 +172,11 @@ const Regions: React.FC = () => {
     setRegionIsLoading((prev) => ({ ...prev, [regionId]: true }))
     try {
       await organizationsApi.updateRegion(regionId, updateData, selectedOrganization.id)
-      toast.success('Region updated successfully')
+      toast.success('区域已更新')
       await refreshRegions()
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to update region')
+      handleApiError(error, '更新区域失败')
       return false
     } finally {
       setRegionIsLoading((prev) => ({ ...prev, [regionId]: false }))
@@ -200,9 +200,9 @@ const Regions: React.FC = () => {
       const response = await organizationsApi.regenerateProxyApiKey(regionForRegenerate.id, selectedOrganization.id)
       setRegeneratedApiKey(response.data.apiKey)
       setShowRegenerateProxyApiKeyDialog(true)
-      toast.success('Proxy API key regenerated successfully')
+      toast.success('Proxy API 密钥已重新生成')
     } catch (error) {
-      handleApiError(error, 'Failed to regenerate proxy API key')
+      handleApiError(error, '重新生成 Proxy API 密钥失败')
       setShowRegenerateProxyApiKeyDialog(false)
       setRegionForRegenerate(null)
     } finally {
@@ -224,9 +224,9 @@ const Regions: React.FC = () => {
       )
       setRegeneratedApiKey(response.data.apiKey)
       setShowRegenerateSshGatewayApiKeyDialog(true)
-      toast.success('SSH Gateway API key regenerated successfully')
+      toast.success('SSH Gateway API 密钥已重新生成')
     } catch (error) {
-      handleApiError(error, 'Failed to regenerate SSH Gateway API key')
+      handleApiError(error, '重新生成 SSH Gateway API 密钥失败')
       setShowRegenerateSshGatewayApiKeyDialog(false)
       setRegionForRegenerate(null)
     } finally {
@@ -248,9 +248,9 @@ const Regions: React.FC = () => {
       )
       setRegeneratedSnapshotManagerCreds(response.data)
       setShowRegenerateSnapshotManagerCredsDialog(true)
-      toast.success('Snapshot Manager credentials regenerated successfully')
+      toast.success('Snapshot Manager 凭据已重新生成')
     } catch (error) {
-      handleApiError(error, 'Failed to regenerate Snapshot Manager credentials')
+      handleApiError(error, '重新生成 Snapshot Manager 凭据失败')
       setShowRegenerateSnapshotManagerCredsDialog(false)
       setRegionForRegenerate(null)
     } finally {
@@ -261,10 +261,10 @@ const Regions: React.FC = () => {
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text)
-      toast.success('Copied to clipboard')
+      toast.success('已复制到剪贴板')
     } catch (err) {
-      console.error('Failed to copy text:', err)
-      toast.error('Failed to copy to clipboard')
+      console.error('复制文本失败：', err)
+      toast.error('复制到剪贴板失败')
     }
   }
 
@@ -274,7 +274,7 @@ const Regions: React.FC = () => {
 
       <PageContent size="full" className="overflow-hidden">
         <PageIntro
-          title="Regions"
+          title="区域"
           actions={
             <CreateRegionSheet
               onCreateRegion={handleCreateRegion}
@@ -347,15 +347,15 @@ const Regions: React.FC = () => {
         >
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Confirm Region Deletion</DialogTitle>
+              <DialogTitle>确认删除区域</DialogTitle>
               <DialogDescription>
-                Are you sure you want to delete this region? This action cannot be undone.
+                确定要删除此区域吗？此操作无法撤销。
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
-                  Cancel
+                  取消
                 </Button>
               </DialogClose>
               <Button
@@ -363,7 +363,7 @@ const Regions: React.FC = () => {
                 onClick={() => handleDelete(regionToDelete)}
                 disabled={regionIsLoading[regionToDelete.id]}
               >
-                {regionIsLoading[regionToDelete.id] ? 'Deleting...' : 'Delete'}
+                {regionIsLoading[regionToDelete.id] ? '正在删除...' : '删除'}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -385,15 +385,15 @@ const Regions: React.FC = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {regeneratedApiKey ? 'Proxy API Key Regenerated' : 'Regenerate Proxy API Key'}
+              {regeneratedApiKey ? 'Proxy API 密钥已重新生成' : '重新生成 Proxy API 密钥'}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {regeneratedApiKey ? (
-                'The new API key has been generated. Copy it now as it will not be shown again.'
+                '新 API 密钥已生成。请立即复制，该密钥不会再次显示。'
               ) : (
                 <>
-                  <strong>Warning:</strong> This will immediately invalidate the current proxy API key. The proxy will
-                  need to be redeployed with the new API key.
+                  <strong>警告：</strong>此操作会立即使当前 Proxy API 密钥失效。需要使用新 API 密钥重新部署
+                  Proxy。
                 </>
               )}
               {regeneratedApiKey && (
@@ -419,13 +419,13 @@ const Regions: React.FC = () => {
           <AlertDialogFooter>
             {!regeneratedApiKey ? (
               <>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>取消</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={confirmRegenerateProxyApiKey}
                   disabled={!regionForRegenerate || regionIsLoading[regionForRegenerate?.id || '']}
                   className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
                 >
-                  {regionForRegenerate && regionIsLoading[regionForRegenerate.id] ? 'Regenerating...' : 'Regenerate'}
+                  {regionForRegenerate && regionIsLoading[regionForRegenerate.id] ? '正在重新生成...' : '重新生成'}
                 </AlertDialogAction>
               </>
             ) : (
@@ -438,7 +438,7 @@ const Regions: React.FC = () => {
                 }}
                 className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
               >
-                Close
+                关闭
               </AlertDialogAction>
             )}
           </AlertDialogFooter>
@@ -460,15 +460,15 @@ const Regions: React.FC = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {regeneratedApiKey ? 'SSH Gateway API Key Regenerated' : 'Regenerate SSH Gateway API Key'}
+              {regeneratedApiKey ? 'SSH Gateway API 密钥已重新生成' : '重新生成 SSH Gateway API 密钥'}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {regeneratedApiKey ? (
-                'The new API key has been generated. Copy it now as it will not be shown again.'
+                '新 API 密钥已生成。请立即复制，该密钥不会再次显示。'
               ) : (
                 <>
-                  <strong>Warning:</strong> This will immediately invalidate the current SSH gateway API key. The SSH
-                  gateway will need to be redeployed with the new API key.
+                  <strong>警告：</strong>此操作会立即使当前 SSH Gateway API 密钥失效。需要使用新 API 密钥重新部署
+                  SSH Gateway。
                 </>
               )}
               {regeneratedApiKey && (
@@ -494,13 +494,13 @@ const Regions: React.FC = () => {
           <AlertDialogFooter>
             {!regeneratedApiKey ? (
               <>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>取消</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={confirmRegenerateSshGatewayApiKey}
                   disabled={!regionForRegenerate || regionIsLoading[regionForRegenerate?.id || '']}
                   className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
                 >
-                  {regionForRegenerate && regionIsLoading[regionForRegenerate.id] ? 'Regenerating...' : 'Regenerate'}
+                  {regionForRegenerate && regionIsLoading[regionForRegenerate.id] ? '正在重新生成...' : '重新生成'}
                 </AlertDialogAction>
               </>
             ) : (
@@ -513,7 +513,7 @@ const Regions: React.FC = () => {
                 }}
                 className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
               >
-                Close
+                关闭
               </AlertDialogAction>
             )}
           </AlertDialogFooter>
@@ -536,22 +536,22 @@ const Regions: React.FC = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>
               {regeneratedSnapshotManagerCreds
-                ? 'Snapshot Manager Credentials Regenerated'
-                : 'Regenerate Snapshot Manager Credentials'}
+                ? 'Snapshot Manager 凭据已重新生成'
+                : '重新生成 Snapshot Manager 凭据'}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {regeneratedSnapshotManagerCreds ? (
-                'The new credentials have been generated. Copy them now as they will not be shown again.'
+                '新凭据已生成。请立即复制，这些凭据不会再次显示。'
               ) : (
                 <>
-                  <strong>Warning:</strong> This will immediately invalidate the current Snapshot Manager credentials.
-                  The Snapshot Manager will need to be reconfigured with the new credentials.
+                  <strong>警告：</strong>此操作会立即使当前 Snapshot Manager 凭据失效。
+                  需要使用新凭据重新配置 Snapshot Manager。
                 </>
               )}
               {regeneratedSnapshotManagerCreds && (
                 <div className="space-y-4 mt-4">
                   <div>
-                    <span className="text-xs text-muted-foreground">Username</span>
+                    <span className="text-xs text-muted-foreground">用户名</span>
                     <div className="p-3 flex justify-between items-center rounded-md bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-400">
                       <span className="overflow-x-auto pr-2 cursor-text select-all">
                         {regeneratedSnapshotManagerCreds.username}
@@ -563,7 +563,7 @@ const Regions: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <span className="text-xs text-muted-foreground">Password</span>
+                    <span className="text-xs text-muted-foreground">密码</span>
                     <div className="p-3 flex justify-between items-center rounded-md bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-400">
                       <span
                         className="overflow-x-auto pr-2 cursor-text select-all"
@@ -588,13 +588,13 @@ const Regions: React.FC = () => {
           <AlertDialogFooter>
             {!regeneratedSnapshotManagerCreds ? (
               <>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>取消</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={confirmRegenerateSnapshotManagerCredentials}
                   disabled={!regionForRegenerate || regionIsLoading[regionForRegenerate?.id || '']}
                   className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
                 >
-                  {regionForRegenerate && regionIsLoading[regionForRegenerate.id] ? 'Regenerating...' : 'Regenerate'}
+                  {regionForRegenerate && regionIsLoading[regionForRegenerate.id] ? '正在重新生成...' : '重新生成'}
                 </AlertDialogAction>
               </>
             ) : (
@@ -607,7 +607,7 @@ const Regions: React.FC = () => {
                 }}
                 className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
               >
-                Close
+                关闭
               </AlertDialogAction>
             )}
           </AlertDialogFooter>

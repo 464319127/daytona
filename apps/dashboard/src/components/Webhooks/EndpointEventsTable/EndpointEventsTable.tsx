@@ -133,14 +133,14 @@ export function EndpointEventsTable({ data, loading, onReplay }: EndpointEventsT
           debounced
           value={globalFilter ?? ''}
           onValueChange={handleChangeFilter}
-          placeholder="Search by Event Type, Message ID, or Status"
+          placeholder="按事件类型、消息 ID 或状态搜索"
           containerClassName="max-w-sm"
         />
         {table.getColumn('eventType') && (
-          <DataTableFacetedFilter column={table.getColumn('eventType')} title="Event Type" options={eventTypeOptions} />
+          <DataTableFacetedFilter column={table.getColumn('eventType')} title="事件类型" options={eventTypeOptions} />
         )}
         {table.getColumn('status') && (
-          <DataTableFacetedFilter column={table.getColumn('status')} title="Status" options={statusOptions} />
+          <DataTableFacetedFilter column={table.getColumn('status')} title="状态" options={statusOptions} />
         )}
       </div>
       <TableContainer
@@ -150,9 +150,9 @@ export function EndpointEventsTable({ data, loading, onReplay }: EndpointEventsT
             <TableEmptyState
               overlay
               colSpan={columns.length}
-              message={hasFilters ? 'No matching events found.' : 'No events found.'}
+              message={hasFilters ? '未找到匹配的事件。' : '暂无事件。'}
               icon={<Mail />}
-              description={hasFilters ? null : <p>Events will appear here when webhooks are triggered.</p>}
+              description={hasFilters ? null : <p>触发 Webhook 后，事件将显示在这里。</p>}
               action={
                 hasFilters ? (
                   <Button variant="outline" onClick={handleClearFilters}>

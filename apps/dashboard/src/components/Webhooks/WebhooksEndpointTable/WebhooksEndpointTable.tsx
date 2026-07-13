@@ -140,7 +140,7 @@ export function WebhooksEndpointTable({
           debounced
           value={globalFilter ?? ''}
           onValueChange={handleChangeFilter}
-          placeholder="Search by URL or Description"
+          placeholder="按 URL 或描述搜索"
           containerClassName="min-w-0 flex-1 sm:max-w-sm"
         />
       </div>
@@ -153,12 +153,12 @@ export function WebhooksEndpointTable({
             <TableEmptyState
               overlay
               colSpan={columns.length}
-              message={hasSearch ? 'No matching webhook endpoints found.' : 'No webhook endpoints found.'}
+              message={hasSearch ? '未找到匹配的 Webhook 端点。' : '暂无 Webhook 端点。'}
               icon={<Mail />}
               description={
                 hasSearch ? null : (
                   <div className="space-y-2">
-                    <p>Create an endpoint to start receiving webhook events.</p>
+                    <p>创建端点以开始接收 Webhook 事件。</p>
                     <p>
                       <a
                         href="https://www.daytona.io/docs/en/tools/api/#daytona/webhook/undefined/"
@@ -166,9 +166,9 @@ export function WebhooksEndpointTable({
                         rel="noopener noreferrer"
                         className="text-primary hover:underline font-medium"
                       >
-                        Check out the Docs
+                        查看文档
                       </a>{' '}
-                      to learn more.
+                      了解更多信息。
                     </p>
                   </div>
                 )
@@ -176,7 +176,7 @@ export function WebhooksEndpointTable({
               action={
                 hasSearch ? (
                   <Button variant="outline" onClick={() => handleChangeFilter('')}>
-                    Clear filters
+                    清除筛选条件
                   </Button>
                 ) : null
               }
@@ -258,15 +258,15 @@ export function WebhooksEndpointTable({
         </Table>
       </TableContainer>
       <PageFooterPortal>
-        <Pagination table={table} entityName="Endpoints" />
+        <Pagination table={table} entityName="端点" />
       </PageFooterPortal>
 
       <AlertDialog open={!!deleteEndpoint} onOpenChange={(open) => !open && setDeleteEndpoint(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Webhook Endpoint</AlertDialogTitle>
+            <AlertDialogTitle>删除 Webhook 端点</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this webhook endpoint? This action cannot be undone.
+              确定要删除此 Webhook 端点吗？此操作无法撤销。
               {deleteEndpoint && (
                 <div className="mt-2 text-sm">
                   <strong>URL:</strong> {deleteEndpoint.url}
@@ -275,9 +275,9 @@ export function WebhooksEndpointTable({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={handleConfirmDelete}>
-              Delete
+              删除
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -286,9 +286,9 @@ export function WebhooksEndpointTable({
       <AlertDialog open={!!disableEndpoint} onOpenChange={(open) => !open && setDisableEndpoint(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{disableEndpoint?.disabled ? 'Enable' : 'Disable'} Webhook Endpoint</AlertDialogTitle>
+            <AlertDialogTitle>{disableEndpoint?.disabled ? '启用' : '停用'} Webhook 端点</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to {disableEndpoint?.disabled ? 'enable' : 'disable'} this webhook endpoint?
+              确定要{disableEndpoint?.disabled ? '启用' : '停用'}此 Webhook 端点吗？
               {disableEndpoint && (
                 <div className="mt-2 text-sm">
                   <strong>URL:</strong> {disableEndpoint.url}
@@ -297,9 +297,9 @@ export function WebhooksEndpointTable({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction onClick={handleConfirmDisable}>
-              {disableEndpoint?.disabled ? 'Enable' : 'Disable'}
+              {disableEndpoint?.disabled ? '启用' : '停用'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

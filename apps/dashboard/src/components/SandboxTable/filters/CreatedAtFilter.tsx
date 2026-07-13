@@ -76,7 +76,7 @@ export function CreatedAtFilter({ onFilterChange, value }: CreatedAtFilterConten
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <Label>Created</Label>
+        <Label>创建时间</Label>
         <button className="text-sm text-muted-foreground hover:text-primary px-2" onClick={() => handleClear()}>
           Clear
         </button>
@@ -86,7 +86,7 @@ export function CreatedAtFilter({ onFilterChange, value }: CreatedAtFilterConten
           <PopoverTrigger asChild>
             <Button variant="outline" className={cn('min-w-40', !fromDate && 'text-muted-foreground')}>
               <CalendarIcon className=" h-4 w-4" />
-              {fromDate ? format(fromDate, 'PPP') : <span>Pick a date</span>}
+              {fromDate ? format(fromDate, 'PPP') : <span>选择日期</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -100,7 +100,7 @@ export function CreatedAtFilter({ onFilterChange, value }: CreatedAtFilterConten
           <PopoverTrigger asChild>
             <Button variant="outline" className={cn('min-w-40', !toDate && 'text-muted-foreground')}>
               <CalendarIcon className=" h-4 w-4" />
-              {toDate ? format(toDate, 'PPP') : <span>Pick a date</span>}
+              {toDate ? format(toDate, 'PPP') : <span>选择日期</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">

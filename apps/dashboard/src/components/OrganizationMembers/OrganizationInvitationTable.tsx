@@ -183,7 +183,7 @@ export function OrganizationInvitationTable({
           debounced
           value={globalFilter}
           onValueChange={handleChangeFilter}
-          placeholder="Search by Email, Inviter, or Status"
+          placeholder="按邮箱、邀请人或状态搜索"
           containerClassName="max-w-sm"
         />
         <TableContainer
@@ -195,13 +195,13 @@ export function OrganizationInvitationTable({
               <TableEmptyState
                 overlay
                 colSpan={organizationInvitationColumns.length}
-                message={hasSearch ? 'No matching Invitations found.' : 'No Invitations found.'}
+                message={hasSearch ? '未找到匹配的邀请。' : '暂无邀请。'}
                 icon={<MailPlus />}
-                description={hasSearch ? null : 'No pending invitations for this organization.'}
+                description={hasSearch ? null : '此组织没有待处理的邀请。'}
                 action={
                   hasSearch ? (
                     <Button variant="outline" onClick={() => handleChangeFilter('')}>
-                      Clear filters
+                      清除筛选条件
                     </Button>
                   ) : null
                 }
@@ -279,10 +279,10 @@ export function OrganizationInvitationTable({
           }}
           trigger={null}
           initialMember={initialInvitationMember}
-          title="Update Invitation"
-          description="Modify organization access for the invited member."
+          title="更新邀请"
+          description="修改受邀成员的组织访问权限。"
           onSubmit={({ role, assignedRoleIds }) => handleConfirmUpdate(role, assignedRoleIds)}
-          reducedRoleWarning="Removing assignments will reduce the invited member's access when they accept this invitation."
+          reducedRoleWarning="移除分配项会减少受邀成员接受邀请后拥有的访问权限。"
         />
       )}
 
@@ -331,7 +331,7 @@ const organizationInvitationColumns: ColumnDef<OrganizationInvitation>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const isExpired = new Date(row.original.expiresAt) < new Date()
-      return <Badge variant={isExpired ? 'destructive' : 'secondary'}>{isExpired ? 'Expired' : 'Pending'}</Badge>
+      return <Badge variant={isExpired ? 'destructive' : 'secondary'}>{isExpired ? '已过期' : '待处理'}</Badge>
     },
   },
   {
@@ -351,13 +351,13 @@ const organizationInvitationColumns: ColumnDef<OrganizationInvitation>[] = [
         <div className="text-right">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onUpdate(row.original)}>Edit</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onUpdate(row.original)}>编辑</DropdownMenuItem>
               <DropdownMenuItem variant="destructive" onClick={() => onCancel(row.original.id)}>
                 Cancel
               </DropdownMenuItem>

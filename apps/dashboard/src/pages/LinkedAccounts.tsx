@@ -56,8 +56,8 @@ const LinkedAccounts: React.FC = () => {
   return (
     <Card>
       <CardHeader className="p-4">
-        <CardTitle>Linked Accounts</CardTitle>
-        <CardDescription>View and manage accounts linked to your Daytona account.</CardDescription>
+        <CardTitle>已关联账户</CardTitle>
+        <CardDescription>查看和管理与 Daytona 账号关联的登录账户。</CardDescription>
       </CardHeader>
       {accountProvidersQuery.isLoading ? (
         <CardContent className="flex flex-col gap-5">
@@ -96,7 +96,7 @@ const LinkedAccount = ({ provider }: { provider: AccountProvider }) => {
 
   const handleUnlinkAccount = async () => {
     if (provider.isPrimary) {
-      toast.error('Primary account cannot be unlinked')
+      toast.error('主账户无法解除关联')
       return
     }
 
@@ -106,14 +106,14 @@ const LinkedAccount = ({ provider }: { provider: AccountProvider }) => {
 
     try {
       await unlinkAccountMutation.mutateAsync({ provider: provider.name, userId: provider.userId })
-      toast.success('Successfully unlinked account')
+      toast.success('账户关联已解除')
       await new Promise((resolve) => setTimeout(resolve, 1500))
       const success = await signinSilent()
       if (!success) {
         window.location.reload()
       }
     } catch (error) {
-      handleApiError(error, 'Failed to unlink account')
+      handleApiError(error, '解除账户关联失败')
     }
   }
 
@@ -128,25 +128,25 @@ const LinkedAccount = ({ provider }: { provider: AccountProvider }) => {
               <TooltipTrigger asChild>
                 <Badge variant="outline" className="gap-1 text-xs">
                   <ShieldCheck className="h-3 w-3" />
-                  Primary
+                  主账户
                 </Badge>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Primary accounts cannot be unlinked</p>
+                <p>主账户无法解除关联</p>
               </TooltipContent>
             </Tooltip>
           )}
         </div>
         <p className="text-sm text-muted-foreground">
           {provider.isPrimary
-            ? `This is your primary account used for authentication.`
-            : `Your ${provider.displayName} account is linked as a secondary login method.`}
+            ? '这是用于身份验证的主账户。'
+            : `你的 ${provider.displayName} 账户已关联为辅助登录方式。`}
         </p>
       </div>
       {!provider.isPrimary && (
         <Button variant="outline" onClick={handleUnlinkAccount} disabled={unlinkAccountMutation.isPending}>
           {unlinkAccountMutation.isPending && <Spinner />}
-          Unlink
+          解除关联
         </Button>
       )}
     </div>

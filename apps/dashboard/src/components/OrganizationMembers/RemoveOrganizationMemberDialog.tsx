@@ -39,7 +39,7 @@ export const RemoveOrganizationMemberDialog: React.FC<RemoveOrganizationMemberDi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Remove Member</DialogTitle>
+          <DialogTitle>移除成员</DialogTitle>
           <DialogDescription>
             Are you sure you want to remove this member from the organization? Any API keys they have created will
             become ineffective.

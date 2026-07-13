@@ -28,21 +28,21 @@ interface VolumeBulkActionAlertDialogProps {
 export function VolumeBulkActionAlertDialog({ action, count, onConfirm, onCancel }: VolumeBulkActionAlertDialogProps) {
   if (!action) return null
 
-  const countText = count === 1 ? 'this volume' : `these ${count} selected volumes`
+  const countText = count === 1 ? '此存储卷' : `选中的 ${count} 个存储卷`
 
   return (
     <AlertDialog open={action !== null} onOpenChange={(open) => !open && onCancel()}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete Volumes</AlertDialogTitle>
+          <AlertDialogTitle>删除存储卷</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete {countText}? This action cannot be undone.
+            确定要删除{countText}吗？此操作无法撤销。
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>取消</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} variant="destructive">
-            Delete
+            删除
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -75,28 +75,28 @@ export const SandboxUsageTable: React.FC<SandboxUsageTableProps> = ({ data, isLo
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Sandbox ID</TableHead>
+              <TableHead>沙箱 ID</TableHead>
               <SortableTableHead
                 field="totalPrice"
-                label="Total Price"
+                label="总价"
                 onSort={handleSort}
                 getSortDirection={getSortDirection}
               />
               <SortableTableHead
                 field="totalCPUSeconds"
-                label="CPU (seconds)"
+                label="CPU（秒）"
                 onSort={handleSort}
                 getSortDirection={getSortDirection}
               />
               <SortableTableHead
                 field="totalRAMGBSeconds"
-                label="RAM (GB-seconds)"
+                label="内存（GB 秒）"
                 onSort={handleSort}
                 getSortDirection={getSortDirection}
               />
               <SortableTableHead
                 field="totalDiskGBSeconds"
-                label="Disk (GB-seconds)"
+                label="磁盘（GB 秒）"
                 onSort={handleSort}
                 getSortDirection={getSortDirection}
               />
@@ -129,7 +129,7 @@ export const SandboxUsageTable: React.FC<SandboxUsageTableProps> = ({ data, isLo
                       <div className="flex items-center gap-2 group/copy-button">
                         <span className="truncate max-w-[200px]">{sandbox.sandboxId}</span>
                         {sandbox.sandboxId && (
-                          <CopyButton value={sandbox.sandboxId} tooltipText="Copy sandbox ID" size="icon-xs" autoHide />
+                          <CopyButton value={sandbox.sandboxId} tooltipText="复制沙箱 ID" size="icon-xs" autoHide />
                         )}
                       </div>
                     </TableCell>
@@ -167,7 +167,7 @@ export const SandboxUsageTable: React.FC<SandboxUsageTableProps> = ({ data, isLo
         </div>
         <div className="flex items-center gap-4">
           <div className="text-sm font-medium text-muted-foreground">
-            Page {pageIndex + 1} of {pageCount}
+            第 {pageIndex + 1} 页，共 {pageCount} 页
           </div>
           <div className="flex items-center space-x-2">
             <Button
@@ -176,7 +176,7 @@ export const SandboxUsageTable: React.FC<SandboxUsageTableProps> = ({ data, isLo
               onClick={() => setPageIndex(0)}
               disabled={pageIndex === 0}
             >
-              <span className="sr-only">Go to first page</span>
+              <span className="sr-only">跳到第一页</span>
               <ChevronsLeft />
             </Button>
             <Button
@@ -185,7 +185,7 @@ export const SandboxUsageTable: React.FC<SandboxUsageTableProps> = ({ data, isLo
               onClick={() => setPageIndex((p) => p - 1)}
               disabled={pageIndex === 0}
             >
-              <span className="sr-only">Go to previous page</span>
+              <span className="sr-only">跳到上一页</span>
               <ChevronLeft />
             </Button>
             <Button
@@ -194,7 +194,7 @@ export const SandboxUsageTable: React.FC<SandboxUsageTableProps> = ({ data, isLo
               onClick={() => setPageIndex((p) => p + 1)}
               disabled={pageIndex >= pageCount - 1}
             >
-              <span className="sr-only">Go to next page</span>
+              <span className="sr-only">跳到下一页</span>
               <ChevronRight />
             </Button>
             <Button
@@ -203,7 +203,7 @@ export const SandboxUsageTable: React.FC<SandboxUsageTableProps> = ({ data, isLo
               onClick={() => setPageIndex(pageCount - 1)}
               disabled={pageIndex >= pageCount - 1}
             >
-              <span className="sr-only">Go to last page</span>
+              <span className="sr-only">跳到最后一页</span>
               <ChevronsRight />
             </Button>
           </div>

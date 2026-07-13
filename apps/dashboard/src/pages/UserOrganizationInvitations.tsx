@@ -36,7 +36,7 @@ const UserOrganizationInvitations: React.FC = () => {
         setInvitations(response.data)
         setCount(response.data.length)
       } catch (error) {
-        handleApiError(error, 'Failed to fetch invitations')
+        handleApiError(error, '获取邀请失败')
       } finally {
         setLoadingInvitations(false)
       }
@@ -73,12 +73,12 @@ const UserOrganizationInvitations: React.FC = () => {
     setLoadingInvitationAction((prev) => ({ ...prev, [invitation.id]: true }))
     try {
       await organizationsApi.acceptOrganizationInvitation(invitation.id)
-      toast.success('Invitation accepted successfully')
+      toast.success('邀请已接受')
       await refreshOrganizations(invitation.organizationId)
       await fetchInvitations(false)
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to accept invitation')
+      handleApiError(error, '接受邀请失败')
       return false
     } finally {
       setLoadingInvitationAction((prev) => ({ ...prev, [invitation.id]: false }))
@@ -89,11 +89,11 @@ const UserOrganizationInvitations: React.FC = () => {
     setLoadingInvitationAction((prev) => ({ ...prev, [invitation.id]: true }))
     try {
       await organizationsApi.declineOrganizationInvitation(invitation.id)
-      toast.success('Invitation declined successfully')
+      toast.success('邀请已拒绝')
       await fetchInvitations(false)
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to decline invitation')
+      handleApiError(error, '拒绝邀请失败')
       return false
     } finally {
       setLoadingInvitationAction((prev) => ({ ...prev, [invitation.id]: false }))
@@ -105,7 +105,7 @@ const UserOrganizationInvitations: React.FC = () => {
       <PageHeader />
 
       <PageContent size="full" className="overflow-hidden">
-        <PageIntro title="Invitations" />
+        <PageIntro title="邀请" />
         <UserOrganizationInvitationTable
           data={invitations}
           loadingData={loadingInvitations}

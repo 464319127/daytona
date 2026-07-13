@@ -50,9 +50,9 @@ export async function downloadSandboxFile({
   try {
     const fileContents = Buffer.from(await sandboxInstance.fs.downloadFile(node.path))
     downloadBlob(new Blob([fileContents]), node.name || 'download')
-    toast.success(`Downloaded ${node.name || node.path}`)
+    toast.success(`已下载 ${node.name || node.path}`)
   } catch (error) {
-    handleFileSystemApiError(error, `Failed to download ${node.path}`)
+    handleFileSystemApiError(error, `下载 ${node.path} 失败`)
   }
 }
 
@@ -60,19 +60,19 @@ export function handleFileSystemApiError(error: unknown, fallbackMessage: string
   const fileSystemError = getFileSystemError(error)
 
   if (isForbiddenFileSystemError(error)) {
-    toast.error(fileSystemError?.path ? `Access denied to ${fileSystemError.path}` : 'Access denied', {
+    toast.error(fileSystemError?.path ? `无权访问 ${fileSystemError.path}` : '访问被拒绝', {
       ...(options?.toastId ? { id: options.toastId } : {}),
-      description: fileSystemError?.message ?? 'You do not have permission to access this location in the sandbox.',
+      description: fileSystemError?.message ?? '你无权访问此 Sandbox 中的该位置。',
     })
     return
   }
 
   if (isFileReadFailedError(error)) {
-    toast.error(fileSystemError?.path ? `Failed to read ${fileSystemError.path}` : fallbackMessage, {
+    toast.error(fileSystemError?.path ? `读取 ${fileSystemError.path} 失败` : fallbackMessage, {
       ...(options?.toastId ? { id: options.toastId } : {}),
       description:
         fileSystemError?.message ??
-        'The file could not be opened in the sandbox. It may no longer exist or be unreadable.',
+        '无法在 Sandbox 中打开该文件。文件可能已不存在或无法读取。',
     })
     return
   }
@@ -174,7 +174,7 @@ export function formatBytes(bytes: number) {
 
 export function formatModTime(modTime: string) {
   if (!modTime) {
-    return 'Unknown'
+    return '未知'
   }
 
   const date = new Date(modTime)
@@ -199,7 +199,7 @@ export function formatLsModTime(modTime: string) {
 }
 
 export function getNodeMetaLine(node: SandboxFileSystemNode) {
-  const segments = [node.isDir ? 'Directory' : 'File']
+  const segments = [node.isDir ? '目录' : '文件']
 
   if (!node.isDir) {
     segments.push(formatBytes(node.size))

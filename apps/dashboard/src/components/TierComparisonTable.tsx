@@ -50,7 +50,7 @@ function buildTierComparisonTableData(tiers: Tier[]): ComparisonSection[] {
   return [
     {
       id: 'tiers',
-      title: 'Tiers',
+      title: '套餐等级',
       rows: tiers
         .map((tier) => {
           const tierNumber = tier.tier
@@ -68,7 +68,7 @@ function buildTierComparisonTableData(tiers: Tier[]): ComparisonSection[] {
           }
         })
         .concat({
-          label: <span className="whitespace-nowrap">Enterprise</span>,
+          label: <span className="whitespace-nowrap">企业版</span>,
           values: Array(6).fill('Custom'),
         }),
     },

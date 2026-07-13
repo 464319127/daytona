@@ -39,7 +39,7 @@ const Registries: React.FC = () => {
 
   useEffect(() => {
     if (registriesError) {
-      handleApiError(registriesError, 'Failed to fetch registries')
+      handleApiError(registriesError, '获取注册表失败')
     }
   }, [registriesError])
 
@@ -49,10 +49,10 @@ const Registries: React.FC = () => {
         registryId: id,
         organizationId: selectedOrganization?.id,
       })
-      toast.success('Registry deleted successfully')
+      toast.success('注册表已成功删除')
       setRegistryToDelete(null)
     } catch (error) {
-      handleApiError(error, 'Failed to delete registry')
+      handleApiError(error, '删除注册表失败')
     }
   }
 
@@ -69,14 +69,14 @@ const Registries: React.FC = () => {
     return [
       {
         id: 'add-registry',
-        label: 'Create Registry',
+        label: '创建注册表',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: () => addRegistrySheetRef.current?.open(),
       },
     ]
   }, [writePermitted])
 
-  useRegisterCommands(rootCommands, { groupId: 'registry-actions', groupLabel: 'Registry actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'registry-actions', groupLabel: '镜像仓库操作', groupOrder: 0 })
 
   return (
     <PageLayout contained>
@@ -84,7 +84,7 @@ const Registries: React.FC = () => {
 
       <PageContent size="full" className="overflow-hidden">
         <PageIntro
-          title="Registries"
+          title="注册表"
           actions={writePermitted ? <UpsertRegistrySheet disabled={loading} ref={addRegistrySheetRef} /> : undefined}
         />
         <RegistryTable
@@ -122,15 +122,15 @@ const Registries: React.FC = () => {
         >
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Confirm Registry Deletion</DialogTitle>
+              <DialogTitle>确认删除镜像仓库</DialogTitle>
               <DialogDescription>
-                Are you sure you want to delete this registry? This action cannot be undone.
+                确定要删除此镜像仓库吗？此操作无法撤销。
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
-                  Cancel
+                  取消
                 </Button>
               </DialogClose>
               <Button
@@ -142,7 +142,7 @@ const Registries: React.FC = () => {
                 }}
                 disabled={deleteInProgress}
               >
-                {deleteInProgress ? 'Deleting...' : 'Delete'}
+                {deleteInProgress ? '正在删除...' : '删除'}
               </Button>
             </DialogFooter>
           </DialogContent>

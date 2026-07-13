@@ -41,23 +41,22 @@ export function PrivacyBanner() {
             <div className="flex items-start gap-3">
               <Cookie className="mt-1 h-6 w-6 flex-shrink-0 text-primary" />
               <div className="space-y-1">
-                <h4 className="font-semibold text-sm">We value your privacy</h4>
+                <h4 className="font-semibold text-sm">我们重视你的隐私</h4>
                 <p className="text-sm text-muted-foreground max-w-xl">
-                  We use tracking technologies for essential functionality like authentication, and optionally for
-                  analytics to improve our product.
+                  我们使用跟踪技术提供身份验证等必要功能，并可选择用于数据分析以改进产品。
                 </p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0 pt-2 lg:pt-0">
               <Button variant="outline" size="sm" onClick={() => setShowCustomize(true)}>
                 <Settings className="mr-2 h-4 w-4" />
-                Customize
+                自定义
               </Button>
               <Button variant="secondary" size="sm" onClick={handleRejectAll}>
-                Essential Only
+                仅必要项
               </Button>
               <Button size="sm" onClick={handleAcceptAll}>
-                Accept All
+                全部接受
               </Button>
             </div>
           </div>

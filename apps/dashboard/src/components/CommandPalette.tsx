@@ -7,7 +7,7 @@
 
 import { useCommandPaletteAnalytics } from '@/hooks/useCommandPaletteAnalytics'
 import { useDeepCompareMemo } from '@/hooks/useDeepCompareMemo'
-import { cn, pluralize } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { useCommandState } from 'cmdk'
 import { AlertCircle, ChevronRight, Loader2 } from 'lucide-react'
 import { AnimatePresence, motion, useAnimate } from 'motion/react'
@@ -103,7 +103,7 @@ const createCommandPaletteStore = (defaultPage = 'root') => {
       [
         defaultPage,
         {
-          meta: { id: defaultPage, label: 'Home', placeholder: 'Type a command or search...' },
+          meta: { id: defaultPage, label: '首页', placeholder: '输入命令或搜索...' },
           groups: new Map(),
         },
       ],
@@ -392,9 +392,9 @@ export function CommandPalette({ className, overlay }: CommandPaletteProps) {
           loop
           className="bg-transparent [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
         >
-          <DialogTitle className="sr-only">Command Palette</DialogTitle>
+          <DialogTitle className="sr-only">命令面板</DialogTitle>
           <DialogDescription className="sr-only">
-            Use the command palette to navigate the application.
+            使用命令面板在应用中导航。
           </DialogDescription>
 
           <Breadcrumbs />
@@ -402,7 +402,7 @@ export function CommandPalette({ className, overlay }: CommandPaletteProps) {
           <CommandInput
             value={search}
             onValueChange={setSearch}
-            placeholder={activePage?.meta.placeholder ?? 'Type a command or search...'}
+            placeholder={activePage?.meta.placeholder ?? '输入命令或搜索...'}
             ref={inputRef}
             onKeyDown={(e) => {
               if (e.key === 'Backspace' && !search && pageStack.length > 1) {
@@ -436,11 +436,11 @@ export function CommandPalette({ className, overlay }: CommandPaletteProps) {
                 onClick={popPage}
                 className="hover:text-foreground mr-2 flex items-center gap-1 transition-colors"
               >
-                <Kbd>Backspace</Kbd> to go back
+                按 <Kbd>Backspace</Kbd> 返回
               </button>
             ) : (
               <span>
-                Use <Kbd>↑</Kbd> <Kbd>↓</Kbd> to navigate
+                使用 <Kbd>↑</Kbd> <Kbd>↓</Kbd> 导航
               </span>
             )}
           </CommandFooter>
@@ -559,7 +559,7 @@ function CommandFooter({
       )}
     >
       {children}
-      {!hideResultsCount && <span className="ml-auto">{pluralize(resultsCount, 'result', 'results')}</span>}
+      {!hideResultsCount && <span className="ml-auto">{resultsCount} 个结果</span>}
     </div>
   )
 }
@@ -567,7 +567,7 @@ function CommandFooter({
 function CommandEmpty({ search }: { search: string }) {
   return (
     <CommandEmptyPrimitive className="text-muted-foreground py-6 text-center text-sm">
-      No results found for <span className="text-foreground">"{search}"</span>.
+      未找到 <span className="text-foreground">"{search}"</span> 的结果。
     </CommandEmptyPrimitive>
   )
 }
@@ -652,7 +652,7 @@ export function CommandHighlight({
 }
 
 export function CommandError({
-  message = 'Something went wrong',
+  message = '出现错误',
   onRetry,
   className,
 }: {

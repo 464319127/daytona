@@ -15,18 +15,17 @@ export function ErrorBoundaryFallback({ error, resetErrorBoundary }: Partial<Fal
     <Dialog open>
       <DialogContent className="max-h-[calc(100svh-4rem)] overflow-hidden [&>button]:hidden">
         <DialogHeader className="shrink-0">
-          <DialogTitle>Something went wrong</DialogTitle>
+          <DialogTitle>出现问题</DialogTitle>
           <DialogDescription>
-            We're having trouble loading the dashboard. This could be due to a temporary service issue or network
-            problem. Please try again or contact support if the issue persists.
+            Dashboard 加载失败，可能是临时服务异常或网络问题。请重试；如果问题持续存在，请联系支持团队。
           </DialogDescription>
         </DialogHeader>
 
         <div className="scrollbar-sm -mr-2 min-h-0 flex-1 space-y-4 overflow-y-auto pr-2">
           <Alert variant="destructive">
-            <AlertTitle>Error Details:</AlertTitle>
+            <AlertTitle>错误详情：</AlertTitle>
             <AlertDescription>
-              <p className="break-all">{error?.message || 'Unknown error'}</p>
+              <p className="break-all">{error?.message || '未知错误'}</p>
             </AlertDescription>
           </Alert>
 
@@ -37,11 +36,11 @@ export function ErrorBoundaryFallback({ error, resetErrorBoundary }: Partial<Fal
                   className="px-4 py-3 text-sm font-semibold hover:no-underline"
                   right={
                     <div className="pr-2">
-                      <CopyButton value={error.stack} size="icon-xs" tooltipText="Copy stack trace" />
+                      <CopyButton value={error.stack} size="icon-xs" tooltipText="复制堆栈跟踪" />
                     </div>
                   }
                 >
-                  Stack Trace
+                  堆栈跟踪
                 </AccordionTrigger>
                 <AccordionContent className="px-4 pb-4 pt-0">
                   <pre className="scrollbar-sm max-h-48 overflow-auto whitespace-pre-wrap break-words font-mono text-xs text-muted-foreground">
@@ -55,11 +54,11 @@ export function ErrorBoundaryFallback({ error, resetErrorBoundary }: Partial<Fal
 
         <div className="flex shrink-0 gap-2 justify-end">
           <Button variant="outline" onClick={() => window.location.reload()}>
-            Reload Page
+            重新加载页面
           </Button>
           {resetErrorBoundary && (
             <Button variant="outline" onClick={resetErrorBoundary}>
-              Try Again
+              重试
             </Button>
           )}
         </div>

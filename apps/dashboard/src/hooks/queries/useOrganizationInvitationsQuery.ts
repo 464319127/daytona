@@ -17,7 +17,7 @@ export function useOrganizationInvitationsQuery({ enabled = true }: { enabled?: 
     queryKey: queryKeys.organization.invitations(selectedOrganization?.id ?? ''),
     queryFn: async () => {
       if (!selectedOrganization) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const response = await organizationsApi.listOrganizationInvitations(selectedOrganization.id)

@@ -157,7 +157,7 @@ export function RunnerTable({
           debounced
           value={globalFilter ?? ''}
           onValueChange={handleChangeFilter}
-          placeholder="Search by ID, Name, or Region"
+          placeholder="按 ID、名称或区域搜索"
           containerClassName="min-w-0 flex-1 sm:max-w-sm"
         />
         {onRefreshIntervalChange && onRefresh && (
@@ -169,11 +169,11 @@ export function RunnerTable({
             isRefreshing={isRefreshing}
             lastUpdatedAt={lastUpdatedAt}
             options={[
-              { label: 'Off', value: false },
-              { label: 'Every 5s', value: 5000 },
-              { label: 'Every 10s', value: 10000 },
-              { label: 'Every 30s', value: 30000 },
-              { label: 'Every 1m', value: 60000 },
+              { label: '关闭', value: false },
+              { label: '每 5 秒', value: 5000 },
+              { label: '每 10 秒', value: 10000 },
+              { label: '每 30 秒', value: 30000 },
+              { label: '每 1 分钟', value: 60000 },
             ]}
           />
         )}
@@ -186,14 +186,14 @@ export function RunnerTable({
             <TableEmptyState
               overlay
               colSpan={runnerColumns.length}
-              message={hasSearch ? 'No matching runners found.' : 'No runners found.'}
+              message={hasSearch ? '未找到匹配的 Runner。' : '暂无 Runner。'}
               icon={<Server />}
               description={
                 hasSearch ? null : (
                   <div className="space-y-2">
-                    <p>Runners are the machines that run your sandboxes.</p>
+                    <p>Runner 是运行沙箱的计算节点。</p>
                     {regions.length === 0 && (
-                      <p>There must be at least one region in your organization before runners can be created.</p>
+                      <p>组织中必须至少有一个区域才能创建 Runner。</p>
                     )}
                   </div>
                 )
@@ -201,7 +201,7 @@ export function RunnerTable({
               action={
                 hasSearch ? (
                   <Button variant="outline" onClick={() => handleChangeFilter('')}>
-                    Clear filters
+                    清除筛选条件
                   </Button>
                 ) : null
               }
@@ -319,7 +319,7 @@ const runnerColumns: ColumnDef<Runner>[] = [
       return (
         <div className="w-full truncate flex items-center gap-1 group/copy-button">
           <span className="truncate block text-sm">{row.original.name}</span>
-          <CopyButton value={row.original.name} size="icon-xs" autoHide tooltipText="Copy Name" />
+          <CopyButton value={row.original.name} size="icon-xs" autoHide tooltipText="复制名称" />
         </div>
       )
     },
@@ -332,7 +332,7 @@ const runnerColumns: ColumnDef<Runner>[] = [
       return (
         <div className="w-full truncate flex items-center gap-1 group/copy-button">
           <span className="truncate block text-sm">{row.original.id}</span>
-          <CopyButton value={row.original.id} size="icon-xs" autoHide tooltipText="Copy ID" />
+          <CopyButton value={row.original.id} size="icon-xs" autoHide tooltipText="复制 ID" />
         </div>
       )
     },
@@ -348,7 +348,7 @@ const runnerColumns: ColumnDef<Runner>[] = [
       return (
         <div className="w-full truncate flex items-center gap-1 group/copy-button">
           <span className="truncate block text-sm">{regionName}</span>
-          <CopyButton value={regionName} size="icon-xs" autoHide tooltipText="Copy Region" />
+          <CopyButton value={regionName} size="icon-xs" autoHide tooltipText="复制区域" />
         </div>
       )
     },
@@ -400,7 +400,7 @@ const runnerColumns: ColumnDef<Runner>[] = [
         <div className="flex justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu" disabled={isLoading}>
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单" disabled={isLoading}>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>

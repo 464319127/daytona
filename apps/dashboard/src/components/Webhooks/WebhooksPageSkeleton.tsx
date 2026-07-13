@@ -14,13 +14,13 @@ export function WebhooksPageSkeleton() {
       <PageHeader />
 
       <PageContent size="full" className="overflow-hidden">
-        <PageIntro title="Webhooks" className="mb-8" actions={<Skeleton className="h-9 w-36" />} />
+        <PageIntro title="Webhook" className="mb-8" actions={<Skeleton className="h-9 w-36" />} />
         <div className="min-h-0 flex-1 -mx-4 flex-col flex">
           <Tabs value="endpoints" className="flex min-h-0 flex-1 flex-col gap-0">
             <div className="flex items-center justify-between shadow-[inset_0_-1px] shadow-border">
               <TabsList variant="underline">
-                <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
-                <TabsTrigger value="messages">Messages</TabsTrigger>
+                <TabsTrigger value="endpoints">端点</TabsTrigger>
+                <TabsTrigger value="messages">消息</TabsTrigger>
               </TabsList>
             </div>
             <TabsContent

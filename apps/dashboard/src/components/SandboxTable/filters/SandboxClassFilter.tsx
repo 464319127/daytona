@@ -52,7 +52,7 @@ export function SandboxClassFilterIndicator({ value, onFilterChange }: SandboxCl
 export function SandboxClassFilter({ value, onFilterChange }: SandboxClassFilterProps) {
   return (
     <Command>
-      <CommandInput placeholder="Search...">
+      <CommandInput placeholder="搜索...">
         <CommandInputButton
           className="text-sm text-muted-foreground hover:text-primary px-2"
           onClick={() => onFilterChange(undefined)}

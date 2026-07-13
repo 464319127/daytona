@@ -100,7 +100,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
                   }
                 })
             }}
-            aria-label="Select all"
+            aria-label="全选"
             disabled={!deletePermitted || loading}
           />
         </div>
@@ -126,7 +126,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
+            aria-label="选择行"
             disabled={!deletePermitted || loadingSnapshots[row.original.id] || loading}
           />
         </div>
@@ -140,7 +140,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
     size: 300,
     minSize: 300,
     enableSorting: true,
-    header: ({ column }) => <SortableHeader column={column} label="Name" />,
+    header: ({ column }) => <SortableHeader column={column} label="名称" />,
     cell: ({ row }) => {
       const snapshot = row.original
       return (
@@ -151,7 +151,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
               System
             </Badge>
           )}
-          <CopyButton value={snapshot.name} size="icon-xs" autoHide tooltipText="Copy name" />
+          <CopyButton value={snapshot.name} size="icon-xs" autoHide tooltipText="复制名称" />
         </div>
       )
     },
@@ -182,7 +182,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
       return snapshot.imageName ? (
         <div className="flex items-center gap-1 min-w-0 group/copy-button">
           <span className="truncate">{snapshot.imageName}</span>
-          <CopyButton value={snapshot.imageName} size="icon-xs" autoHide tooltipText="Copy image" />
+          <CopyButton value={snapshot.imageName} size="icon-xs" autoHide tooltipText="复制镜像" />
         </div>
       ) : (
         <div className="truncate text-muted-foreground/50">-</div>
@@ -273,7 +273,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
     size: 120,
     maxSize: 120,
     enableSorting: true,
-    header: ({ column }) => <SortableHeader column={column} label="State" />,
+    header: ({ column }) => <SortableHeader column={column} label="状态" />,
     cell: ({ row }) => {
       const snapshot = row.original
       const variant = getStateBadgeVariant(snapshot.state)
@@ -302,7 +302,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
     size: 120,
     maxSize: 120,
     enableSorting: true,
-    header: ({ column }) => <SortableHeader column={column} label="Created" />,
+    header: ({ column }) => <SortableHeader column={column} label="创建时间" />,
     cell: ({ row }) => {
       const snapshot = row.original
       if (snapshot.general) {
@@ -321,7 +321,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
     size: 120,
     maxSize: 120,
     enableSorting: true,
-    header: ({ column }) => <SortableHeader column={column} label="Last Used" />,
+    header: ({ column }) => <SortableHeader column={column} label="上次使用" />,
     cell: ({ row }) => {
       const snapshot = row.original
       if (snapshot.general || !snapshot.lastUsedAt) {
@@ -358,7 +358,7 @@ const columns: ColumnDef<SnapshotDto>[] = [
         <div className="flex justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>

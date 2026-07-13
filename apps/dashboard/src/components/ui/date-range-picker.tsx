@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 import { format, subDays, subHours, subMinutes } from 'date-fns'
+import { zhCN } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { DateRange } from 'react-day-picker'
@@ -56,6 +57,27 @@ const createTimeRangesFromConfig = (config: QuickRangesConfig) => {
   }
 
   return ranges
+}
+
+const getQuickRangeDisplayLabel = (label: string) => {
+  if (label === 'All time') return '全部时间'
+
+  const match = label.match(/^Last (\d+) (minute|minutes|hour|hours|day|days|month|months|year|years)$/)
+  if (!match) return label
+
+  const unitLabels: Record<string, string> = {
+    minute: '分钟',
+    minutes: '分钟',
+    hour: '小时',
+    hours: '小时',
+    day: '天',
+    days: '天',
+    month: '个月',
+    months: '个月',
+    year: '年',
+    years: '年',
+  }
+  return `最近 ${match[1]} ${unitLabels[match[2]]}`
 }
 
 export interface DateRangePickerProps {
@@ -216,31 +238,31 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
 
     const formatRange = (range: DateRange) => {
       // If a quick range is selected, show its label
-      if (selectedQuickRange) return selectedQuickRange
+      if (selectedQuickRange) return getQuickRangeDisplayLabel(selectedQuickRange)
 
       // Check if this is "All time" (no date restriction)
-      if (!range.from && !range.to) return 'Select date range'
+      if (!range.from && !range.to) return '选择日期范围'
 
       // Helper function to format a date with or without time
       const formatDate = (date: Date) => {
         if (timeSelection) {
-          return `${format(date, 'MMM dd, yyyy')}, ${fromTime}`
+          return `${format(date, 'PPP', { locale: zhCN })}, ${fromTime}`
         }
-        return format(date, 'MMM dd, yyyy')
+        return format(date, 'PPP', { locale: zhCN })
       }
 
       // Show custom date range with or without time
       if (range.from && range.to) {
         if (timeSelection) {
           // For custom ranges with time, show the actual time that will be applied
-          return `${format(range.from, 'MMM dd, yyyy')}, ${fromTime} - ${format(range.to, 'MMM dd, yyyy')}, ${toTime}`
+          return `${format(range.from, 'PPP', { locale: zhCN })}, ${fromTime} - ${format(range.to, 'PPP', { locale: zhCN })}, ${toTime}`
         }
-        return `${format(range.from, 'MMM dd, yyyy')} - ${format(range.to, 'MMM dd, yyyy')}`
+        return `${format(range.from, 'PPP', { locale: zhCN })} - ${format(range.to, 'PPP', { locale: zhCN })}`
       } else if (range.from) {
         return `${formatDate(range.from)} - ...`
       }
 
-      return 'Select date range'
+      return '选择日期范围'
     }
 
     return (
@@ -258,7 +280,7 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
           >
             <div className="flex items-center gap-2">
               <CalendarIcon className="h-4 w-4" />
-              {internalRange?.from ? formatRange(internalRange) : <span>Select date range</span>}
+              {internalRange?.from ? formatRange(internalRange) : <span>选择日期范围</span>}
             </div>
           </Button>
         </PopoverTrigger>
@@ -267,7 +289,7 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
             {/* Quick ranges panel */}
             {quickRangesEnabled && (
               <div className="w-64 p-4 border-r">
-                <div className="text-sm font-medium mb-3 text-center">Quick ranges</div>
+                <div className="text-sm font-medium mb-3 text-center">快捷范围</div>
                 <div className="space-y-1 max-h-[400px] overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-thumb]:rounded-full">
                   <button
                     className={cn(
@@ -276,7 +298,7 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
                     )}
                     onClick={() => handleQuickRangeSelect({ from: undefined, to: undefined }, 'All time')}
                   >
-                    All time
+                    全部时间
                   </button>
                   {createTimeRangesFromConfig(quickRanges || {}).map((timeRange) => (
                     <button
@@ -289,7 +311,7 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
                       )}
                       onClick={() => handleQuickRangeSelect(timeRange.getRange(), timeRange.label)}
                     >
-                      {timeRange.label}
+                      {getQuickRangeDisplayLabel(timeRange.label)}
                     </button>
                   ))}
                 </div>
@@ -298,7 +320,7 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
 
             {/* Custom range panel */}
             <div className="w-auto p-4">
-              <h3 className="font-semibold text-sm mb-3 text-center">Custom range</h3>
+              <h3 className="font-semibold text-sm mb-3 text-center">自定义范围</h3>
               {/* <p className="text-xs text-muted-foreground mb-4">
               Click and drag to select a date range, or click two dates
             </p> */}
@@ -318,7 +340,7 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
                 <div className="mt-3">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                      <label className="w-8 text-sm font-medium text-foreground text-left">From</label>
+                      <label className="w-8 text-sm font-medium text-foreground text-left">从</label>
                       <Input
                         type="time"
                         value={fromTime}
@@ -328,7 +350,7 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
                       />
                     </div>
                     <div className="flex items-center gap-3">
-                      <label className="w-8 text-sm font-medium text-foreground text-left">To</label>
+                      <label className="w-8 text-sm font-medium text-foreground text-left">至</label>
                       <Input
                         type="time"
                         value={toTime}
@@ -360,7 +382,7 @@ export const DateRangePicker = forwardRef<DateRangePickerRef, DateRangePickerPro
                     setIsOpen(false)
                   }}
                 >
-                  Apply time range
+                  应用时间范围
                 </Button>
               </div>
             </div>

@@ -40,7 +40,7 @@ export function SelectionToast({
 
         <Button variant="ghost" size="sm" className="h-8" onClick={onActionClick}>
           <CommandIcon className="size-3.5" />
-          <span className="text-sm">Actions</span>
+          <span className="text-sm">操作</span>
         </Button>
       </div>
     </motion.div>

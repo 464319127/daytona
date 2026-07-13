@@ -16,7 +16,7 @@ export function useCopyToClipboard({ timeout = 2000 }: { timeout?: number } = {}
   const copy: CopyFn = useCallback(
     async (text) => {
       if (!navigator?.clipboard) {
-        toast.error('Clipboard not supported')
+        toast.error('当前环境不支持剪贴板')
         return false
       }
 
@@ -36,7 +36,7 @@ export function useCopyToClipboard({ timeout = 2000 }: { timeout?: number } = {}
         console.error('Failed to copy to clipboard', error)
         setCopiedText(null)
 
-        toast.error('Failed to copy to clipboard')
+        toast.error('复制到剪贴板失败')
 
         return false
       }

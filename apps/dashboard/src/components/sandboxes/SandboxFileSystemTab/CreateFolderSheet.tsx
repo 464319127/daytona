@@ -105,32 +105,32 @@ export function CreateFolderSheet({
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetContent side="right" className="w-dvw flex flex-col gap-0 p-0 sm:w-[400px]">
         <SheetHeader className="flex flex-row items-center border-b border-border p-4 px-5 text-left">
-          <SheetTitle>Create Folder</SheetTitle>
-          <SheetDescription className="sr-only">Create a folder in {parentNode?.path}</SheetDescription>
+          <SheetTitle>创建文件夹</SheetTitle>
+          <SheetDescription className="sr-only">在 {parentNode?.path} 中创建文件夹</SheetDescription>
         </SheetHeader>
         <div className="flex-1 overflow-y-auto p-5">
           <p className="mb-4 break-all text-sm text-muted-foreground">{parentNode?.path}</p>
           <form id="create-folder-form" onSubmit={handleSubmit}>
             <Field>
-              <FieldLabel htmlFor="create-folder-name">Folder name</FieldLabel>
+              <FieldLabel htmlFor="create-folder-name">文件夹名称</FieldLabel>
               <Input
                 id="create-folder-name"
                 ref={inputRef}
                 autoFocus
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder="Name your folder"
+                placeholder="输入文件夹名称"
               />
             </Field>
           </form>
         </div>
         <SheetFooter className="mt-auto border-t border-border p-4 px-5">
           <Button type="button" variant="secondary" disabled={isPending} onClick={() => handleOpenChange(false)}>
-            Close
+            关闭
           </Button>
           <Button type="submit" form="create-folder-form" disabled={!name.trim() || isPending || !parentPath}>
             {isPending && <Spinner />}
-            Create
+            创建
           </Button>
         </SheetFooter>
       </SheetContent>

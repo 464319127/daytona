@@ -4,6 +4,7 @@
  */
 
 import * as React from 'react'
+import { zhCN } from 'date-fns/locale'
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker'
 
@@ -16,6 +17,7 @@ function Calendar({
   showOutsideDays = true,
   captionLayout = 'label',
   buttonVariant = 'ghost',
+  locale = zhCN,
   formatters,
   components,
   ...props
@@ -34,6 +36,7 @@ function Calendar({
         className,
       )}
       captionLayout={captionLayout}
+      locale={locale}
       formatters={{
         formatMonthDropdown: (date) => date.toLocaleString('default', { month: 'short' }),
         ...formatters,

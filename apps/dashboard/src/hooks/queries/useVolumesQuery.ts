@@ -17,7 +17,7 @@ export function useVolumesQuery() {
     queryKey: queryKeys.volumes.list(selectedOrganization?.id ?? ''),
     queryFn: async () => {
       if (!selectedOrganization) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const response = await volumeApi.listVolumes(selectedOrganization.id)

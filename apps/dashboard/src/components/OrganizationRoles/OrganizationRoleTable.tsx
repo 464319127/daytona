@@ -172,7 +172,7 @@ export function OrganizationRoleTable({
             debounced
             value={globalFilter}
             onValueChange={handleChangeFilter}
-            placeholder="Search by Name, Description, or Permission"
+            placeholder="按名称、描述或权限搜索"
             containerClassName="min-w-0 flex-1 sm:max-w-sm"
           />
         </div>
@@ -185,9 +185,9 @@ export function OrganizationRoleTable({
               <TableEmptyState
                 overlay
                 colSpan={organizationRoleColumns.length}
-                message={hasSearch ? 'No matching Roles found.' : 'No Roles found.'}
+                message={hasSearch ? '未找到匹配的角色。' : '暂无角色。'}
                 icon={<Shield />}
-                description={hasSearch ? null : 'Create custom roles to manage permissions in your organization.'}
+                description={hasSearch ? null : '创建自定义角色以管理组织中的权限。'}
                 action={
                   hasSearch ? (
                     <Button variant="outline" onClick={() => handleChangeFilter('')}>
@@ -315,7 +315,7 @@ const organizationRoleColumns: ColumnDef<OrganizationRole>[] = [
   {
     accessorKey: 'permissions',
     header: () => {
-      return <div className="max-w-md px-3">Permissions</div>
+      return <div className="max-w-md px-3">权限</div>
     },
     cell: ({ row }) => {
       const permissions = row.original.permissions.join(', ')
@@ -349,13 +349,13 @@ const organizationRoleColumns: ColumnDef<OrganizationRole>[] = [
         <div className="text-right">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onUpdate(row.original)}>Edit</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onUpdate(row.original)}>编辑</DropdownMenuItem>
               <DropdownMenuItem variant="destructive" onClick={() => onDelete(row.original.id)}>
                 Delete
               </DropdownMenuItem>

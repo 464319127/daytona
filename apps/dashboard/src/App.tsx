@@ -4,6 +4,7 @@
  */
 
 import { useSelectedOrganization } from '@/hooks/useSelectedOrganization'
+import { enableZhCNLocalization } from '@/localization/zhCN'
 import { NotificationSocketProvider } from '@/providers/NotificationSocketProvider'
 import { OrganizationsProvider } from '@/providers/OrganizationsProvider'
 import { SelectedOrganizationProvider } from '@/providers/SelectedOrganizationProvider'
@@ -83,6 +84,10 @@ function AppRoot() {
   const { error: authError, isAuthenticated, signoutRedirect, user } = useAuth()
 
   useEffect(() => {
+    enableZhCNLocalization()
+  }, [])
+
+  useEffect(() => {
     if (isAuthenticated && user && posthog?.get_distinct_id() !== user.profile.sub) {
       posthog?.identify(user.profile.sub, {
         email: user.profile.email,
@@ -116,11 +121,11 @@ function AppRoot() {
       <Dialog open>
         <DialogContent className="[&>button]:hidden">
           <DialogHeader>
-            <DialogTitle>Authentication Error</DialogTitle>
+            <DialogTitle>身份验证错误</DialogTitle>
             <DialogDescription>{authError.message}</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={() => signoutRedirect()}>Go Back</Button>
+            <Button onClick={() => signoutRedirect()}>返回</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -187,11 +192,11 @@ function AccessRequiredPage({ pageTitle, requiredAccess }: { pageTitle: ReactNod
             <EmptyMedia variant="icon">
               <ShieldAlert />
             </EmptyMedia>
-            <EmptyTitle>You don&apos;t have access to this page</EmptyTitle>
-            <EmptyDescription>Ask your organization owner to grant you the required access.</EmptyDescription>
+            <EmptyTitle>你无权访问此页面</EmptyTitle>
+            <EmptyDescription>请联系组织所有者授予所需权限。</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <div className="text-xs font-medium text-muted-foreground">Required access</div>
+            <div className="text-xs font-medium text-muted-foreground">所需权限</div>
             <div className="flex flex-wrap justify-center gap-2">
               {requiredAccess.map((access) => (
                 <Badge key={access} className="capitalize" title={access}>

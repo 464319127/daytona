@@ -198,11 +198,11 @@ export function VolumeTable({
             debounced
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onValueChange={(value) => table.getColumn('name')?.setFilterValue(value)}
-            placeholder="Search by Name, ID, or State"
+            placeholder="按名称、ID 或状态搜索"
             containerClassName="min-w-0 flex-1 sm:max-w-sm"
           />
           {table.getColumn('state') && (
-            <DataTableFacetedFilter column={table.getColumn('state')} title="State" options={statuses} />
+            <DataTableFacetedFilter column={table.getColumn('state')} title="状态" options={statuses} />
           )}
         </div>
       </div>
@@ -213,7 +213,7 @@ export function VolumeTable({
             <TableEmptyState
               overlay
               colSpan={columns.length}
-              message={hasFilters ? 'No matching volumes found.' : 'No Volumes yet.'}
+              message={hasFilters ? '未找到匹配的存储卷。' : '暂无存储卷。'}
               icon={<HardDrive />}
               description={
                 hasFilters ? null : (
@@ -389,7 +389,7 @@ const columns: ColumnDef<VolumeDto>[] = [
                 }
               }
             }}
-            aria-label="Select all"
+            aria-label="全选"
           />
         </div>
       )
@@ -408,7 +408,7 @@ const columns: ColumnDef<VolumeDto>[] = [
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
+            aria-label="选择行"
           />
         </div>
       )
@@ -447,7 +447,7 @@ const columns: ColumnDef<VolumeDto>[] = [
       return (
         <div className="w-full truncate flex items-center gap-1 group/copy-button">
           <span className="truncate block text-muted-foreground">{truncateUUID(id)}</span>
-          <CopyButton value={id} size="icon-xs" autoHide tooltipText="Copy ID" />
+          <CopyButton value={id} size="icon-xs" autoHide tooltipText="复制 ID" />
         </div>
       )
     },
@@ -521,7 +521,7 @@ const columns: ColumnDef<VolumeDto>[] = [
         <div className="flex justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>

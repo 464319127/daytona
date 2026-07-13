@@ -86,7 +86,7 @@ const useNavCommands = (items: SidebarItem[]) => {
         .filter((item) => item.path !== pathname)
         .map((item) => ({
           id: `nav-${item.path}`,
-          label: `Go to ${item.label}`,
+          label: `前往${item.label}`,
           icon: <ArrowRightIcon className="w-4 h-4" />,
           onSelect: () => {
             preloadSidebarItem(item)
@@ -96,7 +96,7 @@ const useNavCommands = (items: SidebarItem[]) => {
     [pathname, navigate, items],
   )
 
-  useRegisterCommands(navCommands, { groupId: 'navigation', groupLabel: 'Navigation', groupOrder: 1 })
+  useRegisterCommands(navCommands, { groupId: 'navigation', groupLabel: '导航', groupOrder: 1 })
 }
 
 export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarProps) {
@@ -110,19 +110,19 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     const arr: SidebarItem[] = [
       {
         icon: <Container size={16} strokeWidth={1.5} />,
-        label: 'Sandboxes',
+        label: '沙箱',
         path: RoutePath.SANDBOXES,
         preload: lazyRoutes.Sandboxes,
       },
       {
         icon: <Box size={16} strokeWidth={1.5} />,
-        label: 'Snapshots',
+        label: '快照',
         path: RoutePath.SNAPSHOTS,
         preload: lazyRoutes.Snapshots,
       },
       {
         icon: <PackageOpen size={16} strokeWidth={1.5} />,
-        label: 'Registries',
+        label: '镜像仓库',
         path: RoutePath.REGISTRIES,
         preload: lazyRoutes.Registries,
       },
@@ -130,7 +130,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     if (authenticatedUserHasPermission(OrganizationRolePermissionsEnum.READ_VOLUMES)) {
       arr.push({
         icon: <HardDrive size={16} strokeWidth={1.5} />,
-        label: 'Volumes',
+        label: '存储卷',
         path: RoutePath.VOLUMES,
         preload: lazyRoutes.Volumes,
       })
@@ -139,7 +139,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     if (authenticatedUserHasPermission(OrganizationRolePermissionsEnum.READ_AUDIT_LOGS)) {
       arr.push({
         icon: <TextSearch size={16} strokeWidth={1.5} />,
-        label: 'Audit Logs',
+        label: '审计日志',
         path: RoutePath.AUDIT_LOGS,
         preload: lazyRoutes.AuditLogs,
       })
@@ -152,7 +152,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     const arr: SidebarItem[] = [
       {
         icon: <KeyRound size={16} strokeWidth={1.5} />,
-        label: 'API Keys',
+        label: 'API 密钥',
         path: RoutePath.KEYS,
         preload: lazyRoutes.Keys,
       },
@@ -160,7 +160,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
 
     arr.push({
       icon: <Mail size={16} strokeWidth={1.5} />,
-      label: 'Webhooks',
+      label: 'Webhook',
       path: RoutePath.WEBHOOKS,
       preload: lazyRoutes.Webhooks,
     })
@@ -168,7 +168,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     if (authenticatedUserOrganizationMember?.role === OrganizationUserRoleEnum.OWNER) {
       arr.push({
         icon: <LockKeyhole size={16} strokeWidth={1.5} />,
-        label: 'Limits',
+        label: '额度限制',
         path: RoutePath.LIMITS,
         preload: lazyRoutes.Limits,
       })
@@ -176,18 +176,18 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
 
     arr.push({
       icon: <Users size={16} strokeWidth={1.5} />,
-      label: 'Members',
+      label: '成员',
       path: RoutePath.MEMBERS,
       preload: lazyRoutes.OrganizationMembers,
     })
     // TODO: uncomment when we allow creating custom roles
     // if (authenticatedUserOrganizationMember?.role === OrganizationUserRoleEnum.OWNER) {
-    //   arr.push({ icon: <UserCog className="w-5 h-5" />, label: 'Roles', path: RoutePath.ROLES })
+    //   arr.push({ icon: <UserCog className="w-5 h-5" />, label: '角色', path: RoutePath.ROLES })
     // }
 
     arr.push({
       icon: <Settings size={16} strokeWidth={1.5} />,
-      label: 'Settings',
+      label: '设置',
       path: RoutePath.SETTINGS,
       preload: lazyRoutes.OrganizationSettings,
     })
@@ -203,13 +203,13 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     return [
       {
         icon: <ChartColumn size={16} strokeWidth={1.5} />,
-        label: 'Spending',
+        label: '消费',
         path: RoutePath.BILLING_SPENDING,
         preload: lazyRoutes.Spending,
       },
       {
         icon: <CreditCard size={16} strokeWidth={1.5} />,
-        label: 'Wallet',
+        label: '钱包',
         path: RoutePath.BILLING_WALLET,
         preload: lazyRoutes.Wallet,
       },
@@ -224,7 +224,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     const arr = [
       {
         icon: <MapPinned size={16} strokeWidth={1.5} />,
-        label: 'Regions',
+        label: '区域',
         path: RoutePath.REGIONS,
         preload: lazyRoutes.Regions,
       },
@@ -233,7 +233,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     if (authenticatedUserHasPermission(OrganizationRolePermissionsEnum.READ_RUNNERS)) {
       arr.push({
         icon: <Server size={16} strokeWidth={1.5} />,
-        label: 'Runners',
+        label: 'Runner',
         path: RoutePath.RUNNERS,
         preload: lazyRoutes.Runners,
       })
@@ -246,7 +246,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
     return [
       {
         icon: <Joystick size={16} strokeWidth={1.5} />,
-        label: 'Playground',
+        label: '开发工具',
         path: RoutePath.PLAYGROUND,
         preload: lazyRoutes.Playground,
       },
@@ -255,14 +255,14 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
 
   const sidebarGroups: { label: string; items: SidebarItem[] }[] = useMemo(() => {
     return [
-      { label: 'Sandboxes', items: sidebarItems },
+      { label: '沙箱', items: sidebarItems },
       {
-        label: 'Misc',
+        label: '其他',
         items: miscItems,
       },
-      { label: 'Settings', items: settingsItems },
-      { label: 'Billing', items: billingItems },
-      { label: 'Infrastructure', items: infrastructureItems },
+      { label: '设置', items: settingsItems },
+      { label: '账单', items: billingItems },
+      { label: '基础设施', items: infrastructureItems },
     ].filter((group) => group.items.length > 0)
   }, [sidebarItems, settingsItems, billingItems, infrastructureItems, miscItems])
 
@@ -272,19 +272,19 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
       .concat(
         {
           path: RoutePath.ACCOUNT_SETTINGS,
-          label: 'Account Settings',
+          label: '账户设置',
           icon: <Settings size={16} strokeWidth={1.5} />,
           preload: lazyRoutes.AccountSettings,
         },
         {
           path: RoutePath.USER_INVITATIONS,
-          label: 'Invitations',
+          label: '邀请',
           icon: <Mail size={16} strokeWidth={1.5} />,
           preload: lazyRoutes.UserOrganizationInvitations,
         },
         {
           path: RoutePath.ONBOARDING,
-          label: 'Onboarding',
+          label: '入门指南',
           icon: <ListChecks size={16} strokeWidth={1.5} />,
           preload: lazyRoutes.Onboarding,
         },
@@ -331,7 +331,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
           <OrganizationPicker />
           <SidebarMenuItem>
             <SidebarMenuButton
-              tooltip={`Search ${metaKey}+K`}
+              tooltip={`搜索 ${metaKey}+K`}
               variant="outline"
               className="justify-between bg-input/50"
               onClick={() => {
@@ -341,7 +341,7 @@ export function Sidebar({ isBannerVisible, billingEnabled, version }: SidebarPro
             >
               <span className="flex min-w-0 items-center gap-2">
                 <SearchIcon className="size-4" />
-                <span className="truncate group-data-[collapsible=icon]:hidden">Search</span>
+                <span className="truncate group-data-[collapsible=icon]:hidden">搜索</span>
               </span>
               <Kbd className="ml-auto whitespace-nowrap group-data-[collapsible=icon]:hidden">{metaKey} K</Kbd>
             </SidebarMenuButton>

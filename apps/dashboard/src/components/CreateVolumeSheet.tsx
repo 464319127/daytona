@@ -27,7 +27,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
-  name: z.string().trim().min(1, 'Volume name is required'),
+  name: z.string().trim().min(1, '存储卷名称为必填项'),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -71,7 +71,7 @@ export const CreateVolumeSheet = ({
     },
     onSubmit: async ({ value }) => {
       if (!selectedOrganization?.id) {
-        toast.error('Select an organization to create a volume.')
+        toast.error('请选择一个组织以创建存储卷。')
         return
       }
 
@@ -86,9 +86,9 @@ export const CreateVolumeSheet = ({
         })
 
         setOpen(false)
-        toast.success(`Creating volume ${volumeName}`)
+        toast.success(`正在创建存储卷 ${volumeName}`)
       } catch (error) {
-        handleApiError(error, 'Failed to create volume')
+        handleApiError(error, '创建卷失败')
       }
     },
   })
@@ -108,12 +108,12 @@ export const CreateVolumeSheet = ({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <CreateResourceButton resource="Volume" disabled={disabled} className={className} />
+        <CreateResourceButton resource="卷" disabled={disabled} className={className} />
       </SheetTrigger>
       <SheetContent className="w-dvw sm:w-[420px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>Create Volume</SheetTitle>
-          <SheetDescription className="sr-only">Create a new volume for shared, persistent storage.</SheetDescription>
+          <SheetTitle>创建卷</SheetTitle>
+          <SheetDescription className="sr-only">创建用于共享持久化存储的新存储卷。</SheetDescription>
         </SheetHeader>
 
         <ScrollArea fade="mask" className="flex-1 min-h-0">
@@ -132,7 +132,7 @@ export const CreateVolumeSheet = ({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Volume Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>卷名称</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       id={field.name}
@@ -142,7 +142,7 @@ export const CreateVolumeSheet = ({
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="my-volume"
                     />
-                    <FieldDescription>Used to mount this volume in your sandboxes.</FieldDescription>
+                    <FieldDescription>用于在沙箱中挂载此存储卷。</FieldDescription>
                     {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                       <FieldError errors={field.state.meta.errors} />
                     )}

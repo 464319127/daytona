@@ -23,7 +23,7 @@ export const useDeleteSnapshotMutation = ({ invalidateOnSuccess = true }: UseDel
   return useMutation<void, unknown, DeleteSnapshotMutationVariables>({
     mutationFn: async ({ snapshotId, organizationId }) => {
       if (!organizationId) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
       await snapshotApi.removeSnapshot(snapshotId, organizationId)
     },

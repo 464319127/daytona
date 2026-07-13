@@ -203,7 +203,7 @@ export const Banner = ({
                 <span className="text-xs font-medium tabular-nums">
                   {currentIndex + 1}/{total}
                 </span>
-                <BannerButton onClick={() => onNext?.()} aria-label="Next Notification">
+                <BannerButton onClick={() => onNext?.()} aria-label="下一条通知">
                   <ChevronRight className="w-4 h-4" />
                 </BannerButton>
               </div>
@@ -212,7 +212,7 @@ export const Banner = ({
 
           <div className="flex items-center justify-center min-w-6 col-[-1] empty:hidden">
             {onDismiss && (
-              <BannerButton onClick={() => onDismiss()} aria-label="Dismiss">
+              <BannerButton onClick={() => onDismiss()} aria-label="关闭">
                 <XIcon className="w-4 h-4" />
               </BannerButton>
             )}

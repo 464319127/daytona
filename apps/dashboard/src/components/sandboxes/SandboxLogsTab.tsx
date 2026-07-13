@@ -39,9 +39,9 @@ function LogsTableSkeleton() {
       <TableHeader>
         <TableRow>
           <TableHead className="w-10" />
-          <TableHead className="w-48">Timestamp</TableHead>
-          <TableHead className="w-24">Severity</TableHead>
-          <TableHead>Message</TableHead>
+          <TableHead className="w-48">时间戳</TableHead>
+          <TableHead className="w-24">严重程度</TableHead>
+          <TableHead>消息</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -70,12 +70,12 @@ function LogsErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <Empty className="flex-1 border-0">
       <EmptyHeader>
-        <EmptyTitle>Failed to load logs</EmptyTitle>
-        <EmptyDescription>Something went wrong while fetching logs.</EmptyDescription>
+        <EmptyTitle>加载日志失败</EmptyTitle>
+        <EmptyDescription>获取日志时出错。</EmptyDescription>
       </EmptyHeader>
       <Button variant="outline" size="sm" onClick={onRetry}>
         <RefreshCw className="size-4" />
-        Retry
+        重试
       </Button>
     </Empty>
   )
@@ -88,14 +88,14 @@ function LogsEmptyState({ hasFilters, onClearFilters }: { hasFilters: boolean; o
         <EmptyMedia variant="icon">
           <FileText className="size-4" />
         </EmptyMedia>
-        <EmptyTitle>{hasFilters ? 'No matching logs found' : 'No logs yet'}</EmptyTitle>
+        <EmptyTitle>{hasFilters ? '未找到匹配的日志' : '暂无日志'}</EmptyTitle>
         {hasFilters ? (
-          <EmptyDescription>No logs matched your current filters.</EmptyDescription>
+          <EmptyDescription>没有符合当前筛选条件的日志。</EmptyDescription>
         ) : (
           <EmptyDescription>
-            Logs will appear here when the sandbox emits telemetry.{' '}
+            Sandbox 产生遥测数据后，日志将显示在此处。{' '}
             <a href={`${DAYTONA_DOCS_URL}/en/observability/otel-collection`} target="_blank" rel="noopener noreferrer">
-              Learn more about observability
+              了解有关可观测性的更多信息
             </a>
             .
           </EmptyDescription>
@@ -103,7 +103,7 @@ function LogsEmptyState({ hasFilters, onClearFilters }: { hasFilters: boolean; o
       </EmptyHeader>
       {hasFilters ? (
         <Button variant="outline" size="sm" onClick={onClearFilters}>
-          Clear filters
+          清除筛选条件
         </Button>
       ) : null}
     </Empty>
@@ -188,16 +188,16 @@ export function SandboxLogsTab({ sandboxId }: { sandboxId: string }) {
           debounced
           value={params.search}
           onValueChange={handleSearchChange}
-          placeholder="Search logs..."
+          placeholder="搜索日志..."
           containerClassName="w-48"
         />
 
         <Select value={params.severity.length === 1 ? params.severity[0] : ''} onValueChange={handleSeverityChange}>
           <SelectTrigger className="w-32" size="sm">
-            <SelectValue placeholder="Severity" />
+            <SelectValue placeholder="严重程度" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All</SelectItem>
+            <SelectItem value="all">全部</SelectItem>
             {SEVERITY_OPTIONS.map((sev) => (
               <SelectItem key={sev} value={sev}>
                 {sev}
@@ -234,9 +234,9 @@ export function SandboxLogsTab({ sandboxId }: { sandboxId: string }) {
             <TableHeader className="sticky top-0 z-10 bg-background after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-border">
               <TableRow>
                 <TableHead className="w-10" />
-                <TableHead className="w-48">Timestamp</TableHead>
-                <TableHead className="w-24">Severity</TableHead>
-                <TableHead>Message</TableHead>
+                <TableHead className="w-48">时间戳</TableHead>
+                <TableHead className="w-24">严重程度</TableHead>
+                <TableHead>消息</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -265,14 +265,14 @@ export function SandboxLogsTab({ sandboxId }: { sandboxId: string }) {
                       <TableCell colSpan={4} className="bg-muted/30 p-4">
                         <div className="space-y-3">
                           <div>
-                            <h4 className="text-sm font-medium mb-1">Full Message</h4>
+                            <h4 className="text-sm font-medium mb-1">完整消息</h4>
                             <pre className="text-xs bg-background p-2 rounded overflow-x-auto whitespace-pre-wrap">
                               {log.body}
                             </pre>
                           </div>
                           {log.traceId && (
                             <div>
-                              <h4 className="text-sm font-medium mb-1">Trace ID</h4>
+                              <h4 className="text-sm font-medium mb-1">追踪 ID</h4>
                               <code className="text-xs bg-background p-1 rounded">{log.traceId}</code>
                             </div>
                           )}
@@ -284,11 +284,11 @@ export function SandboxLogsTab({ sandboxId }: { sandboxId: string }) {
                           )}
                           {Object.keys(log.logAttributes || {}).length > 0 && (
                             <div>
-                              <h4 className="text-sm font-medium mb-1">Attributes</h4>
+                              <h4 className="text-sm font-medium mb-1">属性</h4>
                               <div className="relative">
                                 <CopyButton
                                   value={JSON.stringify(log.logAttributes, null, 2)}
-                                  tooltipText="Copy"
+                                  tooltipText="复制"
                                   size="icon-xs"
                                   className="absolute top-1.5 right-1.5"
                                 />

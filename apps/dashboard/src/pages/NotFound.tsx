@@ -16,10 +16,10 @@ const NotFound: React.FC = () => {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="text-center space-y-6 max-w-lg">
         <h1 className="text-4xl font-bold text-foreground animate-bounce">404</h1>
-        <p className="text-base text-muted-foreground">The page you're looking for doesn't exist or has been moved.</p>
+        <p className="text-base text-muted-foreground">你访问的页面不存在或已被移动。</p>
         <Button onClick={() => navigate(RoutePath.DASHBOARD)} className="flex items-center gap-2 mx-auto">
           <Home className="w-4 h-4" />
-          Go to Dashboard
+          返回控制台
         </Button>
       </div>
     </div>

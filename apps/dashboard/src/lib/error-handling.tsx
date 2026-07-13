@@ -14,7 +14,7 @@ interface HandleApiErrorOptions {
   toastId?: string
 }
 
-const fallbackErrorDescription = 'Please try again or check the console for more details'
+const fallbackErrorDescription = '请重试或查看控制台了解更多详情'
 const linkify = new LinkifyIt({ fuzzyLink: false, fuzzyEmail: false })
 
 function toMessage(value: unknown): string | undefined {

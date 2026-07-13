@@ -24,7 +24,6 @@ import { useSelectedOrganization } from '@/hooks/useSelectedOrganization'
 import { useVolumeWsSync } from '@/hooks/useVolumeWsSync'
 import { createBulkActionToast } from '@/lib/bulk-action-toast'
 import { handleApiError } from '@/lib/error-handling'
-import { pluralize } from '@/lib/utils'
 import { OrganizationRolePermissionsEnum, VolumeDto, VolumeState } from '@daytona/api-client'
 import { useQueryClient } from '@tanstack/react-query'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -47,7 +46,7 @@ const Volumes: React.FC = () => {
 
   useEffect(() => {
     if (volumesError) {
-      handleApiError(volumesError, 'Failed to fetch volumes')
+      handleApiError(volumesError, '获取卷失败')
     }
   }, [volumesError])
 
@@ -77,9 +76,9 @@ const Volumes: React.FC = () => {
       }
       setVolumeToDelete(null)
       setShowDeleteDialog(false)
-      toast.success(`Deleting volume ${volume.name}`)
+      toast.success(`正在删除存储卷 ${volume.name}`)
     } catch (error) {
-      handleApiError(error, 'Failed to delete volume')
+      handleApiError(error, '删除卷失败')
       updateVolumeStateInCache(volume.id, volume.state)
     } finally {
       setProcessingVolumeAction((prev) => ({ ...prev, [volume.id]: false }))
@@ -93,13 +92,13 @@ const Volumes: React.FC = () => {
     let successCount = 0
     let failureCount = 0
 
-    const totalLabel = pluralize(volumes.length, 'volume', 'volumes')
+    const totalLabel = `${volumes.length} 个卷`
     const onCancel = () => {
       isCancelled = true
     }
 
-    const bulkToast = createBulkActionToast(`Deleting 0 of ${totalLabel}.`, {
-      action: { label: 'Cancel', onClick: onCancel },
+    const bulkToast = createBulkActionToast(`正在删除 0 / ${totalLabel}`, {
+      action: { label: '取消', onClick: onCancel },
     })
 
     try {
@@ -107,8 +106,8 @@ const Volumes: React.FC = () => {
         if (isCancelled) break
 
         processedCount += 1
-        bulkToast.loading(`Deleting ${processedCount} of ${totalLabel}.`, {
-          action: { label: 'Cancel', onClick: onCancel },
+        bulkToast.loading(`正在删除 ${processedCount} / ${totalLabel}`, {
+          action: { label: '取消', onClick: onCancel },
         })
 
         setProcessingVolumeAction((prev) => ({ ...prev, [volume.id]: true }))
@@ -136,15 +135,15 @@ const Volumes: React.FC = () => {
       bulkToast.result(
         { successCount, failureCount },
         {
-          successTitle: `${pluralize(volumes.length, 'Volume', 'Volumes')} deleted.`,
-          errorTitle: `Failed to delete ${pluralize(volumes.length, 'volume', 'volumes')}.`,
-          warningTitle: 'Failed to delete some volumes.',
-          canceledTitle: 'Delete canceled.',
+          successTitle: `已删除 ${volumes.length} 个卷。`,
+          errorTitle: `删除 ${volumes.length} 个卷失败。`,
+          warningTitle: '部分卷删除失败。',
+          canceledTitle: '已取消删除。',
         },
       )
     } catch (error) {
       console.error('Deleting volumes failed', error)
-      bulkToast.error('Deleting volumes failed.')
+      bulkToast.error('删除卷失败。')
     }
   }
 
@@ -159,7 +158,7 @@ const Volumes: React.FC = () => {
 
       <PageContent size="full" className="overflow-hidden">
         <PageIntro
-          title="Volumes"
+          title="卷"
           actions={writePermitted ? <CreateVolumeSheet disabled={loadingVolumes} ref={createVolumeSheetRef} /> : null}
         />
         <VolumeTable
@@ -192,15 +191,15 @@ const Volumes: React.FC = () => {
           >
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Confirm Volume Deletion</DialogTitle>
+                <DialogTitle>确认删除存储卷</DialogTitle>
                 <DialogDescription>
-                  Are you sure you want to delete this Volume? This action cannot be undone.
+                  确定要删除此存储卷吗？此操作无法撤销。
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button type="button" variant="secondary">
-                    Cancel
+                    取消
                   </Button>
                 </DialogClose>
                 <Button
@@ -209,7 +208,7 @@ const Volumes: React.FC = () => {
                   disabled={processingVolumeAction[volumeToDelete.id]}
                 >
                   {processingVolumeAction[volumeToDelete.id] && <Spinner />}
-                  Delete
+                  删除
                 </Button>
               </DialogFooter>
             </DialogContent>

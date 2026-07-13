@@ -90,13 +90,13 @@ export function SandboxInfoPanel({
       )}
 
       <InfoSection title={null}>
-        <InfoRow label="Region" className="-mr-2">
+        <InfoRow label="区域" className="-mr-2">
           <div className="flex items-center gap-1">
             <span className="truncate">{getRegionName(sandbox.target) ?? sandbox.target}</span>
-            <CopyButton value={sandbox.target} tooltipText="Copy" size="icon-xs" />
+            <CopyButton value={sandbox.target} tooltipText="复制" size="icon-xs" />
           </div>
         </InfoRow>
-        <InfoRow label="Class">
+        <InfoRow label="规格">
           {(() => {
             const ClassIcon = getSandboxClassIcon(sandbox.sandboxClass)
             return (
@@ -107,22 +107,22 @@ export function SandboxInfoPanel({
             )
           })()}
         </InfoRow>
-        <InfoRow label="Snapshot" className="-mr-2">
+        <InfoRow label="快照" className="-mr-2">
           {sandbox.snapshot ? (
             <div className="flex items-center gap-1 min-w-0">
               <span className="truncate font-mono text-sm">{sandbox.snapshot}</span>
-              <CopyButton value={sandbox.snapshot} tooltipText="Copy" size="icon-xs" />
+              <CopyButton value={sandbox.snapshot} tooltipText="复制" size="icon-xs" />
             </div>
           ) : (
             <span className="text-muted-foreground font-normal">—</span>
           )}
         </InfoRow>
-        <InfoRow label="Preview access">
-          {sandbox.public ? 'Public' : <span className="text-muted-foreground font-normal">Private</span>}
+        <InfoRow label="预览访问">
+          {sandbox.public ? '公开' : <span className="text-muted-foreground font-normal">私有</span>}
         </InfoRow>
       </InfoSection>
 
-      <InfoSection title="Resources">
+      <InfoSection title="资源">
         <div className="flex flex-wrap gap-2 py-1">
           <ResourceChip resource="cpu" value={sandbox.cpu} />
           <ResourceChip resource="memory" value={sandbox.memory} />
@@ -141,30 +141,30 @@ export function SandboxInfoPanel({
         </div>
       </InfoSection>
 
-      <InfoSection title="Lifecycle">
-        <InfoRow label="Auto-stop">
+      <InfoSection title="生命周期">
+        <InfoRow label="自动停止">
           {sandbox.autoStopInterval ? (
             formatDuration(sandbox.autoStopInterval)
           ) : (
-            <span className="text-muted-foreground font-normal">Disabled</span>
+            <span className="text-muted-foreground font-normal">已禁用</span>
           )}
         </InfoRow>
-        <InfoRow label="Auto-archive">
+        <InfoRow label="自动归档">
           {sandbox.autoArchiveInterval ? (
             formatDuration(sandbox.autoArchiveInterval)
           ) : (
-            <span className="text-muted-foreground font-normal">Disabled</span>
+            <span className="text-muted-foreground font-normal">已禁用</span>
           )}
         </InfoRow>
-        <InfoRow label="Auto-delete">
+        <InfoRow label="自动删除">
           {sandbox.autoDeleteInterval !== undefined && sandbox.autoDeleteInterval >= 0 ? (
             sandbox.autoDeleteInterval === 0 ? (
-              'On stop'
+              '停止时'
             ) : (
               formatDuration(sandbox.autoDeleteInterval)
             )
           ) : (
-            <span className="text-muted-foreground font-normal">Disabled</span>
+            <span className="text-muted-foreground font-normal">已禁用</span>
           )}
         </InfoRow>
       </InfoSection>
@@ -172,7 +172,7 @@ export function SandboxInfoPanel({
       {showSshSection && (
         <div className="px-5 py-3 border-b border-border">
           <div className="flex items-center justify-between gap-3">
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">SSH Access</span>
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">SSH 访问</span>
             <ButtonGroup>
               {onCreateSshAccess && (
                 <Button
@@ -201,7 +201,7 @@ export function SandboxInfoPanel({
         </div>
       )}
 
-      <InfoSection title="Labels">
+      <InfoSection title="标签">
         {labelEntries.length > 0 ? (
           <div className="max-h-[250px] overflow-y-auto scrollbar-sm">
             <div className="flex flex-wrap gap-2 py-1">
@@ -216,7 +216,7 @@ export function SandboxInfoPanel({
               <EmptyMedia variant="icon">
                 <Tag className="size-4" />
               </EmptyMedia>
-              <EmptyDescription>No labels</EmptyDescription>
+              <EmptyDescription>暂无标签</EmptyDescription>
             </EmptyHeader>
           </Empty>
         )}
@@ -225,7 +225,7 @@ export function SandboxInfoPanel({
       {showRecordingsSection && (
         <div className="px-5 py-3 border-b border-border">
           <div className="flex items-center justify-between gap-3">
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">Recordings</span>
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">录像</span>
             <Button
               variant="link"
               className="h-auto px-0 py-0 text-sm"
@@ -239,13 +239,13 @@ export function SandboxInfoPanel({
         </div>
       )}
 
-      <InfoSection title="Activity">
-        <InfoRow label="Created">
+      <InfoSection title="活动">
+        <InfoRow label="创建时间">
           <TimestampTooltip timestamp={sandbox.createdAt}>
             <span>{getRelativeTimeString(sandbox.createdAt).relativeTimeString}</span>
           </TimestampTooltip>
         </InfoRow>
-        <InfoRow label="Last event">
+        <InfoRow label="最后事件">
           <TimestampTooltip timestamp={sandbox.updatedAt}>
             <span>{getRelativeTimeString(sandbox.updatedAt).relativeTimeString}</span>
           </TimestampTooltip>

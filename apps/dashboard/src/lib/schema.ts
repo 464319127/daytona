@@ -10,10 +10,10 @@ const IMAGE_TAG_OR_DIGEST_REGEX = /^[^@]+@sha256:[a-f0-9]{64}$|^(?!.*@sha256:).*
 
 export const imageNameSchema = z
   .string()
-  .min(1, 'Image name is required')
-  .refine((name) => IMAGE_NAME_REGEX.test(name), 'Only letters, digits, dots, colons, slashes and dashes are allowed')
+  .min(1, '镜像名称为必填项')
+  .refine((name) => IMAGE_NAME_REGEX.test(name), '仅允许字母、数字、点、冒号、斜杠和连字符')
   .refine(
     (name) => IMAGE_TAG_OR_DIGEST_REGEX.test(name),
     'Image must include a tag (e.g., ubuntu:22.04) or digest (@sha256:...)',
   )
-  .refine((name) => !name.endsWith(':latest'), 'Images with tag ":latest" are not allowed')
+  .refine((name) => !name.endsWith(':latest'), '不允许使用标签为 ":latest" 的镜像')

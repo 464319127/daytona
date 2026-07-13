@@ -23,9 +23,9 @@ export function WebhooksGetStarted() {
     }
     try {
       await initializeMutation.mutateAsync(selectedOrganization.id)
-      toast.success('Webhooks enabled')
+      toast.success('Webhook 已启用')
     } catch (error) {
-      handleApiError(error, 'Failed to enable webhooks')
+      handleApiError(error, '启用 Webhook 失败')
     }
   }
 
@@ -33,22 +33,21 @@ export function WebhooksGetStarted() {
     <PageLayout contained>
       <PageHeader />
       <PageContent size="full">
-        <PageIntro title="Webhooks" />
+        <PageIntro title="Webhook" />
         <Empty className="border flex-none py-16">
           <EmptyHeader>
             <EmptyMedia variant="icon">
               <Webhook />
             </EmptyMedia>
-            <EmptyTitle>Webhooks aren't enabled yet</EmptyTitle>
+            <EmptyTitle>Webhook 尚未启用</EmptyTitle>
             <EmptyDescription>
-              Receive real-time notifications when sandboxes, snapshots, and volumes change state. Enable webhooks for
-              this organization to start creating endpoints and delivering events.
+              在 Sandbox、Snapshot 和卷的状态发生变化时接收实时通知。为此组织启用 Webhook 后，即可创建端点并投递事件。
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
             <Button onClick={handleEnable} disabled={initializeMutation.isPending}>
               {initializeMutation.isPending && <Spinner />}
-              Enable webhooks
+              启用 Webhook
             </Button>
           </EmptyContent>
         </Empty>

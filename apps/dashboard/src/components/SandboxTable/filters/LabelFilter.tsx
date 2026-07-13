@@ -20,7 +20,7 @@ export function LabelFilterIndicator({ value, onFilterChange }: Pick<LabelFilter
     <div className="flex items-center h-6 gap-0.5 rounded-sm border border-border bg-muted/80 hover:bg-muted/50 text-sm">
       <Popover>
         <PopoverTrigger className="max-w-[160px] overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground px-2">
-          Labels: <span className="text-primary font-medium">{value.length} selected</span>
+          标签：<span className="text-primary font-medium">已选择 {value.length} 项</span>
         </PopoverTrigger>
 
         <PopoverContent className="p-0 w-[320px]" align="start">
@@ -66,7 +66,7 @@ export function LabelFilter({ value, onFilterChange }: LabelFilterProps) {
   return (
     <div className="p-3 space-y-3">
       <div className="flex items-center justify-between">
-        <h4 className="text-sm font-medium">Labels</h4>
+        <h4 className="text-sm font-medium">标签</h4>
         <button className="text-sm text-muted-foreground hover:text-primary pl-2" onClick={clearAll}>
           Clear
         </button>
@@ -110,7 +110,7 @@ export function LabelFilter({ value, onFilterChange }: LabelFilterProps) {
       <div className="space-y-2">
         <div className="space-y-2">
           <Input
-            placeholder="Key"
+            placeholder="键"
             value={newKey}
             onChange={(e) => setNewKey(e.target.value)}
             className="h-8"
@@ -121,7 +121,7 @@ export function LabelFilter({ value, onFilterChange }: LabelFilterProps) {
             }}
           />
           <Input
-            placeholder="Value"
+            placeholder="值"
             value={newValue}
             onChange={(e) => setNewValue(e.target.value)}
             className="h-8"

@@ -72,7 +72,7 @@ const Runners: React.FC = () => {
         setRunners(response || [])
         setRunnersUpdatedAt(Date.now())
       } catch (error) {
-        handleApiError(error, 'Failed to fetch runners')
+        handleApiError(error, '获取 Runner 失败')
         setRunners([])
       } finally {
         setLoadingRunnersData(false)
@@ -154,10 +154,10 @@ const Runners: React.FC = () => {
   const handleCreateRunner = async (createRunnerData: CreateRunner): Promise<CreateRunnerResponse | null> => {
     try {
       const response = (await runnersApi.createRunner(createRunnerData, selectedOrganization?.id)).data
-      toast.success('Runner created successfully')
+      toast.success('Runner 已成功创建')
       return response
     } catch (error) {
-      handleApiError(error, 'Failed to create runner')
+      handleApiError(error, '创建 Runner 失败')
       return null
     }
   }
@@ -176,10 +176,10 @@ const Runners: React.FC = () => {
         data: { unschedulable: !runnerToToggleScheduling.unschedulable },
       })
       toast.success(
-        `Runner is now ${runnerToToggleScheduling.unschedulable ? 'available' : 'unavailable'} for scheduling new sandboxes`,
+        `Runner 现在${runnerToToggleScheduling.unschedulable ? '可以' : '无法'}调度新的 Sandbox`,
       )
     } catch (error) {
-      handleApiError(error, 'Failed to update runner scheduling status')
+      handleApiError(error, '更新 Runner 调度状态失败')
     } finally {
       setRunnerIsLoading((prev) => ({ ...prev, [runnerToToggleScheduling.id]: false }))
       setToggleRunnerSchedulingDialogIsOpen(false)
@@ -198,10 +198,10 @@ const Runners: React.FC = () => {
     setRunnerIsLoading((prev) => ({ ...prev, [runnerToDelete.id]: true }))
     try {
       await runnersApi.deleteRunner(runnerToDelete.id, selectedOrganization?.id)
-      toast.success('Runner deleted successfully')
+      toast.success('Runner 已成功删除')
       await fetchRunners(false)
     } catch (error) {
-      handleApiError(error, 'Failed to delete runner')
+      handleApiError(error, '删除 Runner 失败')
     } finally {
       setRunnerIsLoading((prev) => ({ ...prev, [runnerToDelete.id]: false }))
       setDeleteRunnerDialogIsOpen(false)
@@ -227,14 +227,14 @@ const Runners: React.FC = () => {
     return [
       {
         id: 'create-runner',
-        label: 'Create Runner',
+        label: '创建 Runner',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: () => createRunnerSheetRef.current?.open(),
       },
     ]
   }, [writePermitted, regions.length])
 
-  useRegisterCommands(rootCommands, { groupId: 'runner-actions', groupLabel: 'Runner actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'runner-actions', groupLabel: 'Runner 操作', groupOrder: 0 })
 
   return (
     <PageLayout contained>
@@ -242,7 +242,7 @@ const Runners: React.FC = () => {
 
       <PageContent size="full" className="overflow-hidden">
         <PageIntro
-          title="Runners"
+          title="Runner"
           actions={
             writePermitted && regions.length > 0 ? (
               <CreateRunnerSheet regions={regions} onCreateRunner={handleCreateRunner} ref={createRunnerSheetRef} />
@@ -276,16 +276,16 @@ const Runners: React.FC = () => {
         <Dialog open={toggleRunnerSchedulingDialogIsOpen} onOpenChange={setToggleRunnerSchedulingDialogIsOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Update Runner</DialogTitle>
+              <DialogTitle>更新 Runner</DialogTitle>
               <DialogDescription>
-                Are you sure you want to update the scheduling status of this runner? This will make the runner{' '}
-                {runnerToToggleScheduling.unschedulable ? 'available' : 'unavailable'} for scheduling new sandboxes.
+                确定要更新此 Runner 的调度状态吗？这会使 Runner
+                {runnerToToggleScheduling.unschedulable ? '可用于' : '不可用于'}调度新沙箱。
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
-                  Cancel
+                  取消
                 </Button>
               </DialogClose>
               <Button
@@ -294,10 +294,10 @@ const Runners: React.FC = () => {
                 disabled={runnerIsLoading[runnerToToggleScheduling.id]}
               >
                 {runnerIsLoading[runnerToToggleScheduling.id]
-                  ? 'Updating...'
+                  ? '正在更新...'
                   : runnerToToggleScheduling.unschedulable
-                    ? 'Mark as schedulable'
-                    : 'Mark as unschedulable'}
+                    ? '标记为可调度'
+                    : '标记为不可调度'}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -308,19 +308,19 @@ const Runners: React.FC = () => {
         <Dialog open={deleteRunnerDialogIsOpen} onOpenChange={setDeleteRunnerDialogIsOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Confirm Runner Deletion</DialogTitle>
+              <DialogTitle>确认删除 Runner</DialogTitle>
               <DialogDescription>
-                Are you sure you want to delete this runner? This action cannot be undone.
+                确定要删除此 Runner 吗？此操作无法撤销。
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
-                  Cancel
+                  取消
                 </Button>
               </DialogClose>
               <Button variant="destructive" onClick={confirmDelete} disabled={runnerIsLoading[runnerToDelete.id]}>
-                {runnerIsLoading[runnerToDelete.id] ? 'Deleting...' : 'Delete'}
+                {runnerIsLoading[runnerToDelete.id] ? '正在删除...' : '删除'}
               </Button>
             </DialogFooter>
           </DialogContent>

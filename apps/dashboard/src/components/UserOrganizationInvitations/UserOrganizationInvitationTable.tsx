@@ -145,7 +145,7 @@ export function UserOrganizationInvitationTable({
           debounced
           value={globalFilter}
           onValueChange={handleChangeFilter}
-          placeholder="Search by Organization or Inviter"
+          placeholder="按组织或邀请人搜索"
           containerClassName="max-w-sm"
         />
       </div>
@@ -158,13 +158,13 @@ export function UserOrganizationInvitationTable({
             <TableEmptyState
               overlay
               colSpan={userOrganizationInvitationColumns.length}
-              message={hasSearch ? 'No matching Invitations found.' : 'No Invitations found.'}
+              message={hasSearch ? '未找到匹配的邀请。' : '暂无邀请。'}
               icon={<Mail />}
-              description={hasSearch ? null : 'You have no pending organization invitations.'}
+              description={hasSearch ? null : '你没有待处理的组织邀请。'}
               action={
                 hasSearch ? (
                   <Button variant="outline" onClick={() => handleChangeFilter('')}>
-                    Clear filters
+                    清除筛选条件
                   </Button>
                 ) : null
               }
@@ -279,13 +279,13 @@ const userOrganizationInvitationColumns: ColumnDef<OrganizationInvitation>[] = [
 
       return (
         <div className="flex justify-end gap-2">
-          <Button variant="ghost" size="icon-sm" aria-label="Accept invitation" onClick={() => onAccept(row.original)}>
+          <Button variant="ghost" size="icon-sm" aria-label="接受邀请" onClick={() => onAccept(row.original)}>
             <Check className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Decline invitation"
+            aria-label="拒绝邀请"
             onClick={() => onDecline(row.original)}
           >
             <X className="h-4 w-4" />

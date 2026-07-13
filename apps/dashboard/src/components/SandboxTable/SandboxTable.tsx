@@ -292,13 +292,13 @@ export function SandboxTable({
             <TableEmptyState
               overlay
               colSpan={table.getAllColumns().length}
-              message={hasFilters ? 'No matching sandboxes found.' : 'No Sandboxes yet.'}
+              message={hasFilters ? '未找到匹配的 Sandbox。' : '暂无 Sandbox。'}
               icon={<Container />}
               description={
                 hasFilters ? null : (
                   <div className="space-y-2">
-                    <p>Spin up a Sandbox to run code in an isolated environment.</p>
-                    <p>Use the Daytona SDK or CLI to create one.</p>
+                    <p>创建沙箱以在隔离环境中运行代码。</p>
+                    <p>使用 Daytona SDK 或 CLI 创建沙箱。</p>
                     <p>
                       <button
                         onClick={() => navigate(RoutePath.ONBOARDING)}

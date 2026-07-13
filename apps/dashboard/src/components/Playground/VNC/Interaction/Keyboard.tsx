@@ -37,24 +37,24 @@ const VNCKeyboardOperations: React.FC<VNCInteractionOptionsSectionComponentProps
   const typeParams = VNCInteractionOptionsParamsState['keyboardTypeParams']
 
   const hotKeyParamsFormData: ParameterFormData<KeyboardHotKey> = [
-    { label: 'Keys', key: 'keys', placeholder: 'ctrl+c, alt+tab', required: true },
+    { label: '按键', key: 'keys', placeholder: 'ctrl+c, alt+tab', required: true },
   ]
 
   const pressParamsFormData: ParameterFormData<KeyboardPress> = [
-    { label: 'Key', key: 'key', placeholder: 'Enter', required: true },
-    { label: 'Modifiers', key: 'modifiers', placeholder: 'ctrl, alt, shift' },
+    { label: '按键', key: 'key', placeholder: 'Enter', required: true },
+    { label: '修饰键', key: 'modifiers', placeholder: 'ctrl, alt, shift' },
   ]
 
   const typeParamsFormData: ParameterFormData<KeyboardType> = [
-    { label: 'Text', key: 'text', placeholder: 'Daytona', required: true },
-    { label: 'Delay(ms)', key: 'delay', placeholder: '50ms', min: 0, max: Infinity, step: 10 },
+    { label: '文本', key: 'text', placeholder: 'Daytona', required: true },
+    { label: '延迟（毫秒）', key: 'delay', placeholder: '50ms', min: 0, max: Infinity, step: 10 },
   ]
 
   const keyboardActionsFormData: KeyboardActionFormData<KeyboardHotKey | KeyboardPress | KeyboardType>[] = [
     {
       methodName: KeyboardActions.HOTKEY,
       label: 'hotkey()',
-      description: 'Presses a hotkey combination',
+      description: '按下快捷键组合',
       parametersFormItems: hotKeyParamsFormData,
       parametersState: hotKeyParams,
       onChangeParamsValidationDisabled: true,
@@ -62,7 +62,7 @@ const VNCKeyboardOperations: React.FC<VNCInteractionOptionsSectionComponentProps
     {
       methodName: KeyboardActions.PRESS,
       label: 'press()',
-      description: 'Presses a key with optional modifiers',
+      description: '按下按键，可带修饰键',
       parametersFormItems: pressParamsFormData,
       parametersState: pressParams,
       onChangeParamsValidationDisabled: true,
@@ -70,7 +70,7 @@ const VNCKeyboardOperations: React.FC<VNCInteractionOptionsSectionComponentProps
     {
       methodName: KeyboardActions.TYPE,
       label: 'type()',
-      description: 'Types the specified text',
+      description: '输入指定文本',
       parametersFormItems: typeParamsFormData,
       parametersState: typeParams,
       onChangeParamsValidationDisabled: true,

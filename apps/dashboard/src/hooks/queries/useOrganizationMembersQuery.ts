@@ -25,7 +25,7 @@ export const getOrganizationMembersQueryOptions = (
       const response = await organizationsApi.listOrganizationMembers(organizationId)
       return response.data
     } catch (error) {
-      handleApiError(error, 'Failed to fetch organization members')
+      handleApiError(error, '获取组织成员失败')
       throw error
     }
   },

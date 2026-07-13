@@ -74,13 +74,13 @@ export function useSuspensionBanner(suspension?: Suspension | null) {
           addBanner({
             id: SUSPENSION_BANNER_ID,
             variant: 'error',
-            title: 'No credits',
-            description: 'Top up your wallet to continue creating sandboxes.',
+            title: '额度不足',
+            description: '请为钱包充值后继续创建沙箱。',
             icon: <CreditCardIcon className="h-4 w-4 flex-shrink-0 text-current" />,
             action:
               path !== RoutePath.BILLING_WALLET
                 ? {
-                    label: 'Go to Billing',
+                    label: '前往账单',
                     onClick: () => navigate(RoutePath.BILLING_WALLET),
                   }
                 : undefined,
@@ -92,13 +92,13 @@ export function useSuspensionBanner(suspension?: Suspension | null) {
         addBanner({
           id: SUSPENSION_BANNER_ID,
           variant: 'info',
-          title: 'Setup Required',
-          description: 'Add a payment method to start creating sandboxes.',
+            title: '需要完成设置',
+            description: '添加付款方式后即可开始创建 Sandbox。',
           icon: <CreditCardIcon className="h-4 w-4 flex-shrink-0 text-current" />,
           action:
             path !== RoutePath.BILLING_WALLET
               ? {
-                  label: 'Go to Billing',
+                  label: '前往账单',
                   onClick: () => navigate(RoutePath.BILLING_WALLET),
                 }
               : undefined,
@@ -108,8 +108,8 @@ export function useSuspensionBanner(suspension?: Suspension | null) {
         addBanner({
           id: SUSPENSION_BANNER_ID,
           variant: 'info',
-          title: 'Verification Required',
-          description: 'Please verify your email address to access all features.',
+          title: '需要验证',
+          description: '请验证邮箱地址以使用全部功能。',
           icon: <MailIcon className="h-4 w-4 flex-shrink-0 text-current" />,
           isDismissible: false,
         })
@@ -127,19 +127,19 @@ export function useSuspensionBanner(suspension?: Suspension | null) {
 
       const cleanupText = cleanupDate
         ? cleanupDatePassed
-          ? 'Sandboxes will be stopped'
-          : `Sandboxes will be stopped ${formatDistanceToNow(cleanupDate, { addSuffix: true })}`
-        : 'Sandboxes will be stopped soon'
+          ? 'Sandbox 将被停止'
+          : `Sandbox 将在${formatDistanceToNow(cleanupDate, { addSuffix: true })}停止`
+        : 'Sandbox 即将被停止'
 
       addBanner({
         id: SUSPENSION_BANNER_ID,
         variant: 'error',
-        title: 'Credits depleted',
+        title: '额度已用完',
         description: cleanupText,
         action:
           path !== RoutePath.BILLING_WALLET
             ? {
-                label: 'Go to Billing',
+                label: '前往账单',
                 onClick: () => navigate(RoutePath.BILLING_WALLET),
               }
             : undefined,
@@ -156,14 +156,14 @@ export function useSuspensionBanner(suspension?: Suspension | null) {
     const cleanupDatePassed = cleanupDate !== null && cleanupDate <= new Date()
     const cleanupText = cleanupDate
       ? cleanupDatePassed
-        ? 'Sandboxes will be stopped'
-        : `Sandboxes will be stopped ${formatDistanceToNow(cleanupDate, { addSuffix: true })}`
-      : 'Sandboxes will be stopped soon'
+        ? 'Sandbox 将被停止'
+        : `Sandbox 将在${formatDistanceToNow(cleanupDate, { addSuffix: true })}停止`
+      : 'Sandbox 即将被停止'
 
     addBanner({
       id: SUSPENSION_BANNER_ID,
       variant: 'error',
-      title: 'Organization suspended',
+      title: '组织已暂停',
       description: reason ? `${reason}. ${cleanupText}` : cleanupText,
       isDismissible: false,
     })

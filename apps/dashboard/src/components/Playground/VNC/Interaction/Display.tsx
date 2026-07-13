@@ -25,12 +25,12 @@ const VNCDisplayOperations: React.FC<VNCInteractionOptionsSectionComponentProps>
     {
       methodName: DisplayActions.GET_INFO,
       label: 'getInfo()',
-      description: 'Gets information about the displays',
+      description: '获取显示器信息',
     },
     {
       methodName: DisplayActions.GET_WINDOWS,
       label: 'getWindows()',
-      description: 'Gets the list of open windows',
+      description: '获取已打开窗口列表',
     },
   ]
 
@@ -50,13 +50,13 @@ const VNCDisplayOperations: React.FC<VNCInteractionOptionsSectionComponentProps>
           y: number
         }
         ;(displayInfoResponse.displays as Display[]).forEach((display, index) => {
-          displayActionResponseText += `Display ${index}: ${display.width}x${display.height} at ${display.x},${display.y}\n`
+          displayActionResponseText += `显示器 ${index}：${display.width}x${display.height}，位置 ${display.x},${display.y}\n`
         })
         break
       }
       case DisplayActions.GET_WINDOWS: {
         const displayWindowsResponse = displayActionResponse as WindowsResponse
-        displayActionResponseText += `Found ${displayWindowsResponse.windows.length} open windows:\n`
+        displayActionResponseText += `找到 ${displayWindowsResponse.windows.length} 个已打开窗口：\n`
         type Window = {
           title: string
           id: string

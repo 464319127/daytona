@@ -17,7 +17,7 @@ export function useRegistriesQuery() {
     queryKey: queryKeys.registries.list(selectedOrganization?.id ?? ''),
     queryFn: async () => {
       if (!selectedOrganization) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const response = await dockerRegistryApi.listRegistries(selectedOrganization.id)

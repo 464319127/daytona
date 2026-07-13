@@ -76,7 +76,7 @@ export function FacetFilter({ title, options, selectedValues, setSelectedValues,
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>未找到结果。</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value)

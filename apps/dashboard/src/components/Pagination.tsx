@@ -59,7 +59,7 @@ export function Pagination<TData>({
       </div>
       <div className="flex items-center gap-4">
         <div className="flex items-center justify-end text-sm font-medium text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount() || 1}
+          第 {table.getState().pagination.pageIndex + 1} 页，共 {table.getPageCount() || 1} 页
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -68,7 +68,7 @@ export function Pagination<TData>({
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
-            <span className="sr-only">Go to first page</span>
+            <span className="sr-only">跳到第一页</span>
             <ChevronsLeft />
           </Button>
           <Button
@@ -77,7 +77,7 @@ export function Pagination<TData>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <span className="sr-only">Go to previous page</span>
+            <span className="sr-only">跳到上一页</span>
             <ChevronLeft />
           </Button>
           <Button
@@ -86,7 +86,7 @@ export function Pagination<TData>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <span className="sr-only">Go to next page</span>
+            <span className="sr-only">跳到下一页</span>
             <ChevronRight />
           </Button>
           <Button
@@ -95,7 +95,7 @@ export function Pagination<TData>({
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
-            <span className="sr-only">Go to last page</span>
+            <span className="sr-only">跳到最后一页</span>
             <ChevronsRight />
           </Button>
         </div>

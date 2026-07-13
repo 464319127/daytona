@@ -39,8 +39,8 @@ export const DeleteOrganizationRoleDialog: React.FC<DeleteOrganizationRoleDialog
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Role</DialogTitle>
-          <DialogDescription>Are you sure you want to delete this role?</DialogDescription>
+          <DialogTitle>删除角色</DialogTitle>
+          <DialogDescription>确定要删除此角色吗？</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>

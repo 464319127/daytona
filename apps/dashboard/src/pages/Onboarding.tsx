@@ -62,15 +62,15 @@ const Onboarding: React.FC = () => {
         if (personalOrg) {
           const success = await onSelectOrganization(personalOrg.id)
           if (success) {
-            toast.success('Switched to personal organization', {
+            toast.success('已切换到个人组织', {
               description:
-                'You did not have the necessary permissions for creating sandboxes in the previous organization.',
+                '你在之前的组织中没有创建沙箱所需的权限。',
             })
             return
           }
         }
 
-        toast.error('An unexpected issue occurred while preparing your onboarding snippet')
+        toast.error('准备入门示例时发生意外错误')
       }
     }
 
@@ -95,9 +95,9 @@ const Onboarding: React.FC = () => {
       ).data
       setCreatedApiKey(key)
       setApiKeyName('')
-      toast.success('API key created successfully')
+      toast.success('API 密钥已成功创建')
     } catch (error) {
-      handleApiError(error, 'Failed to create API key')
+      handleApiError(error, '创建 API 密钥失败')
     } finally {
       setIsLoadingCreateKey(false)
     }
@@ -109,7 +109,7 @@ const Onboarding: React.FC = () => {
       setIsApiKeyCopied(true)
       setTimeout(() => setIsApiKeyCopied(false), 2000)
     } catch (err) {
-      console.error('Failed to copy text:', err)
+      console.error('复制文本失败：', err)
     }
   }
 
@@ -119,8 +119,8 @@ const Onboarding: React.FC = () => {
         <div className="max-w-3xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-2xl font-bold mb-2">Get Started</h1>
-              <p className="text-muted-foreground">Install and get your Sandboxes running.</p>
+              <h1 className="text-2xl font-bold mb-2">快速入门</h1>
+              <p className="text-muted-foreground">安装 SDK 并开始运行沙箱。</p>
             </div>
             <div className="flex items-center space-x-2">
               <Tabs value={language} onValueChange={(value) => setLanguage(value as 'typescript' | 'python')}>
@@ -154,8 +154,8 @@ const Onboarding: React.FC = () => {
                   1
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Install the SDK</h2>
-                  <p className="mb-4">Run the following command in your terminal to install the Daytona SDK:</p>
+                  <h2 className="text-xl font-semibold mb-4">安装 SDK</h2>
+                  <p className="mb-4">在终端中运行以下命令安装 Daytona SDK：</p>
                   <div className="transition-all duration-500">
                     <CodeBlock code={codeExamples[language].install} language="bash" showCopy />
                   </div>
@@ -168,18 +168,18 @@ const Onboarding: React.FC = () => {
                   2
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold mb-4">Create an API Key</h2>
+                  <h2 className="text-xl font-semibold mb-4">创建 API 密钥</h2>
                   <p className="mb-4">
-                    This API key will have permissions to only{' '}
-                    {apiKeyPermissions.includes(CreateApiKeyPermissionsEnum.DELETE_SANDBOXES) ? 'manage' : 'create'}{' '}
-                    Sandboxes. For full API permissions, head to the{' '}
+                    此 API 密钥仅具有
+                    {apiKeyPermissions.includes(CreateApiKeyPermissionsEnum.DELETE_SANDBOXES) ? '管理' : '创建'}沙箱的权限。
+                    如需完整 API 权限，请前往
                     <button
                       onClick={() => navigate(RoutePath.KEYS)}
                       className="underline cursor-pointer hover:text-muted-foreground"
                     >
-                      Keys
+                      API 密钥
                     </button>{' '}
-                    page.
+                    页面。
                   </p>
                   {createdApiKey ? (
                     <div className="p-4 flex justify-between items-center rounded-md bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-400">
@@ -217,7 +217,7 @@ const Onboarding: React.FC = () => {
                     >
                       <div className="mb-6">
                         <label htmlFor="key-name" className="block mb-1 text-sm font-medium text-muted-foreground">
-                          API Key Name
+                          API 密钥名称
                         </label>
 
                         <Input
@@ -226,7 +226,7 @@ const Onboarding: React.FC = () => {
                           value={apiKeyName}
                           onChange={(e) => setApiKeyName(e.target.value)}
                           required
-                          placeholder="e.g. Onboarding"
+                          placeholder="例如：入门指南"
                           className="md:text-base px-4 h-10.5"
                           disabled={!hasSufficientPermissions}
                         />
@@ -241,7 +241,7 @@ const Onboarding: React.FC = () => {
                         ) : (
                           <Plus className="w-6 h-6" />
                         )}
-                        Create API Key
+                        创建 API 密钥
                       </Button>
                     </form>
                   )}
@@ -258,8 +258,8 @@ const Onboarding: React.FC = () => {
                   3
                 </div>
                 <div className={!createdApiKey ? 'opacity-40 pointer-events-none' : ''}>
-                  <h2 className="text-xl font-semibold mb-4">Create a Sandbox</h2>
-                  <p className="mb-4">The example below will create a Sandbox and run a simple code snippet:</p>
+                  <h2 className="text-xl font-semibold mb-4">创建沙箱</h2>
+                  <p className="mb-4">以下示例将创建一个沙箱并运行一段简单代码：</p>
                   <div className="transition-all duration-500">
                     <CodeBlock
                       code={
@@ -284,8 +284,8 @@ const Onboarding: React.FC = () => {
                   4
                 </div>
                 <div className={!createdApiKey ? 'opacity-40 pointer-events-none' : ''}>
-                  <h2 className="text-xl font-semibold mb-4">Run the Example</h2>
-                  <p className="mb-4">Run the following command in your terminal to run the example:</p>
+                  <h2 className="text-xl font-semibold mb-4">运行示例</h2>
+                  <p className="mb-4">在终端中运行以下命令执行示例：</p>
                   <div className="transition-all duration-500">
                     <CodeBlock code={codeExamples[language].run} language="bash" showCopy />
                   </div>
@@ -302,13 +302,13 @@ const Onboarding: React.FC = () => {
                   5
                 </div>
                 <div className={!createdApiKey ? 'opacity-40 pointer-events-none' : ''}>
-                  <h2 className="text-xl font-semibold mb-4">That's It</h2>
+                  <h2 className="text-xl font-semibold mb-4">完成</h2>
                   <p className="text-muted-foreground">
-                    It's as easy as that. For more examples check out the{' '}
+                    就这么简单。如需查看更多示例，请访问
                     <a href={DAYTONA_DOCS_URL} target="_blank" rel="noopener noreferrer" className="text-primary">
-                      Docs
+                      文档
                     </a>
-                    .
+                    。
                   </p>
                 </div>
               </div>

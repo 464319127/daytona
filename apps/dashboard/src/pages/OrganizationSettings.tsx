@@ -43,11 +43,11 @@ const OrganizationSettings: React.FC = () => {
   const handleDeleteOrganization = async () => {
     try {
       await deleteOrganizationMutation.mutateAsync({ organizationId: selectedOrganization.id })
-      toast.success('Organization deleted successfully')
+      toast.success('组织已成功删除')
       await refreshOrganizations()
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to delete organization')
+      handleApiError(error, '删除组织失败')
       return false
     }
   }
@@ -55,11 +55,11 @@ const OrganizationSettings: React.FC = () => {
   const handleLeaveOrganization = async () => {
     try {
       await leaveOrganizationMutation.mutateAsync({ organizationId: selectedOrganization.id })
-      toast.success('Organization left successfully')
+      toast.success('已成功离开组织')
       await refreshOrganizations()
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to leave organization')
+      handleApiError(error, '离开组织失败')
       return false
     }
   }
@@ -71,16 +71,16 @@ const OrganizationSettings: React.FC = () => {
       <PageHeader />
 
       <PageContent>
-        <PageIntro title="Settings" />
+        <PageIntro title="设置" />
         <Card>
           <CardHeader className="p-4">
-            <CardTitle>Organization Details</CardTitle>
+            <CardTitle>组织详情</CardTitle>
           </CardHeader>
           <CardContent className="border-t border-border">
             <Field className="grid sm:grid-cols-2 items-center">
               <FieldContent className="flex-1">
-                <FieldLabel htmlFor="organization-name">Organization Name</FieldLabel>
-                <FieldDescription>The public name of your organization.</FieldDescription>
+                <FieldLabel htmlFor="organization-name">组织名称</FieldLabel>
+                <FieldDescription>组织对外显示的名称。</FieldDescription>
               </FieldContent>
 
               <Input id="organization-name" value={selectedOrganization.name} readOnly className="flex-1" />
@@ -90,11 +90,11 @@ const OrganizationSettings: React.FC = () => {
           <CardContent className="border-t border-border">
             <Field className="grid sm:grid-cols-2 items-center">
               <FieldContent className="flex-1">
-                <FieldLabel htmlFor="organization-id">Organization ID</FieldLabel>
+                <FieldLabel htmlFor="organization-id">组织 ID</FieldLabel>
                 <FieldDescription>
-                  The unique identifier of your organization.
+                  组织的唯一标识符。
                   <br />
-                  Used in CLI and API calls.
+                  用于 CLI 和 API 调用。
                 </FieldDescription>
               </FieldContent>
               <InputGroup className="pr-1 flex-1">
@@ -104,15 +104,15 @@ const OrganizationSettings: React.FC = () => {
                   readOnly
                   className="font-mono text-sm"
                 />
-                <CopyButton value={selectedOrganization.id} size="icon-xs" tooltipText="Copy Organization ID" />
+                <CopyButton value={selectedOrganization.id} size="icon-xs" tooltipText="复制组织 ID" />
               </InputGroup>
             </Field>
           </CardContent>
           <CardContent className="border-t border-border">
             <Field className="grid sm:grid-cols-2 items-center">
               <FieldContent className="flex-1">
-                <FieldLabel htmlFor="organization-default-region">Default Region</FieldLabel>
-                <FieldDescription>The default target for creating sandboxes in this organization.</FieldDescription>
+                <FieldLabel htmlFor="organization-default-region">默认区域</FieldLabel>
+                <FieldDescription>在此组织中创建沙箱时使用的默认区域。</FieldDescription>
               </FieldContent>
               {selectedOrganization.defaultRegionId ? (
                 <Input
@@ -124,7 +124,7 @@ const OrganizationSettings: React.FC = () => {
               ) : isOwner ? (
                 <div className="flex sm:justify-end">
                   <Button onClick={() => setDefaultRegionDialogRef.current?.open()} variant="secondary">
-                    Set Region
+                    设置区域
                   </Button>
                 </div>
               ) : null}
@@ -140,11 +140,11 @@ const OrganizationSettings: React.FC = () => {
               <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-2">
                 <div className="text-sm">
                   <div className="text-muted-foreground">
-                    <p className="font-semibold text-destructive-foreground">Danger Zone</p>
+                    <p className="font-semibold text-destructive-foreground">危险区域</p>
                     {isOwner ? (
-                      <>Delete the organization and all associated data.</>
+                      <>删除组织及所有相关数据。</>
                     ) : (
-                      <>Remove yourself from the organization.</>
+                      <>退出此组织。</>
                     )}
                   </div>
                 </div>

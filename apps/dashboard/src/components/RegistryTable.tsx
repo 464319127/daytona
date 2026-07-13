@@ -139,7 +139,7 @@ export function RegistryTable({ data, loading, onDelete, onEdit }: DataTableProp
           debounced
           value={globalFilter}
           onValueChange={handleChangeFilter}
-          placeholder="Search by Name, URL, Project, or Username"
+          placeholder="按名称、URL、项目或用户名搜索"
           containerClassName="min-w-0 flex-1 sm:max-w-sm"
         />
       </div>
@@ -150,7 +150,7 @@ export function RegistryTable({ data, loading, onDelete, onEdit }: DataTableProp
             <TableEmptyState
               overlay
               colSpan={columns.length}
-              message={hasFilters ? 'No matching registries found.' : 'No Container registries found.'}
+              message={hasFilters ? '未找到匹配的镜像仓库。' : '暂无容器镜像仓库。'}
               icon={<PackageOpen />}
               description={
                 hasFilters ? null : (
@@ -266,7 +266,7 @@ const columns: ColumnDef<DockerRegistry>[] = [
         <div className="flex justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>

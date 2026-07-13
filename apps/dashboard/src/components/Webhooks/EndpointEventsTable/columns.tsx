@@ -32,7 +32,7 @@ const getMeta = (table: Table<EndpointMessageOut>) => {
 const columns: ColumnDef<EndpointMessageOut>[] = [
   {
     accessorKey: 'id',
-    header: 'Message ID',
+    header: '消息 ID',
     size: 300,
     cell: ({ row }) => {
       const msgId = row.original.id
@@ -43,7 +43,7 @@ const columns: ColumnDef<EndpointMessageOut>[] = [
           </span>
           {msgId && (
             <span onClick={(e) => e.stopPropagation()}>
-              <CopyButton value={msgId} size="icon-xs" autoHide tooltipText="Copy Message ID" />
+              <CopyButton value={msgId} size="icon-xs" autoHide tooltipText="复制消息 ID" />
             </span>
           )}
         </div>
@@ -53,7 +53,7 @@ const columns: ColumnDef<EndpointMessageOut>[] = [
   {
     id: 'status',
     accessorFn: (row) => row.statusText || 'unknown',
-    header: 'Status',
+    header: '状态',
     size: 100,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -61,12 +61,12 @@ const columns: ColumnDef<EndpointMessageOut>[] = [
     cell: ({ row }) => {
       const status = row.original.status
       const variant = status === 0 ? 'success' : status === 1 ? 'secondary' : 'destructive'
-      return <Badge variant={variant}>{status === 0 ? 'Success' : status === 1 ? 'Pending' : 'Failed'}</Badge>
+      return <Badge variant={variant}>{status === 0 ? '成功' : status === 1 ? '待处理' : '失败'}</Badge>
     },
   },
   {
     accessorKey: 'eventType',
-    header: 'Event Type',
+    header: '事件类型',
     size: 200,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
@@ -82,7 +82,7 @@ const columns: ColumnDef<EndpointMessageOut>[] = [
   },
   {
     accessorKey: 'nextAttempt',
-    header: 'Next Attempt',
+    header: '下次尝试',
     size: 100,
     cell: ({ row }) => {
       const nextAttempt = row.original.nextAttempt
@@ -99,7 +99,7 @@ const columns: ColumnDef<EndpointMessageOut>[] = [
   },
   {
     accessorKey: 'timestamp',
-    header: 'Sent',
+    header: '发送时间',
     size: 100,
     cell: ({ row }) => {
       const timestamp = row.original.timestamp
@@ -129,12 +129,12 @@ const columns: ColumnDef<EndpointMessageOut>[] = [
         <div className="flex justify-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-              <DropdownMenuItem onClick={() => onReplay(msgId)}>Replay</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onReplay(msgId)}>重放</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -149,9 +149,9 @@ const eventTypeOptions: FacetedFilterOption[] = WEBHOOK_EVENTS.map((event) => ({
 }))
 
 const statusOptions: FacetedFilterOption[] = [
-  { label: 'Success', value: 'success', icon: CheckCircle },
-  { label: 'Pending', value: 'pending', icon: Clock },
-  { label: 'Failed', value: 'fail', icon: XCircle },
+  { label: '成功', value: 'success', icon: CheckCircle },
+  { label: '待处理', value: 'pending', icon: Clock },
+  { label: '失败', value: 'fail', icon: XCircle },
 ]
 
 export { columns, eventTypeOptions, statusOptions }

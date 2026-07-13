@@ -26,7 +26,7 @@ const columns: ColumnDef<MessageOut>[] = [
           </span>
           {msgId && (
             <span onClick={(e) => e.stopPropagation()}>
-              <CopyButton value={msgId} size="icon-xs" autoHide tooltipText="Copy Message ID" />
+              <CopyButton value={msgId} size="icon-xs" autoHide tooltipText="复制消息 ID" />
             </span>
           )}
         </div>

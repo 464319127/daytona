@@ -14,7 +14,7 @@ export function InvoicesTableHeader({ table }: InvoicesTableHeaderProps) {
     <div className="flex items-center">
       <SearchInput
         debounced
-        placeholder="Search invoices..."
+        placeholder="搜索发票..."
         value={globalFilter ?? ''}
         onValueChange={(value) => {
           setGlobalFilter(value)
