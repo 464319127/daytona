@@ -69,7 +69,7 @@ const usePrivacyConsentStore = create<PrivacyConsentState>()((set, get) => ({
       localStorage.setItem(consentKey, JSON.stringify(newPreferences))
       set({ preferences: newPreferences, hasConsented: true })
     } catch {
-      toast.error('Failed to save privacy preferences. Please try again.')
+      toast.error('保存隐私偏好失败，请重试。')
     }
   },
 }))

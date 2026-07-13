@@ -23,7 +23,7 @@ const WebTerminal: React.FC<{ className?: string }> = ({ className }) => {
 
   return (
     <Window className={className}>
-      <WindowTitleBar>Sandbox Terminal</WindowTitleBar>
+      <WindowTitleBar>Sandbox 终端</WindowTitleBar>
       <WindowContent>
         <div className="w-full bg-muted/40 dark:bg-muted/10 min-h-[500px] flex flex-col [&>*]:flex-1">
           {loadingTerminalUrl || !terminal.url ? (
@@ -31,7 +31,7 @@ const WebTerminal: React.FC<{ className?: string }> = ({ className }) => {
               <AnimatePresence mode="wait">
                 {loadingTerminalUrl ? (
                   <motion.p className="flex items-center gap-2" key="loading" {...motionLoadingProps}>
-                    <Spinner className="size-4 mr-2" /> Loading terminal...
+                    <Spinner className="size-4 mr-2" /> 正在加载终端...
                   </motion.p>
                 ) : (
                   <motion.p
@@ -39,11 +39,11 @@ const WebTerminal: React.FC<{ className?: string }> = ({ className }) => {
                     className="flex flex-col items-center justify-center gap-2 text-center px-2"
                     {...motionLoadingProps}
                   >
-                    There was an error loading the terminal.
+                    加载终端时出错。
                     {sandbox.instance ? (
                       <Button variant="outline" className="ml-2" onClick={() => terminal.refetch()}>
                         <RefreshCcw className="size-4" />
-                        Retry
+                        重试
                       </Button>
                     ) : (
                       sandbox.error && <span className="text-sm text-muted-foreground">{sandbox.error}</span>
@@ -53,7 +53,7 @@ const WebTerminal: React.FC<{ className?: string }> = ({ className }) => {
               </AnimatePresence>
             </div>
           ) : (
-            <iframe title="Interactive web terminal for sandbox" src={terminal.url} width={'100%'} height={'100%'} />
+            <iframe title="Sandbox 交互式 Web 终端" src={terminal.url} width={'100%'} height={'100%'} />
           )}
         </div>
       </WindowContent>

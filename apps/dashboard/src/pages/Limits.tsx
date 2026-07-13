@@ -65,7 +65,7 @@ export default function Limits() {
       <PageHeader />
 
       <PageContent>
-        <PageIntro title="Limits" />
+        <PageIntro title="限制" />
         <CurrentUsageCard organizationTier={organizationTier} />
 
         {config.billingApiUrl && selectedOrganization && (
@@ -74,8 +74,8 @@ export default function Limits() {
               <Card>
                 <CardContent className="flex p-0">
                   <LimitsSectionErrorState
-                    title="Failed to load upgrade requirements"
-                    description="Something went wrong while fetching your billing requirements."
+                    title="加载升级要求失败"
+                    description="获取账单要求时出现问题。"
                     onRetry={handleRetryPaymentMethods}
                   />
                 </CardContent>
@@ -97,7 +97,7 @@ export default function Limits() {
 
             <Card className="mb-10">
               <CardHeader>
-                <CardTitle className="flex items-center mb-2">Limits</CardTitle>
+                <CardTitle className="flex items-center mb-2">限制</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 {tierDataLoading ? (
@@ -105,8 +105,8 @@ export default function Limits() {
                 ) : tierDataError ? (
                   <div className="flex">
                     <LimitsSectionErrorState
-                      title="Failed to load tier limits"
-                      description="Something went wrong while fetching billing tiers."
+                      title="加载等级限制失败"
+                      description="获取账单等级时出现问题。"
                       onRetry={handleRetryTierData}
                     />
                   </div>
@@ -143,7 +143,7 @@ function LimitsSectionErrorState({
       </EmptyHeader>
       <Button variant="outline" size="sm" onClick={onRetry}>
         <RefreshCcw className="size-4" />
-        Retry
+        重试
       </Button>
     </Empty>
   )

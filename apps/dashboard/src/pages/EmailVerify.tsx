@@ -28,7 +28,7 @@ export default function EmailVerify() {
     const verifyEmail = async () => {
       if (!organizationId || !email || !token) {
         setVerificationStatus('error')
-        setErrorMessage('Invalid verification link')
+        setErrorMessage('验证链接无效')
         return
       }
 
@@ -41,7 +41,7 @@ export default function EmailVerify() {
         }, 1000)
       } catch (error) {
         setVerificationStatus('error')
-        setErrorMessage('An error occurred while verifying your email')
+        setErrorMessage('验证邮箱时发生错误')
       }
     }
 
@@ -57,24 +57,24 @@ export default function EmailVerify() {
           </div>
           {verificationStatus === 'loading' && (
             <>
-              <CardTitle>Verifying Your Email</CardTitle>
-              <p className="text-muted-foreground">Please wait while we verify your email address...</p>
+              <CardTitle>正在验证邮箱</CardTitle>
+              <p className="text-muted-foreground">请稍候，正在验证你的邮箱地址...</p>
             </>
           )}
           {verificationStatus === 'success' && (
             <>
-              <CardTitle className="text-green-600">Email Verified Successfully!</CardTitle>
+              <CardTitle className="text-green-600">邮箱验证成功</CardTitle>
               <p className="text-muted-foreground">
-                Your email has been verified. You will be redirected to the wallet page shortly.
+                你的邮箱已验证，即将跳转到钱包页面。
               </p>
             </>
           )}
           {verificationStatus === 'error' && (
             <>
-              <CardTitle className="text-red-600">Verification Failed</CardTitle>
+              <CardTitle className="text-red-600">验证失败</CardTitle>
               <p className="text-muted-foreground">{errorMessage}</p>
               <Button onClick={() => navigate(RoutePath.BILLING_WALLET)} className="mt-4">
-                Go to Wallet
+                前往钱包
               </Button>
             </>
           )}

@@ -53,7 +53,7 @@ export function SandboxTerminalTab({ sandbox }: { sandbox: SandboxListItem }) {
               <EmptyMedia variant="icon">
                 <TerminalSquare className="size-4" />
               </EmptyMedia>
-              <EmptyTitle>Sandbox is not running</EmptyTitle>
+              <EmptyTitle>Sandbox 未运行</EmptyTitle>
               <EmptyDescription>
                 Start the sandbox to access the terminal.{' '}
                 <a href={`${DAYTONA_DOCS_URL}/en/web-terminal`} target="_blank" rel="noopener noreferrer">
@@ -73,7 +73,7 @@ export function SandboxTerminalTab({ sandbox }: { sandbox: SandboxListItem }) {
       <div className="flex-1 flex flex-col p-4">
         <div className="flex-1 min-h-0 rounded-md border border-border flex items-center justify-center gap-2 text-muted-foreground">
           <Spinner className="size-4" />
-          <span className="text-sm">Connecting...</span>
+          <span className="text-sm">正在连接...</span>
         </div>
       </div>
     )
@@ -86,8 +86,8 @@ export function SandboxTerminalTab({ sandbox }: { sandbox: SandboxListItem }) {
         <div className="flex-1 min-h-0 rounded-md border border-border flex">
           <Empty className="border-0">
             <EmptyHeader>
-              <EmptyTitle>Failed to connect</EmptyTitle>
-              <EmptyDescription>Something went wrong while connecting to the terminal.</EmptyDescription>
+              <EmptyTitle>连接失败</EmptyTitle>
+              <EmptyDescription>连接终端时出现问题。</EmptyDescription>
             </EmptyHeader>
             <Button variant="outline" size="sm" onClick={() => reset()}>
               <RefreshCw className="size-4" />
@@ -111,7 +111,7 @@ export function SandboxTerminalTab({ sandbox }: { sandbox: SandboxListItem }) {
         </Button>
       </div>
       <div className="flex-1 min-h-0 rounded-md border border-border bg-black overflow-hidden p-1">
-        <iframe title="Sandbox terminal" src={session.url} className="w-full h-full border-0" />
+        <iframe title="Sandbox 终端" src={session.url} className="w-full h-full border-0" />
       </div>
     </div>
   )

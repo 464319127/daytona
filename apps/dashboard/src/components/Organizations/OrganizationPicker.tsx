@@ -35,11 +35,11 @@ function useOrganizationCommands() {
     if (selectedOrganization) {
       cmds.push({
         id: 'copy-org-id',
-        label: 'Copy Organization ID',
+        label: '复制组织 ID',
         icon: <Copy className="w-4 h-4" />,
         onSelect: () => {
           copyToClipboard(selectedOrganization.id)
-          toast.success('Organization ID copied to clipboard')
+          toast.success('组织 ID 已复制到剪贴板')
         },
       })
     }
@@ -51,7 +51,7 @@ function useOrganizationCommands() {
         id: `switch-org-${org.id}`,
         label: (
           <>
-            Switch to <CommandHighlight>{org.name}</CommandHighlight>
+            切换到 <CommandHighlight>{org.name}</CommandHighlight>
           </>
         ),
         value: `switch to organization ${org.name}`,
@@ -63,7 +63,7 @@ function useOrganizationCommands() {
     return cmds
   }, [organizations, selectedOrganization, copyToClipboard, onSelectOrganization])
 
-  useRegisterCommands(commands, { groupId: 'organization', groupLabel: 'Organization', groupOrder: 5 })
+  useRegisterCommands(commands, { groupId: 'organization', groupLabel: '组织', groupOrder: 5 })
 }
 
 export const OrganizationPicker: React.FC = () => {
@@ -106,11 +106,11 @@ export const OrganizationPicker: React.FC = () => {
           defaultRegionId,
         })
       ).data
-      toast.success('Organization created successfully')
+      toast.success('组织已成功创建')
       await refreshOrganizations(organization.id)
       return organization
     } catch (error) {
-      handleApiError(error, 'Failed to create organization')
+      handleApiError(error, '创建组织失败')
       return null
     }
   }
@@ -176,7 +176,7 @@ export const OrganizationPicker: React.FC = () => {
               onClick={() => createOrganizationSheetRef.current?.open()}
             >
               <PlusCircle className="w-4 h-4 flex-shrink-0" />
-              <span>Create Organization</span>
+              <span>创建组织</span>
             </DropdownMenuItem>
           </div>
         </DropdownMenuContent>

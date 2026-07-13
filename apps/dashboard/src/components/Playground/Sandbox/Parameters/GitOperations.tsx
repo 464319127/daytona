@@ -24,23 +24,23 @@ const SandboxGitOperations: React.FC = () => {
   const gitBranchesParams = sandboxParametersState['gitBranchesParams']
 
   const gitCloneParamsFormData: ParameterFormData<GitCloneParams> = [
-    { label: 'URL', key: 'repositoryURL', placeholder: 'Repository URL to clone from', required: true },
+    { label: 'URL', key: 'repositoryURL', placeholder: '要克隆的仓库 URL', required: true },
     {
-      label: 'Destination',
+      label: '目标位置',
       key: 'cloneDestinationPath',
-      placeholder: 'Path where the repository should be cloned',
+      placeholder: '仓库的克隆路径',
       required: true,
     },
-    { label: 'Branch', key: 'branchToClone', placeholder: 'Specific branch to clone' },
-    { label: 'Commit', key: 'commitToClone', placeholder: 'Specific commit to clone' },
-    { label: 'Username', key: 'authUsername', placeholder: 'Git username for authentication' },
-    { label: 'Password', key: 'authPassword', placeholder: 'Git password or token for authentication' },
+    { label: '分支', key: 'branchToClone', placeholder: '要克隆的指定分支' },
+    { label: '提交', key: 'commitToClone', placeholder: '要克隆的指定提交' },
+    { label: '用户名', key: 'authUsername', placeholder: '用于身份验证的 Git 用户名' },
+    { label: '密码', key: 'authPassword', placeholder: '用于身份验证的 Git 密码或令牌' },
   ]
 
   const gitRepoLocationFormData: ParameterFormItem & { key: 'repositoryPath' } = {
-    label: 'Repo location',
+    label: '仓库位置',
     key: 'repositoryPath',
-    placeholder: 'Path to the Git repository root',
+    placeholder: 'Git 仓库根目录路径',
     required: true,
   }
 
@@ -50,21 +50,21 @@ const SandboxGitOperations: React.FC = () => {
     {
       methodName: GitOperationsActions.GIT_CLONE,
       label: 'clone()',
-      description: 'Clones a Git repository into the specified path',
+      description: '将 Git 仓库克隆到指定路径',
       parametersFormItems: gitCloneParamsFormData,
       parametersState: gitCloneParams,
     },
     {
       methodName: GitOperationsActions.GIT_STATUS,
       label: 'status()',
-      description: 'Gets the current Git repository status',
+      description: '获取当前 Git 仓库状态',
       parametersFormItems: [gitRepoLocationFormData],
       parametersState: gitStatusParams,
     },
     {
       methodName: GitOperationsActions.GIT_BRANCHES_LIST,
       label: 'branches()',
-      description: 'Lists branches in the repository',
+      description: '列出仓库中的分支',
       parametersFormItems: [gitRepoLocationFormData],
       parametersState: gitBranchesParams,
     },

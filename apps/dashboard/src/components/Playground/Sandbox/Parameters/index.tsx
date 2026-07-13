@@ -15,10 +15,10 @@ import SandboxManagementParameters from './Management'
 import SandboxProcessCodeExecution from './ProcessCodeExecution'
 
 const sandboxParametersSectionsData = [
-  { value: SandboxParametersSections.SANDBOX_MANAGEMENT, label: 'Management' },
-  { value: SandboxParametersSections.FILE_SYSTEM, label: 'File System' },
-  { value: SandboxParametersSections.GIT_OPERATIONS, label: 'Git Operations' },
-  { value: SandboxParametersSections.PROCESS_CODE_EXECUTION, label: 'Process & Code Execution' },
+  { value: SandboxParametersSections.SANDBOX_MANAGEMENT, label: '管理' },
+  { value: SandboxParametersSections.FILE_SYSTEM, label: '文件系统' },
+  { value: SandboxParametersSections.GIT_OPERATIONS, label: 'Git 操作' },
+  { value: SandboxParametersSections.PROCESS_CODE_EXECUTION, label: '进程与代码执行' },
 ]
 
 const sectionIcons = {
@@ -49,8 +49,8 @@ const SandboxParameters = ({ className }: { className?: string }) => {
   return (
     <div className={cn('flex flex-col gap-6', className)}>
       <div>
-        <h2>Sandbox Configuration</h2>
-        <p className="text-sm text-muted-foreground mt-1">Manage resources, lifecycle policies, and file systems.</p>
+        <h2>Sandbox 配置</h2>
+        <p className="text-sm text-muted-foreground mt-1">管理资源、生命周期策略和文件系统。</p>
       </div>
       <Accordion
         type="multiple"

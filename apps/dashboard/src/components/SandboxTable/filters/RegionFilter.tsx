@@ -54,18 +54,18 @@ export function RegionFilterIndicator({ value, onFilterChange, options, isLoadin
 export function RegionFilter({ value, onFilterChange, options, isLoading }: RegionFilterProps) {
   return (
     <Command>
-      <CommandInput placeholder="Search..." className="">
-        <CommandInputButton onClick={() => onFilterChange(undefined)}>Clear</CommandInputButton>
+      <CommandInput placeholder="搜索..." className="">
+        <CommandInputButton onClick={() => onFilterChange(undefined)}>清除</CommandInputButton>
       </CommandInput>
       <CommandList>
         {isLoading ? (
           <div className="flex items-center justify-center py-6">
             <Loader2 className="h-4 w-4 animate-spin mr-2" />
-            <span className="text-sm text-muted-foreground">Loading regions...</span>
+            <span className="text-sm text-muted-foreground">正在加载区域...</span>
           </div>
         ) : (
           <>
-            <CommandEmpty>No regions found.</CommandEmpty>
+            <CommandEmpty>未找到区域。</CommandEmpty>
             <CommandGroup>
               {options?.map((region) => (
                 <CommandCheckboxItem

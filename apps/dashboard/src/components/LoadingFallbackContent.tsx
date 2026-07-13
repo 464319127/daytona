@@ -35,13 +35,13 @@ export function LoadingFallbackContent({ className, source = 'unknown' }: Loadin
         animate={showLongLoadingMessage ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
         transition={{ duration: 0.35 }}
       >
-        <p className="text-sm text-muted-foreground text-center">This is taking longer than expected...</p>
+        <p className="text-sm text-muted-foreground text-center">加载时间比预期更长...</p>
         <p className="text-sm text-muted-foreground text-center">
-          If this issue persists, contact us at{' '}
+          如果问题持续存在，请通过以下邮箱联系我们：{' '}
           <a href="mailto:support@daytona.io" className="text-primary underline">
             support@daytona.io
           </a>
-          .
+          。
         </p>
       </motion.div>
     </div>

@@ -33,11 +33,11 @@ const noDuplicateHeaderKeys = (headers: HeaderEntry[]) => {
 const headersSchema = z
   .array(
     z.object({
-      key: z.string().trim().min(1, 'Header key is required'),
+      key: z.string().trim().min(1, '请求头键为必填项'),
       value: z.string().trim(),
     }),
   )
-  .refine(noDuplicateHeaderKeys, 'Header keys must be unique')
+  .refine(noDuplicateHeaderKeys, '请求头键不能重复')
 
 const formSchema = z.object({
   endpoint: z
@@ -50,7 +50,7 @@ const formSchema = z.object({
       } catch {
         return false
       }
-    }, 'A valid OTLP endpoint URL is required'),
+    }, '请输入有效的 OTLP 端点 URL'),
   headers: headersSchema,
 })
 
@@ -125,9 +125,9 @@ export const OtelConfigCard: React.FC = () => {
             headers,
           },
         })
-        toast.success('OpenTelemetry configuration saved')
+        toast.success('OpenTelemetry 配置已保存')
       } catch (error) {
-        handleApiError(error, 'Failed to save OpenTelemetry configuration')
+        handleApiError(error, '保存 OpenTelemetry 配置失败')
       }
     },
   })
@@ -140,9 +140,9 @@ export const OtelConfigCard: React.FC = () => {
     try {
       await deleteOtelConfigMutation.mutateAsync({ organizationId: selectedOrganization.id })
       form.reset({ endpoint: '', headers: [] })
-      toast.success('OpenTelemetry configuration disabled')
+      toast.success('OpenTelemetry 配置已停用')
     } catch (error) {
-      handleApiError(error, 'Failed to disable OpenTelemetry configuration')
+      handleApiError(error, '停用 OpenTelemetry 配置失败')
     }
   }
 
@@ -177,8 +177,8 @@ export const OtelConfigCard: React.FC = () => {
                 return (
                   <Field data-invalid={isInvalid} className="grid gap-3 sm:grid-cols-2 sm:items-center">
                     <FieldContent>
-                      <FieldLabel htmlFor={field.name}>OTLP Endpoint</FieldLabel>
-                      <FieldDescription>The OpenTelemetry collector endpoint URL.</FieldDescription>
+                      <FieldLabel htmlFor={field.name}>OTLP 端点</FieldLabel>
+                      <FieldDescription>OpenTelemetry Collector 的端点 URL。</FieldDescription>
                     </FieldContent>
                     <div className="space-y-1">
                       <Input
@@ -208,7 +208,7 @@ export const OtelConfigCard: React.FC = () => {
                 return (
                   <Field data-invalid={hasErrors} className="gap-3">
                     <FieldContent>
-                      <FieldLabel>Headers</FieldLabel>
+                      <FieldLabel>标头</FieldLabel>
                       <FieldDescription>
                         Optional headers to send with OTLP requests. Existing values are stored encrypted and shown as{' '}
                         <code>******</code>.
@@ -314,14 +314,14 @@ const HeaderInput = ({
       <Input
         ref={keyInputRef}
         aria-invalid={invalid}
-        placeholder="Header key"
+        placeholder="请求头名称"
         value={headerKey}
         onChange={(e) => onChangeKey(e.target.value)}
       />
-      <Input placeholder="Header value" value={headerValue} onChange={(e) => onChangeValue(e.target.value)} />
+      <Input placeholder="请求头值" value={headerValue} onChange={(e) => onChangeValue(e.target.value)} />
       <TooltipButton
         type="button"
-        tooltipText="Remove header"
+        tooltipText="移除请求头"
         variant="ghost"
         size="icon"
         className="flex-shrink-0 h-8 w-8"

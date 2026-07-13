@@ -21,7 +21,7 @@ export const useCancelOrganizationInvitationMutation = () => {
     mutationKey: mutationKeys.organization.invitations.cancel(),
     mutationFn: async ({ organizationId, invitationId }) => {
       if (!organizationId) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       await organizationsApi.cancelOrganizationInvitation(organizationId, invitationId)

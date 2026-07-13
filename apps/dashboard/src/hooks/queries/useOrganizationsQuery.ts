@@ -17,7 +17,7 @@ export const getOrganizationsQueryOptions = (organizationsApi: OrganizationsApiC
     try {
       return (await organizationsApi.listOrganizations()).data
     } catch (error) {
-      handleApiError(error, 'Failed to fetch your organizations')
+      handleApiError(error, '获取你的组织失败')
       throw error
     }
   },

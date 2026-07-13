@@ -33,15 +33,15 @@ const REGION_NAME_REGEX = /^[a-zA-Z0-9._-]+$/
 const optionalUrlSchema = z
   .string()
   .trim()
-  .refine((value) => value.length === 0 || z.string().url().safeParse(value).success, 'Must be a valid URL')
+  .refine((value) => value.length === 0 || z.string().url().safeParse(value).success, '请输入有效的 URL')
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, 'Region name is required')
+    .min(1, '区域名称为必填项')
     .refine(
       (value) => REGION_NAME_REGEX.test(value),
-      'Only letters, numbers, underscores, periods, and hyphens are allowed',
+      '仅允许字母、数字、下划线、句点和连字符',
     ),
   proxyUrl: optionalUrlSchema,
   sshGatewayUrl: optionalUrlSchema,
@@ -163,16 +163,16 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <CreateResourceButton resource="Region" disabled={loadingData} />
+        <CreateResourceButton resource="区域" disabled={loadingData} />
       </SheetTrigger>
 
       <SheetContent className="w-dvw sm:w-[500px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>{createdRegion ? 'Region Created' : 'Create Region'}</SheetTitle>
+          <SheetTitle>{createdRegion ? '区域已创建' : '创建区域'}</SheetTitle>
           <SheetDescription className="sr-only">
             {!createdRegion
-              ? 'Add a new region for grouping runners and sandboxes.'
-              : "Save these credentials securely. You won't be able to see them again."}
+              ? '添加用于归组 Runner 和 Sandbox 的新区域。'
+              : '请安全保存这些凭据，之后将无法再次查看。'}
           </SheetDescription>
         </SheetHeader>
 
@@ -194,7 +194,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                       <InputGroupButton
                         variant="ghost"
                         size="icon-xs"
-                        aria-label={isProxyApiKeyRevealed ? 'Hide proxy API key' : 'Show proxy API key'}
+                        aria-label={isProxyApiKeyRevealed ? '隐藏 Proxy API 密钥' : '显示 Proxy API 密钥'}
                         aria-pressed={isProxyApiKeyRevealed}
                         onClick={() => setIsProxyApiKeyRevealed((revealed) => !revealed)}
                       >
@@ -203,7 +203,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                       <InputGroupButton
                         variant="ghost"
                         size="icon-xs"
-                        aria-label="Copy proxy API key"
+                        aria-label="复制 Proxy API 密钥"
                         onClick={() => copyToClipboard(createdRegion.proxyApiKey ?? '')}
                       >
                         {copiedText === createdRegion.proxyApiKey ? (
@@ -233,7 +233,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                         variant="ghost"
                         size="icon-xs"
                         aria-label={
-                          isSshGatewayApiKeyRevealed ? 'Hide SSH gateway API key' : 'Show SSH gateway API key'
+                          isSshGatewayApiKeyRevealed ? '隐藏 SSH Gateway API 密钥' : '显示 SSH Gateway API 密钥'
                         }
                         aria-pressed={isSshGatewayApiKeyRevealed}
                         onClick={() => setIsSshGatewayApiKeyRevealed((revealed) => !revealed)}
@@ -247,7 +247,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                       <InputGroupButton
                         variant="ghost"
                         size="icon-xs"
-                        aria-label="Copy SSH gateway API key"
+                        aria-label="复制 SSH Gateway API 密钥"
                         onClick={() => copyToClipboard(createdRegion.sshGatewayApiKey ?? '')}
                       >
                         {copiedText === createdRegion.sshGatewayApiKey ? (
@@ -262,7 +262,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
 
                 {createdRegion?.snapshotManagerUsername && (
                   <Field>
-                    <FieldLabel htmlFor="snapshot-manager-username">Snapshot manager username</FieldLabel>
+                    <FieldLabel htmlFor="snapshot-manager-username">Snapshot Manager 用户名</FieldLabel>
                     <InputGroup className="pr-1 flex-1">
                       <InputGroupInput
                         id="snapshot-manager-username"
@@ -272,7 +272,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                       <InputGroupButton
                         variant="ghost"
                         size="icon-xs"
-                        aria-label="Copy snapshot manager username"
+                        aria-label="复制 Snapshot Manager 用户名"
                         onClick={() => copyToClipboard(createdRegion.snapshotManagerUsername ?? '')}
                       >
                         {copiedText === createdRegion.snapshotManagerUsername ? (
@@ -287,7 +287,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
 
                 {createdRegion?.snapshotManagerPassword && (
                   <Field>
-                    <FieldLabel htmlFor="snapshot-manager-password">Snapshot manager password</FieldLabel>
+                    <FieldLabel htmlFor="snapshot-manager-password">Snapshot Manager 密码</FieldLabel>
                     <InputGroup className="pr-1 flex-1">
                       <InputGroupInput
                         id="snapshot-manager-password"
@@ -303,8 +303,8 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                         size="icon-xs"
                         aria-label={
                           isSnapshotManagerPasswordRevealed
-                            ? 'Hide snapshot manager password'
-                            : 'Show snapshot manager password'
+                            ? '隐藏 Snapshot Manager 密码'
+                            : '显示 Snapshot Manager 密码'
                         }
                         aria-pressed={isSnapshotManagerPasswordRevealed}
                         onClick={() => setIsSnapshotManagerPasswordRevealed((revealed) => !revealed)}
@@ -318,7 +318,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                       <InputGroupButton
                         variant="ghost"
                         size="icon-xs"
-                        aria-label="Copy snapshot manager password"
+                        aria-label="复制 Snapshot Manager 密码"
                         onClick={() => copyToClipboard(createdRegion.snapshotManagerPassword ?? '')}
                       >
                         {copiedText === createdRegion.snapshotManagerPassword ? (
@@ -347,7 +347,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor={field.name}>Region Name</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>区域名称</FieldLabel>
                         <Input
                           aria-invalid={isInvalid}
                           id={field.name}
@@ -358,7 +358,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                           placeholder="us-east-1"
                         />
                         <FieldDescription>
-                          Region name must contain only letters, numbers, underscores, periods, and hyphens.
+                          区域名称只能包含字母、数字、下划线、句点和连字符。
                         </FieldDescription>
                         {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                           <FieldError errors={field.state.meta.errors} />
@@ -383,7 +383,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                           onChange={(e) => field.handleChange(e.target.value)}
                           placeholder="https://proxy.example.com"
                         />
-                        <FieldDescription>(Optional) URL of the custom proxy for this region.</FieldDescription>
+                        <FieldDescription>（可选）此区域的自定义 Proxy URL。</FieldDescription>
                         {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                           <FieldError errors={field.state.meta.errors} />
                         )}
@@ -407,7 +407,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                           onChange={(e) => field.handleChange(e.target.value)}
                           placeholder="https://ssh-gateway.example.com"
                         />
-                        <FieldDescription>(Optional) URL of the custom SSH gateway for this region.</FieldDescription>
+                        <FieldDescription>（可选）此区域的自定义 SSH Gateway URL。</FieldDescription>
                         {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                           <FieldError errors={field.state.meta.errors} />
                         )}
@@ -432,7 +432,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
                           placeholder="https://snapshot-manager.example.com"
                         />
                         <FieldDescription>
-                          (Optional) URL of the custom snapshot manager for this region.
+                          （可选）此区域的自定义 Snapshot Manager URL。
                         </FieldDescription>
                         {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                           <FieldError errors={field.state.meta.errors} />
@@ -448,7 +448,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
 
         <SheetFooter className="border-t border-border p-4 px-5">
           <Button type="button" variant="secondary" onClick={() => setOpen(false)}>
-            {showCredentials ? 'Close' : 'Cancel'}
+            {showCredentials ? '关闭' : '取消'}
           </Button>
           {!showCredentials && (
             <form.Subscribe
@@ -456,7 +456,7 @@ export const CreateRegionSheet: React.FC<CreateRegionSheetProps> = ({
               children={([canSubmit, isSubmitting]) => (
                 <Button type="submit" form="create-region-form" variant="default" disabled={!canSubmit || isSubmitting}>
                   {isSubmitting && <Spinner />}
-                  Create
+                  创建
                 </Button>
               )}
             />

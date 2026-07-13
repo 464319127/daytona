@@ -25,7 +25,7 @@ export const VerifyEmailDialog: React.FC<VerifyEmailDialogProps> = ({ open, onOp
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Verify Your Account</DialogTitle>
+          <DialogTitle>验证账号</DialogTitle>
           <DialogDescription>
             A verification email was sent to your registered email address. Please note that you must verify your email
             before you can create sandboxes or new organizations.

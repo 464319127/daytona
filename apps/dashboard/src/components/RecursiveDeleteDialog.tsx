@@ -61,7 +61,7 @@ export function RecursiveDeleteDialog({ sandboxId, open, onClose, onDeleted }: R
 
         setSandboxesToDelete(collected)
       } catch {
-        toast.error('Failed to load sandbox tree')
+        toast.error('加载 Sandbox 树失败')
       } finally {
         setLoading(false)
       }
@@ -82,11 +82,11 @@ export function RecursiveDeleteDialog({ sandboxId, open, onClose, onDeleted }: R
         deleted++
         setDeleteProgress(deleted)
       } catch {
-        toast.error(`Failed to delete sandbox: ${sandbox.name}`)
+        toast.error(`删除 Sandbox 失败：${sandbox.name}`)
       }
     }
 
-    toast.success(`Deleted ${deleted} ${deleted === 1 ? 'sandbox' : 'sandboxes'}`)
+    toast.success(`已删除 ${deleted} 个 Sandbox`)
     setDeleting(false)
     onDeleted()
     onClose()
@@ -98,11 +98,11 @@ export function RecursiveDeleteDialog({ sandboxId, open, onClose, onDeleted }: R
     <AlertDialog open={open} onOpenChange={(v) => !v && !deleting && onClose()}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete Sandbox and All Forks</AlertDialogTitle>
+          <AlertDialogTitle>删除 Sandbox 及其所有 Fork</AlertDialogTitle>
           <AlertDialogDescription>
             {loading
-              ? 'Loading sandbox tree...'
-              : `This will delete ${total} ${total === 1 ? 'sandbox' : 'sandboxes'}. This action cannot be undone.`}
+              ? '正在加载 Sandbox 树...'
+              : `这将删除 ${total} 个 Sandbox。此操作无法撤销。`}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -119,12 +119,12 @@ export function RecursiveDeleteDialog({ sandboxId, open, onClose, onDeleted }: R
 
         {deleting && (
           <p className="text-sm text-muted-foreground">
-            Deleting {deleteProgress}/{total}...
+            正在删除 {deleteProgress}/{total}...
           </p>
         )}
 
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={deleting}>取消</AlertDialogCancel>
           <AlertDialogAction
             className={buttonVariants({ variant: 'destructive' })}
             disabled={loading || deleting}
@@ -133,7 +133,7 @@ export function RecursiveDeleteDialog({ sandboxId, open, onClose, onDeleted }: R
               handleDelete()
             }}
           >
-            {deleting ? `Deleting ${deleteProgress}/${total}...` : `Delete ${total > 1 ? `All ${total}` : ''}`}
+            {deleting ? `正在删除 ${deleteProgress}/${total}...` : `删除${total > 1 ? `全部 ${total} 个` : ''}`}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

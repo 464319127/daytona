@@ -86,10 +86,10 @@ const WebhookEndpointDetails: React.FC = () => {
         endpointId: endpoint.data.id,
         update: { disabled: !endpoint.data.disabled },
       })
-      toast.success('Endpoint updated')
+      toast.success('端点已更新')
       endpoint.reload()
     } catch (error) {
-      handleApiError(error, 'Failed to update endpoint')
+      handleApiError(error, '更新端点失败')
     }
   }
 
@@ -97,11 +97,11 @@ const WebhookEndpointDetails: React.FC = () => {
     if (!endpoint.data) return
     try {
       await deleteMutation.mutateAsync({ endpointId: endpoint.data.id })
-      toast.success('Endpoint deleted')
+      toast.success('端点已删除')
       setDeleteDialogOpen(false)
       navigate(RoutePath.WEBHOOKS)
     } catch (error) {
-      handleApiError(error, 'Failed to delete endpoint')
+      handleApiError(error, '删除端点失败')
     }
   }
 
@@ -109,11 +109,11 @@ const WebhookEndpointDetails: React.FC = () => {
     if (!endpoint.data) return
     try {
       await rotateSecretMutation.mutateAsync({ endpointId: endpoint.data.id })
-      toast.success('Secret rotated')
+      toast.success('签名密钥已轮换')
       secret.reload()
       setRotateSecretDialogOpen(false)
     } catch (error) {
-      handleApiError(error, 'Failed to rotate secret')
+      handleApiError(error, '轮换签名密钥失败')
     }
   }
 
@@ -121,11 +121,11 @@ const WebhookEndpointDetails: React.FC = () => {
     if (!endpointId) return
     try {
       await replayMutation.mutateAsync({ endpointId, msgId })
-      toast.success('Event replayed')
+      toast.success('事件已重放')
       messages.reload()
       stats.reload()
     } catch (error) {
-      handleApiError(error, 'Failed to replay event')
+      handleApiError(error, '重放事件失败')
     }
   }
 
@@ -141,7 +141,7 @@ const WebhookEndpointDetails: React.FC = () => {
       <PageHeader />
 
       <PageContent className="gap-6">
-        <PageIntro title="Webhooks" />
+        <PageIntro title="Webhook" />
         {endpoint.loading ? (
           <WebhookEndpointDetailsSkeleton onBack={() => navigate(RoutePath.WEBHOOKS)} />
         ) : (
@@ -153,10 +153,10 @@ const WebhookEndpointDetails: React.FC = () => {
               {endpointData ? (
                 <>
                   <h2 className="text-lg font-medium truncate min-w-0">
-                    {endpointData.description || 'Unnamed Endpoint'}
+                    {endpointData.description || '未命名端点'}
                   </h2>
                   <Badge variant={endpointData.disabled ? 'secondary' : 'success'} className="shrink-0">
-                    {endpointData.disabled ? 'Disabled' : 'Enabled'}
+                    {endpointData.disabled ? '已停用' : '已启用'}
                   </Badge>
                   <span className="text-sm text-muted-foreground shrink-0 hidden sm:inline">•</span>
                   <TimestampTooltip
@@ -173,22 +173,22 @@ const WebhookEndpointDetails: React.FC = () => {
                   <div className="ml-auto flex items-center gap-2 shrink-0">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="icon-sm" aria-label="Open menu" disabled={isMutating}>
+                        <Button variant="outline" size="icon-sm" aria-label="打开菜单" disabled={isMutating}>
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setEditSheetOpen(true)}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setEditSheetOpen(true)}>编辑</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setDisableDialogOpen(true)}>
-                          {endpointData.disabled ? 'Enable' : 'Disable'}
+                          {endpointData.disabled ? '启用' : '停用'}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => setRotateSecretDialogOpen(true)}>
-                          Rotate Secret
+                          轮换签名密钥
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem variant="destructive" onClick={() => setDeleteDialogOpen(true)}>
-                          Delete
+                          删除
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -203,13 +203,13 @@ const WebhookEndpointDetails: React.FC = () => {
             {endpoint.error || !endpointData ? (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-center">Oops, something went wrong</CardTitle>
+                  <CardTitle className="text-center">出现错误</CardTitle>
                 </CardHeader>
                 <CardContent className="flex justify-between items-center flex-col gap-3">
-                  <div>There was an error loading the endpoint details.</div>
+                  <div>加载端点详情时出错。</div>
                   <Button variant="outline" onClick={handleRetry}>
                     <RefreshCcw className="mr-2 h-4 w-4" />
-                    Retry
+                    重试
                   </Button>
                 </CardContent>
               </Card>
@@ -217,7 +217,7 @@ const WebhookEndpointDetails: React.FC = () => {
               <div className="flex flex-col gap-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Endpoint Configuration</CardTitle>
+                    <CardTitle>端点配置</CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 flex flex-col gap-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -225,15 +225,15 @@ const WebhookEndpointDetails: React.FC = () => {
                         <div className="text-muted-foreground text-xs mb-1">URL</div>
                         <InputGroup className="pr-1">
                           <InputGroupInput value={endpointData.url} readOnly className="font-mono text-sm" />
-                          <CopyButton value={endpointData.url} size="icon-xs" tooltipText="Copy URL" />
+                          <CopyButton value={endpointData.url} size="icon-xs" tooltipText="复制 URL" />
                         </InputGroup>
                       </div>
                       <div className="flex flex-col">
-                        <div className="text-muted-foreground text-xs mb-1">Signing Secret</div>
+                        <div className="text-muted-foreground text-xs mb-1">签名密钥</div>
                         {secret.loading ? (
                           <Skeleton className="h-9 w-full" />
                         ) : secret.error ? (
-                          <span className="text-sm text-muted-foreground">Failed to load</span>
+                          <span className="text-sm text-muted-foreground">加载失败</span>
                         ) : secret.data ? (
                           <InputGroup className="pr-1">
                             <InputGroupInput
@@ -245,18 +245,18 @@ const WebhookEndpointDetails: React.FC = () => {
                               variant="ghost"
                               size="icon-xs"
                               onClick={() => setIsSecretRevealed(!isSecretRevealed)}
-                              title={isSecretRevealed ? 'Hide secret' : 'Reveal secret'}
+                              title={isSecretRevealed ? '隐藏密钥' : '显示密钥'}
                             >
                               {isSecretRevealed ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </InputGroupButton>
-                            <CopyButton value={secret.data.key} size="icon-xs" tooltipText="Copy Signing Secret" />
+                            <CopyButton value={secret.data.key} size="icon-xs" tooltipText="复制签名密钥" />
                           </InputGroup>
                         ) : null}
                       </div>
                     </div>
                     {endpointData.filterTypes && endpointData.filterTypes.length > 0 && (
                       <div>
-                        <div className="text-muted-foreground text-xs mb-1">Listening For</div>
+                        <div className="text-muted-foreground text-xs mb-1">监听事件</div>
                         <div className="flex flex-wrap gap-1.5">
                           {endpointData.filterTypes.map((eventType) => (
                             <Badge key={eventType} variant="secondary" className="font-normal text-xs">
@@ -270,7 +270,7 @@ const WebhookEndpointDetails: React.FC = () => {
                 </Card>
                 <Card>
                   <CardHeader>
-                    <CardTitle>Delivery Stats</CardTitle>
+                    <CardTitle>投递统计</CardTitle>
                   </CardHeader>
                   <CardContent>
                     {statsIsLoading ? (
@@ -292,7 +292,7 @@ const WebhookEndpointDetails: React.FC = () => {
                 </Card>
                 <Card>
                   <CardHeader>
-                    <CardTitle>Event History</CardTitle>
+                    <CardTitle>事件历史</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <EndpointEventsTable
@@ -320,18 +320,18 @@ const WebhookEndpointDetails: React.FC = () => {
       <AlertDialog open={disableDialogOpen} onOpenChange={setDisableDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{endpoint.data?.disabled ? 'Enable' : 'Disable'} Webhook Endpoint</AlertDialogTitle>
+            <AlertDialogTitle>{endpoint.data?.disabled ? '启用' : '停用'} Webhook 端点</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to {endpoint.data?.disabled ? 'enable' : 'disable'} this webhook endpoint?
+              确定要{endpoint.data?.disabled ? '启用' : '停用'}此 Webhook 端点吗？
               {endpoint.data?.disabled
-                ? ' The endpoint will start receiving webhook events again.'
-                : ' The endpoint will stop receiving webhook events.'}
+                ? ' 该端点将重新开始接收 Webhook 事件。'
+                : ' 该端点将停止接收 Webhook 事件。'}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction onClick={handleDisable}>
-              {endpoint.data?.disabled ? 'Enable' : 'Disable'}
+              {endpoint.data?.disabled ? '启用' : '停用'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -340,16 +340,15 @@ const WebhookEndpointDetails: React.FC = () => {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Webhook Endpoint</AlertDialogTitle>
+            <AlertDialogTitle>删除 Webhook 端点</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this endpoint? This action cannot be undone. All webhook history for this
-              endpoint will be permanently deleted.
+              确定要删除此端点吗？此操作无法撤销，该端点的所有 Webhook 历史记录都将被永久删除。
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={handleDelete} disabled={deleteMutation.isPending}>
-              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              {deleteMutation.isPending ? '正在删除...' : '删除'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -358,16 +357,15 @@ const WebhookEndpointDetails: React.FC = () => {
       <AlertDialog open={rotateSecretDialogOpen} onOpenChange={setRotateSecretDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Rotate Signing Secret</AlertDialogTitle>
+            <AlertDialogTitle>轮换签名密钥</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to rotate the signing secret? The current secret will be invalidated and you will
-              need to update your webhook handler with the new secret.
+              确定要轮换签名密钥吗？当前密钥将失效，你需要使用新密钥更新 Webhook 处理程序。
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction onClick={handleRotateSecret} disabled={rotateSecretMutation.isPending}>
-              {rotateSecretMutation.isPending ? 'Rotating...' : 'Rotate Secret'}
+              {rotateSecretMutation.isPending ? '正在轮换...' : '轮换密钥'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

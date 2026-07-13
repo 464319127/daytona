@@ -202,75 +202,75 @@ const SandboxCodeSnippetsResponse = ({ className }: { className?: string }) => {
 
   const runCodeSnippet = async () => {
     setIsCodeSnippetRunning(true)
-    let codeSnippetOutput = 'Creating sandbox...\n'
+    let codeSnippetOutput = '正在创建 Sandbox...\n'
     setCodeSnippetOutput(codeSnippetOutput)
     let sandbox: Sandbox | undefined
 
     try {
       sandbox = await createSandbox()
-      codeSnippetOutput = `Sandbox successfully created: ${sandbox.id}\n`
+      codeSnippetOutput = `Sandbox 创建成功：${sandbox.id}\n`
       setCodeSnippetOutput(codeSnippetOutput)
       if (codeToRunExists) {
-        setCodeSnippetOutput(codeSnippetOutput + '\nRunning code...')
+        setCodeSnippetOutput(codeSnippetOutput + '\n正在运行代码...')
         const codeRunResponse = await sandbox.process.codeRun(
           sandboxParametersState['codeRunParams'].languageCode as string,
         ) // codeToRunExists guarantees that value isn't undefined so we put as string to silence TS compiler
-        codeSnippetOutput += `\nCode run result: ${codeRunResponse.result}`
+        codeSnippetOutput += `\n代码运行结果：${codeRunResponse.result}`
         setCodeSnippetOutput(codeSnippetOutput)
       }
       if (shellCommandExists) {
-        setCodeSnippetOutput(codeSnippetOutput + '\nRunning shell command...')
+        setCodeSnippetOutput(codeSnippetOutput + '\n正在运行 Shell 命令...')
         const shellCommandResponse = await sandbox.process.executeCommand(
           sandboxParametersState['shellCommandRunParams'].shellCommand as string, // shellCommandExists guarantees that value isn't undefined so we put as string to silence TS compiler
         )
-        codeSnippetOutput += `\nShell command result: ${shellCommandResponse.result}`
+        codeSnippetOutput += `\nShell 命令结果：${shellCommandResponse.result}`
         setCodeSnippetOutput(codeSnippetOutput)
       }
       let codeRunShellCommandFinishedMessage = '\n'
       if (codeToRunExists && shellCommandExists) {
-        codeRunShellCommandFinishedMessage += '🎉 Code and shell command executed successfully.'
+        codeRunShellCommandFinishedMessage += '代码和 Shell 命令执行成功。'
       } else if (codeToRunExists) {
-        codeRunShellCommandFinishedMessage += '🎉 Code executed successfully.'
+        codeRunShellCommandFinishedMessage += '代码执行成功。'
       } else if (shellCommandExists) {
-        codeRunShellCommandFinishedMessage += '🎉 Shell command executed successfully.'
+        codeRunShellCommandFinishedMessage += 'Shell 命令执行成功。'
       }
       codeSnippetOutput += codeRunShellCommandFinishedMessage + '\n'
       setCodeSnippetOutput(codeSnippetOutput)
       if (fileSystemCreateFolderParamsSet) {
-        setCodeSnippetOutput(codeSnippetOutput + '\nCreating directory...')
+        setCodeSnippetOutput(codeSnippetOutput + '\n正在创建目录...')
         await sandbox.fs.createFolder(
           sandboxParametersState['createFolderParams'].folderDestinationPath,
           sandboxParametersState['createFolderParams'].permissions,
         )
-        codeSnippetOutput += '\n🎉 Directory created successfully.\n'
+        codeSnippetOutput += '\n目录创建成功。\n'
         setCodeSnippetOutput(codeSnippetOutput)
       }
       if (fileSystemListFilesLocationSet) {
-        setCodeSnippetOutput(codeSnippetOutput + '\nListing directory files...')
+        setCodeSnippetOutput(codeSnippetOutput + '\n正在列出目录文件...')
         const files = await sandbox.fs.listFiles(sandboxParametersState['listFilesParams'].directoryPath)
-        codeSnippetOutput += '\nDirectory content:'
+        codeSnippetOutput += '\n目录内容：'
         codeSnippetOutput += '\n'
         files.forEach((file) => {
-          codeSnippetOutput += `Name: ${file.name}\n`
-          codeSnippetOutput += `Is directory: ${file.isDir}\n`
-          codeSnippetOutput += `Size: ${file.size}\n`
-          codeSnippetOutput += `Modified: ${file.modTime}\n`
+          codeSnippetOutput += `名称：${file.name}\n`
+          codeSnippetOutput += `是否为目录：${file.isDir}\n`
+          codeSnippetOutput += `大小：${file.size}\n`
+          codeSnippetOutput += `修改时间：${file.modTime}\n`
         })
         setCodeSnippetOutput(codeSnippetOutput)
       }
       if (fileSystemDeleteFileRequiredParamsSet) {
         setCodeSnippetOutput(
-          codeSnippetOutput + `\nDeleting ${useFileSystemDeleteFileRecursive ? 'directory' : 'file'}...`,
+          codeSnippetOutput + `\n正在删除${useFileSystemDeleteFileRecursive ? '目录' : '文件'}...`,
         )
         await sandbox.fs.deleteFile(
           sandboxParametersState['deleteFileParams'].filePath,
           useFileSystemDeleteFileRecursive || false,
         )
-        codeSnippetOutput += `\n🎉 ${useFileSystemDeleteFileRecursive ? 'Directory' : 'File'} deleted successfully.\n`
+        codeSnippetOutput += `\n${useFileSystemDeleteFileRecursive ? '目录' : '文件'}删除成功。\n`
         setCodeSnippetOutput(codeSnippetOutput)
       }
       if (gitCloneOperationRequiredParamsSet) {
-        setCodeSnippetOutput(codeSnippetOutput + '\nCloning repo...')
+        setCodeSnippetOutput(codeSnippetOutput + '\n正在克隆仓库...')
         await sandbox.git.clone(
           sandboxParametersState['gitCloneParams'].repositoryURL,
           sandboxParametersState['gitCloneParams'].cloneDestinationPath,
@@ -279,26 +279,26 @@ const SandboxCodeSnippetsResponse = ({ className }: { className?: string }) => {
           useGitCloneUsername ? sandboxParametersState['gitCloneParams'].authUsername : undefined,
           useGitClonePassword ? sandboxParametersState['gitCloneParams'].authPassword : undefined,
         )
-        codeSnippetOutput += '\n🎉 Repository cloned successfully.\n'
+        codeSnippetOutput += '\n仓库克隆成功。\n'
         setCodeSnippetOutput(codeSnippetOutput)
       }
       if (gitStatusOperationLocationSet) {
-        setCodeSnippetOutput(codeSnippetOutput + '\nFetching repository status...')
+        setCodeSnippetOutput(codeSnippetOutput + '\n正在获取仓库状态...')
         const status = await sandbox.git.status(sandboxParametersState['gitStatusParams'].repositoryPath)
-        codeSnippetOutput += `\nCurrent branch: ${status.currentBranch}\n`
-        codeSnippetOutput += `Commits ahead: ${status.ahead}\n`
-        codeSnippetOutput += `Commits behind: ${status.behind}\n`
-        status.fileStatus.forEach((file) => (codeSnippetOutput += `File: ${file.name}\n`))
+        codeSnippetOutput += `\n当前分支：${status.currentBranch}\n`
+        codeSnippetOutput += `领先提交数：${status.ahead}\n`
+        codeSnippetOutput += `落后提交数：${status.behind}\n`
+        status.fileStatus.forEach((file) => (codeSnippetOutput += `文件：${file.name}\n`))
         setCodeSnippetOutput(codeSnippetOutput)
       }
       if (gitBranchesOperationLocationSet) {
-        setCodeSnippetOutput(codeSnippetOutput + '\nFetching repository branches...')
+        setCodeSnippetOutput(codeSnippetOutput + '\n正在获取仓库分支...')
         const response = await sandbox.git.branches(sandboxParametersState['gitBranchesParams'].repositoryPath)
         codeSnippetOutput += '\n'
-        response.branches.forEach((branch) => (codeSnippetOutput += `Branch: ${branch}\n`))
+        response.branches.forEach((branch) => (codeSnippetOutput += `分支：${branch}\n`))
         setCodeSnippetOutput(codeSnippetOutput)
       }
-      setCodeSnippetOutput(codeSnippetOutput + '\nSandbox session finished.')
+      setCodeSnippetOutput(codeSnippetOutput + '\nSandbox 会话已完成。')
     } catch (error) {
       console.error(error)
       setCodeSnippetOutput(
@@ -317,7 +317,7 @@ const SandboxCodeSnippetsResponse = ({ className }: { className?: string }) => {
 
   return (
     <Window className={className}>
-      <WindowTitleBar>Sandbox Code</WindowTitleBar>
+      <WindowTitleBar>Sandbox 代码</WindowTitleBar>
       <WindowContent className="relative">
         <Tabs
           value={codeSnippetLanguage}
@@ -353,10 +353,10 @@ const SandboxCodeSnippetsResponse = ({ className }: { className?: string }) => {
                   }
                 }}
               >
-                {isCodeSnippetRunning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="w-4 h-4" />} Run
+                {isCodeSnippetRunning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="w-4 h-4" />} 运行
               </Button>
               <TooltipButton
-                tooltipText="Show result"
+                tooltipText="显示结果"
                 className="!px-2"
                 size="icon-sm"
                 variant="outline"
@@ -409,11 +409,11 @@ const SandboxCodeSnippetsResponse = ({ className }: { className?: string }) => {
             <Panel maxSize="80%" minSize="20%" panelRef={resultPanelRef} collapsedSize={0} collapsible defaultSize={33}>
               <div className="bg-background w-full border rounded-md overflow-auto h-full flex flex-col">
                 <div className="flex justify-between border-b px-4 pr-2 py-1 text-xs items-center bg-muted/50">
-                  <div className="text-muted-foreground font-mono">Result</div>
+                  <div className="text-muted-foreground font-mono">结果</div>
                   <div className="flex items-center gap-2">
                     <TooltipButton
                       onClick={() => resultPanelRef.current?.resize('80%')}
-                      tooltipText="Maximize"
+                      tooltipText="最大化"
                       className="h-6 w-6"
                       size="sm"
                       variant="ghost"
@@ -421,7 +421,7 @@ const SandboxCodeSnippetsResponse = ({ className }: { className?: string }) => {
                       <ChevronUpIcon className="w-4 h-4" />
                     </TooltipButton>
                     <TooltipButton
-                      tooltipText="Close"
+                      tooltipText="关闭"
                       className="h-6 w-6"
                       size="sm"
                       variant="ghost"
@@ -435,7 +435,7 @@ const SandboxCodeSnippetsResponse = ({ className }: { className?: string }) => {
                   <ResponseCard
                     responseContent={
                       codeSnippetOutput || (
-                        <div className="text-muted-foreground font-mono">Code output will be shown here...</div>
+                        <div className="text-muted-foreground font-mono">代码输出将显示在这里...</div>
                       )
                     }
                   />

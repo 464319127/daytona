@@ -137,12 +137,12 @@ const Spending = () => {
       <PageHeader />
 
       <PageContent>
-        <PageIntro title="Spending" />
+        <PageIntro title="消费" />
         {analyticsAvailable && (
           <Card>
             <CardHeader className="flex flex-row items-center gap-2 space-y-0 border-b p-4">
               <div className="flex-1">
-                <CardTitle>Resource Usage</CardTitle>
+                <CardTitle>资源用量</CardTitle>
               </div>
               <DateRangePicker
                 value={analyticsDateRange}
@@ -161,13 +161,13 @@ const Spending = () => {
                   <EmptyMedia variant="icon" className="bg-destructive-background text-destructive">
                     <AlertCircle />
                   </EmptyMedia>
-                  <EmptyTitle className="text-destructive">Failed to load resource usage</EmptyTitle>
-                  <EmptyDescription>Something went wrong while fetching usage data. Please try again.</EmptyDescription>
+                  <EmptyTitle className="text-destructive">加载资源用量失败</EmptyTitle>
+                  <EmptyDescription>获取用量数据时出错，请重试。</EmptyDescription>
                 </EmptyHeader>
                 <EmptyContent>
                   <Button variant="secondary" size="sm" onClick={() => refetchAggregated()}>
                     <RefreshCw />
-                    Retry
+                    重试
                   </Button>
                 </EmptyContent>
               </Empty>
@@ -177,10 +177,9 @@ const Spending = () => {
                   <EmptyMedia variant="icon">
                     <BarChart3 />
                   </EmptyMedia>
-                  <EmptyTitle>No resource usage data</EmptyTitle>
+                  <EmptyTitle>暂无资源用量数据</EmptyTitle>
                   <EmptyDescription>
-                    Usage data will appear here once your sandboxes start consuming resources in the selected time
-                    range.
+                    沙箱在所选时间范围内开始消耗资源后，用量数据将显示在这里。
                   </EmptyDescription>
                 </EmptyHeader>
               </Empty>
@@ -204,9 +203,9 @@ const Spending = () => {
             )}
             <Separator />
             <div className="p-4">
-              <p className="text-xl font-semibold leading-none tracking-tight">Per-Sandbox Usage</p>
+              <p className="text-xl font-semibold leading-none tracking-tight">各沙箱用量</p>
               <p className="text-sm text-muted-foreground mt-2">
-                Resource consumption broken down by individual sandbox.
+                按各个沙箱查看资源消耗情况。
               </p>
             </div>
             {sandboxesError ? (
@@ -215,15 +214,15 @@ const Spending = () => {
                   <EmptyMedia variant="icon" className="bg-destructive-background text-destructive">
                     <AlertCircle />
                   </EmptyMedia>
-                  <EmptyTitle className="text-destructive">Failed to load sandbox usage</EmptyTitle>
+                  <EmptyTitle className="text-destructive">加载沙箱用量失败</EmptyTitle>
                   <EmptyDescription>
-                    Something went wrong while fetching per-sandbox data. Please try again.
+                    获取各沙箱用量数据时出错，请重试。
                   </EmptyDescription>
                 </EmptyHeader>
                 <EmptyContent>
                   <Button variant="secondary" size="sm" onClick={() => refetchSandboxes()}>
                     <RefreshCw />
-                    Retry
+                    重试
                   </Button>
                 </EmptyContent>
               </Empty>
@@ -233,9 +232,9 @@ const Spending = () => {
                   <EmptyMedia variant="icon">
                     <BarChart3 />
                   </EmptyMedia>
-                  <EmptyTitle>No sandbox usage yet</EmptyTitle>
+                  <EmptyTitle>暂无沙箱用量</EmptyTitle>
                   <EmptyDescription>
-                    Once you create and run a sandbox, its resource consumption will appear here.
+                    创建并运行沙箱后，其资源消耗将显示在这里。
                   </EmptyDescription>
                 </EmptyHeader>
               </Empty>

@@ -15,7 +15,7 @@ export function usePylonCommands() {
     () => [
       {
         id: 'pylon-support',
-        label: 'Help & Support',
+        label: '帮助与支持',
         icon: <LifeBuoyIcon className="w-4 h-4" />,
         keywords: ['help', 'support', 'chat', 'pylon', 'assist'],
         onSelect: toggle,
@@ -24,5 +24,5 @@ export function usePylonCommands() {
     [toggle],
   )
 
-  useRegisterCommands(isEnabled ? commands : [], { groupId: 'support', groupLabel: 'Support', groupOrder: 10 })
+  useRegisterCommands(isEnabled ? commands : [], { groupId: 'support', groupLabel: '支持', groupOrder: 10 })
 }

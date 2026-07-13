@@ -22,7 +22,7 @@ export const useCreateOrganizationInvitationMutation = () => {
     mutationKey: mutationKeys.organization.invitations.create(),
     mutationFn: async ({ organizationId, invitation }) => {
       if (!organizationId) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const response = await organizationsApi.createOrganizationInvitation(organizationId, invitation)

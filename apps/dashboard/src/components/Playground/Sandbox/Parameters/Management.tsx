@@ -35,9 +35,9 @@ const SandboxManagementParameters: React.FC<SandboxManagementParametersProps> = 
   const sandboxFromImageParams = sandboxParametersState['createSandboxBaseParams']
 
   const languageFormData: ParameterFormItem = {
-    label: 'Language',
+    label: '语言',
     key: 'language',
-    placeholder: 'Select sandbox language',
+    placeholder: '选择 Sandbox 语言',
   }
 
   // const sandboxSnapshotFormData: ParameterFormItem = {
@@ -50,7 +50,7 @@ const SandboxManagementParameters: React.FC<SandboxManagementParametersProps> = 
   const languageOptions = [
     {
       value: CodeLanguage.PYTHON,
-      label: 'Python (default)',
+      label: 'Python（默认）',
     },
     {
       value: CodeLanguage.TYPESCRIPT,
@@ -62,17 +62,17 @@ const SandboxManagementParameters: React.FC<SandboxManagementParametersProps> = 
     },
   ]
   const resourcesFormData: (NumberParameterFormItem & { key: 'cpu' | 'memory' | 'disk' })[] = [
-    { label: 'Compute (vCPU)', key: 'cpu', min: 1, max: Infinity, placeholder: '1' },
-    { label: 'Memory (GiB)', key: 'memory', min: 1, max: Infinity, placeholder: '1' },
-    { label: 'Storage (GiB)', key: 'disk', min: 1, max: Infinity, placeholder: '3' },
+    { label: '计算 (vCPU)', key: 'cpu', min: 1, max: Infinity, placeholder: '1' },
+    { label: '内存 (GiB)', key: 'memory', min: 1, max: Infinity, placeholder: '1' },
+    { label: '存储 (GiB)', key: 'disk', min: 1, max: Infinity, placeholder: '3' },
   ]
 
   const lifecycleParamsFormData: (NumberParameterFormItem & {
     key: 'autoStopInterval' | 'autoArchiveInterval' | 'autoDeleteInterval'
   })[] = [
-    { label: 'Stop (min)', key: 'autoStopInterval', min: 0, max: Infinity, placeholder: '15' },
-    { label: 'Archive (min)', key: 'autoArchiveInterval', min: 0, max: Infinity, placeholder: '7' },
-    { label: 'Delete (min)', key: 'autoDeleteInterval', min: -1, max: Infinity, placeholder: '' },
+    { label: '停止（分钟）', key: 'autoStopInterval', min: 0, max: Infinity, placeholder: '15' },
+    { label: '归档（分钟）', key: 'autoArchiveInterval', min: 0, max: Infinity, placeholder: '7' },
+    { label: '删除（分钟）', key: 'autoDeleteInterval', min: -1, max: Infinity, placeholder: '' },
   ]
 
   // Change code to run based on selected sandbox language
@@ -99,7 +99,7 @@ const SandboxManagementParameters: React.FC<SandboxManagementParametersProps> = 
       {/* <StackedInputFormControl formItem={sandboxSnapshotFormData}>
         <FormSelectInput
           selectOptions={[
-            { value: SANDBOX_SNAPSHOT_DEFAULT_VALUE, label: 'Default' },
+            { value: SANDBOX_SNAPSHOT_DEFAULT_VALUE, label: '默认' },
             ...snapshotsData.map((snapshot) => ({
               value: snapshot.name,
               label: snapshot.name,
@@ -116,13 +116,13 @@ const SandboxManagementParameters: React.FC<SandboxManagementParametersProps> = 
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <Label htmlFor="resources" className="text-sm text-muted-foreground">
-            Resources
+            资源
           </Label>
           {nonDefaultSnapshotSelected && (
             <Tooltip
               content={
                 <div className="text-balance text-center max-w-[300px]">
-                  Resources cannot be modified when a non-default snapshot is selected.
+                  选择非默认 Snapshot 时无法修改资源。
                 </div>
               }
               label={
@@ -150,7 +150,7 @@ const SandboxManagementParameters: React.FC<SandboxManagementParametersProps> = 
       </div>
       <div className="space-y-2">
         <Label htmlFor="lifecycle" className="text-sm text-muted-foreground">
-          Lifecycle
+          生命周期
         </Label>
         <div id="lifecycle" className="space-y-2">
           {lifecycleParamsFormData.map((lifecycleParamFormItem) => (

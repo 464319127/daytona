@@ -26,11 +26,11 @@ export interface RefreshIntervalOption {
 }
 
 const DEFAULT_REFRESH_OPTIONS: RefreshIntervalOption[] = [
-  { label: 'Off', value: false },
-  { label: 'Every 10s', value: 10000 },
-  { label: 'Every 30s', value: 30000 },
-  { label: 'Every 1m', value: 60000 },
-  { label: 'Every 5m', value: 300000 },
+  { label: '关闭', value: false },
+  { label: '每 10 秒', value: 10000 },
+  { label: '每 30 秒', value: 30000 },
+  { label: '每 1 分钟', value: 60000 },
+  { label: '每 5 分钟', value: 300000 },
 ]
 
 const MotionRefreshIcon = motion(RefreshCw)
@@ -71,14 +71,14 @@ function normalizeOptions(options: RefreshIntervalOption[]) {
 
 function getFallbackLabel(value: RefreshIntervalValue) {
   if (value === false) {
-    return 'Off'
+    return '关闭'
   }
 
   if (value < 60000) {
-    return `Every ${value / 1000}s`
+    return `每 ${value / 1000} 秒`
   }
 
-  return `Every ${value / 60000}m`
+  return `每 ${value / 60000} 分钟`
 }
 
 function formatCountdownLabel(totalSeconds: number) {
@@ -256,9 +256,9 @@ export function RefreshSegmentedButton({
 
   const buttonLabel =
     value === false
-      ? 'Auto-refresh off'
+      ? '自动刷新已关闭'
       : isRefreshing
-        ? 'Refreshing...'
+        ? '刷新中...'
         : countdownSeconds !== null
           ? formatCountdownLabel(countdownSeconds)
           : (selectedOptionLabel ?? getFallbackLabel(value))
@@ -271,7 +271,7 @@ export function RefreshSegmentedButton({
         size="sm"
         disabled={disabled || isRefreshing}
         onClick={onRefresh}
-        aria-label="Refresh now"
+        aria-label="立即刷新"
         className={cn('rounded-r-none border-0 px-2.5 shadow-none hover:bg-accent/80', isRefreshing && 'opacity-70')}
       >
         <MotionRefreshIcon className="size-4" style={{ rotate: rotation }} />
@@ -301,7 +301,7 @@ export function RefreshSegmentedButton({
         </SelectTrigger>
         <SelectContent position="popper">
           <SelectGroup>
-            <SelectLabel className="pl-2">Auto-refresh interval</SelectLabel>
+            <SelectLabel className="pl-2">自动刷新间隔</SelectLabel>
             <SelectSeparator />
             {normalizedOptions.map((option) => (
               <SelectItem key={serializeIntervalValue(option.value)} value={serializeIntervalValue(option.value)}>

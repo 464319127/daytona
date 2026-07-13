@@ -87,17 +87,17 @@ export function AuditLogTable({
             <TableEmptyState
               overlay
               colSpan={auditLogColumns.length}
-              message={hasFilters ? 'No matching logs found.' : 'No logs yet.'}
+              message={hasFilters ? '未找到匹配的日志。' : '暂无日志。'}
               icon={<TextSearch />}
               description={
                 hasFilters ? null : (
-                  <p>Audit logs are detailed records of all actions taken by users in the organization.</p>
+                  <p>审计日志详细记录组织中用户执行的所有操作。</p>
                 )
               }
               action={
                 hasFilters && onClearFilters ? (
                   <Button variant="outline" onClick={onClearFilters}>
-                    Clear filters
+                    清除筛选条件
                   </Button>
                 ) : null
               }
@@ -137,7 +137,7 @@ export function AuditLogTable({
         </Table>
       </TableContainer>
       <PageFooterPortal>
-        <Pagination table={table} entityName="Logs" totalItems={totalItems} />
+        <Pagination table={table} entityName="日志" totalItems={totalItems} />
       </PageFooterPortal>
     </div>
   )
@@ -168,11 +168,11 @@ function AuditLogTableSkeleton({ columns }: { columns: Column<AuditLog>[] }) {
 
 const auditLogColumns: ColumnDef<AuditLog>[] = [
   {
-    header: 'Time',
+    header: '时间',
     size: 200,
     cell: ({ row }) => {
       const createdAt = new Date(row.original.createdAt)
-      const localeString = createdAt.toLocaleString()
+      const localeString = createdAt.toLocaleString('zh-CN')
       const relativeTimeString = getRelativeTimeString(row.original.createdAt).relativeTimeString
 
       return (
@@ -184,7 +184,7 @@ const auditLogColumns: ColumnDef<AuditLog>[] = [
     },
   },
   {
-    header: 'User',
+    header: '用户',
     size: 240,
     cell: ({ row }) => {
       const actorEmail = row.original.actorEmail
@@ -220,7 +220,7 @@ const auditLogColumns: ColumnDef<AuditLog>[] = [
     },
   },
   {
-    header: 'Action',
+    header: '操作',
     size: 240,
     cell: ({ row }) => {
       const action = row.original.action
@@ -238,7 +238,7 @@ const auditLogColumns: ColumnDef<AuditLog>[] = [
     },
   },
   {
-    header: 'Target',
+    header: '目标',
     size: 360,
     cell: ({ row }) => {
       const targetType = row.original.targetType
@@ -257,7 +257,7 @@ const auditLogColumns: ColumnDef<AuditLog>[] = [
     },
   },
   {
-    header: 'Outcome',
+    header: '结果',
     size: 320,
     cell: ({ row }) => {
       const statusCode = row.original.statusCode
@@ -313,29 +313,29 @@ const getOutcomeInfo = (statusCode: number | null | undefined): OutcomeInfo => {
   switch (category) {
     case 'informational':
       return {
-        label: 'Info',
+        label: '信息',
         colorClass: 'text-blue-500 dark:text-blue-300',
       }
     case 'success':
       return {
-        label: 'Success',
+        label: '成功',
         colorClass: 'text-green-600 dark:text-green-400',
       }
     case 'redirect':
       return {
-        label: 'Redirect',
+        label: '重定向',
         colorClass: 'text-blue-600 dark:text-blue-400',
       }
     case 'client-error':
     case 'server-error':
       return {
-        label: 'Error',
+        label: '错误',
         colorClass: 'text-red-600 dark:text-red-400',
       }
     case 'unknown':
     default:
       return {
-        label: 'Unknown',
+        label: '未知',
         colorClass: 'text-gray-600 dark:text-gray-400',
       }
   }

@@ -30,12 +30,12 @@ function SpendingTableSkeleton() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Start</TableHead>
-          <TableHead>End</TableHead>
+          <TableHead>开始时间</TableHead>
+          <TableHead>结束时间</TableHead>
           <TableHead className="text-right">CPU</TableHead>
           <TableHead className="text-right">RAM (GB)</TableHead>
-          <TableHead className="text-right">Disk (GB)</TableHead>
-          <TableHead className="text-right">Price</TableHead>
+          <TableHead className="text-right">磁盘 (GB)</TableHead>
+          <TableHead className="text-right">价格</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -70,12 +70,12 @@ function SpendingErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <Empty className="flex-1 border-0">
       <EmptyHeader>
-        <EmptyTitle>Failed to load spending</EmptyTitle>
-        <EmptyDescription>Something went wrong while fetching usage periods.</EmptyDescription>
+        <EmptyTitle>加载消费数据失败</EmptyTitle>
+        <EmptyDescription>获取用量周期时出错。</EmptyDescription>
       </EmptyHeader>
       <Button variant="outline" size="sm" onClick={onRetry}>
         <RefreshCw className="size-4" />
-        Retry
+        重试
       </Button>
     </Empty>
   )
@@ -88,16 +88,16 @@ function SpendingEmptyState({ hasFilters, onClearFilters }: { hasFilters: boolea
         <EmptyMedia variant="icon">
           <DollarSign className="size-4" />
         </EmptyMedia>
-        <EmptyTitle>{hasFilters ? 'No matching usage periods found' : 'No usage periods yet'}</EmptyTitle>
+        <EmptyTitle>{hasFilters ? '未找到匹配的用量周期' : '暂无用量周期'}</EmptyTitle>
         <EmptyDescription>
           {hasFilters
-            ? 'No usage periods matched your current filters.'
-            : 'Usage periods will appear here after the sandbox has billable activity.'}
+            ? '没有符合当前筛选条件的用量周期。'
+            : 'Sandbox 产生计费活动后，用量周期将显示在此处。'}
         </EmptyDescription>
       </EmptyHeader>
       {hasFilters ? (
         <Button variant="outline" size="sm" onClick={onClearFilters}>
-          Clear filters
+          清除筛选条件
         </Button>
       ) : null}
     </Empty>
@@ -170,12 +170,12 @@ export function SandboxSpendingTab({ sandboxId }: { sandboxId: string }) {
           <Table>
             <TableHeader className="sticky top-0 z-10 bg-background after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-border">
               <TableRow>
-                <TableHead>Start</TableHead>
-                <TableHead>End</TableHead>
+                <TableHead>开始时间</TableHead>
+                <TableHead>结束时间</TableHead>
                 <TableHead className="text-right">CPU</TableHead>
                 <TableHead className="text-right">RAM (GB)</TableHead>
-                <TableHead className="text-right">Disk (GB)</TableHead>
-                <TableHead className="text-right">Price</TableHead>
+                <TableHead className="text-right">磁盘 (GB)</TableHead>
+                <TableHead className="text-right">价格</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

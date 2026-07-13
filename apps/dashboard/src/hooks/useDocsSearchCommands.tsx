@@ -163,7 +163,7 @@ export function useDocsSearchCommands() {
     enabled,
   })
 
-  useRegisterPage({ id: 'search-docs', label: 'Search Docs', placeholder: 'Search documentation...' })
+  useRegisterPage({ id: 'search-docs', label: '搜索文档', placeholder: '搜索文档...' })
 
   useEffect(() => {
     if (!enabled) {
@@ -185,27 +185,27 @@ export function useDocsSearchCommands() {
       return [
         {
           id: 'suggestion-quickstart',
-          label: 'Quick Start',
+          label: '快速开始',
           icon: <BookOpen className="w-4 h-4" />,
           onSelect: () => openDocs(),
           chainable: true,
         },
         {
           id: 'suggestion-sandboxes',
-          label: 'Sandboxes',
+          label: 'Sandbox',
           icon: <Container className="w-4 h-4" />,
           onSelect: () => openDocs('/en/sandboxes'),
         },
         {
           id: 'suggestion-snapshots',
-          label: 'Snapshots',
+          label: 'Snapshot',
           icon: <Layers className="w-4 h-4" />,
           onSelect: () => openDocs('/en/snapshots'),
           chainable: true,
         },
         {
           id: 'suggestion-limits',
-          label: 'Limits',
+          label: '额度限制',
           icon: <Terminal className="w-4 h-4" />,
           onSelect: () => openDocs('/en/limits'),
           chainable: true,
@@ -217,7 +217,7 @@ export function useDocsSearchCommands() {
       return [
         {
           id: 'error',
-          label: 'Failed to load documentation. Try again.',
+          label: '加载文档失败，请重试。',
           disabled: true,
         },
       ]

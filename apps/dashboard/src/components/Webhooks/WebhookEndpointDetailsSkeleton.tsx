@@ -24,7 +24,7 @@ export function WebhookEndpointDetailsSkeleton({ onBack }: { onBack?: () => void
 
       <Card>
         <CardHeader>
-          <CardTitle>Endpoint Configuration</CardTitle>
+          <CardTitle>端点配置</CardTitle>
         </CardHeader>
         <CardContent className="p-4 flex flex-col gap-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -33,12 +33,12 @@ export function WebhookEndpointDetailsSkeleton({ onBack }: { onBack?: () => void
               <Skeleton className="h-9 w-full" />
             </div>
             <div className="flex flex-col">
-              <div className="text-muted-foreground text-xs mb-1">Signing Secret</div>
+              <div className="text-muted-foreground text-xs mb-1">签名密钥</div>
               <Skeleton className="h-9 w-full" />
             </div>
           </div>
           <div>
-            <div className="text-muted-foreground text-xs mb-1">Listening For</div>
+            <div className="text-muted-foreground text-xs mb-1">监听事件</div>
             <div className="flex flex-wrap gap-1.5">
               <Skeleton className="h-5 w-24 rounded-full" />
               <Skeleton className="h-5 w-32 rounded-full" />
@@ -49,7 +49,7 @@ export function WebhookEndpointDetailsSkeleton({ onBack }: { onBack?: () => void
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Delivery Stats</CardTitle>
+          <CardTitle>投递统计</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-2">
@@ -65,7 +65,7 @@ export function WebhookEndpointDetailsSkeleton({ onBack }: { onBack?: () => void
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Event History</CardTitle>
+          <CardTitle>事件历史</CardTitle>
         </CardHeader>
         <CardContent>
           <EndpointEventsTable data={[]} loading={true} onReplay={() => undefined} />
@@ -81,7 +81,7 @@ export function WebhookEndpointDetailsPageSkeleton() {
       <PageHeader />
 
       <PageContent className="gap-6">
-        <PageIntro title="Webhooks" />
+        <PageIntro title="Webhook" />
         <WebhookEndpointDetailsSkeleton />
       </PageContent>
     </PageLayout>

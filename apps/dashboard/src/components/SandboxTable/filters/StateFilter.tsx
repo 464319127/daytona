@@ -52,7 +52,7 @@ export function StateFilterIndicator({ value, onFilterChange }: StateFilterProps
 export function StateFilter({ value, onFilterChange }: StateFilterProps) {
   return (
     <Command>
-      <CommandInput placeholder="Search...">
+      <CommandInput placeholder="搜索...">
         <CommandInputButton
           className="text-sm text-muted-foreground hover:text-primary px-2"
           onClick={() => onFilterChange(undefined)}

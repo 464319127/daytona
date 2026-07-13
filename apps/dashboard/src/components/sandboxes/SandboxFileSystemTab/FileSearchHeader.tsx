@@ -75,9 +75,9 @@ export function FileSearchHeader({
           'z-0 -translate-x-6 opacity-0': isOpen,
         })}
       >
-        <span className="mr-2 text-sm font-medium">Files</span>
+        <span className="mr-2 text-sm font-medium">文件</span>
         <div className="ml-auto flex items-center">{actions}</div>
-        <TooltipButton tooltipText="Search files" variant="ghost" size="icon-sm" onClick={() => setIsOpen(true)}>
+        <TooltipButton tooltipText="搜索文件" variant="ghost" size="icon-sm" onClick={() => setIsOpen(true)}>
           <SearchIcon className="size-4" />
         </TooltipButton>
       </div>
@@ -100,7 +100,7 @@ export function FileSearchHeader({
             ref={inputRef}
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
-            placeholder="Search files..."
+            placeholder="搜索文件..."
             className="h-8 px-2"
           />
           {inputValue ? (
@@ -111,14 +111,14 @@ export function FileSearchHeader({
                   className="shrink-0 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none"
                   onClick={clearSearch}
                 >
-                  Clear
+                  清除
                 </button>
               </span>
             </InputGroupAddon>
           ) : null}
         </InputGroup>
         <TooltipButton
-          tooltipText="Close search"
+          tooltipText="关闭搜索"
           variant="ghost"
           size="icon-sm"
           onClick={closeSearch}

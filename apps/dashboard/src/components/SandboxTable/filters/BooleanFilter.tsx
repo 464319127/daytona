@@ -15,8 +15,8 @@ interface BooleanFilterProps {
 }
 
 const OPTIONS = [
-  { value: true, label: 'Yes' },
-  { value: false, label: 'No' },
+  { value: true, label: '是' },
+  { value: false, label: '否' },
 ]
 
 export function BooleanFilterIndicator({ label, value, onFilterChange }: BooleanFilterProps) {
@@ -25,7 +25,7 @@ export function BooleanFilterIndicator({ label, value, onFilterChange }: Boolean
       <Popover>
         <PopoverTrigger className="max-w-[180px] overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground px-2">
           {label}:{' '}
-          <span className="text-primary font-medium">{value === true ? 'Yes' : value === false ? 'No' : 'Any'}</span>
+          <span className="text-primary font-medium">{value === true ? '是' : value === false ? '否' : '任意'}</span>
         </PopoverTrigger>
         <PopoverContent className="p-0 w-48" align="start">
           <BooleanFilter label={label} onFilterChange={onFilterChange} value={value} />

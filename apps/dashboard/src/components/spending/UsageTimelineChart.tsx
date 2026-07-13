@@ -43,27 +43,27 @@ const RESOURCE_COLORS = {
 const LIMIT_COLOR = '#ef4444'
 
 const allResourceChartConfig: ChartConfig = {
-  cpuPercent: { label: 'Compute', color: RESOURCE_COLORS.cpu },
-  ramPercent: { label: 'Memory', color: RESOURCE_COLORS.ram },
-  diskPercent: { label: 'Storage', color: RESOURCE_COLORS.disk },
+  cpuPercent: { label: '计算', color: RESOURCE_COLORS.cpu },
+  ramPercent: { label: '内存', color: RESOURCE_COLORS.ram },
+  diskPercent: { label: '存储', color: RESOURCE_COLORS.disk },
 }
 
 const cpuChartConfig: ChartConfig = {
-  cpu: { label: 'CPU (vCPU)', color: RESOURCE_COLORS.cpu },
+  cpu: { label: 'CPU（vCPU）', color: RESOURCE_COLORS.cpu },
 }
 
 const ramChartConfig: ChartConfig = {
-  ramGB: { label: 'RAM (GiB)', color: RESOURCE_COLORS.ram },
+  ramGB: { label: '内存（GiB）', color: RESOURCE_COLORS.ram },
 }
 
 const diskChartConfig: ChartConfig = {
-  diskGB: { label: 'Disk (GiB)', color: RESOURCE_COLORS.disk },
+  diskGB: { label: '磁盘（GiB）', color: RESOURCE_COLORS.disk },
 }
 
 const costChartConfig: ChartConfig = {
   cpuPrice: { label: 'CPU', color: RESOURCE_COLORS.cpu },
-  ramPrice: { label: 'RAM', color: RESOURCE_COLORS.ram },
-  diskPrice: { label: 'Disk', color: RESOURCE_COLORS.disk },
+  ramPrice: { label: '内存', color: RESOURCE_COLORS.ram },
+  diskPrice: { label: '磁盘', color: RESOURCE_COLORS.disk },
 }
 
 function formatTime(value: string) {
@@ -71,7 +71,7 @@ function formatTime(value: string) {
   if (isNaN(date.getTime())) {
     return ''
   }
-  return date.toLocaleTimeString('en-US', {
+  return date.toLocaleTimeString('zh-CN', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
@@ -83,7 +83,7 @@ function formatDateAndTime(value: string) {
   if (isNaN(date.getTime())) {
     return ''
   }
-  return date.toLocaleString('en-US', {
+  return date.toLocaleString('zh-CN', {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
@@ -97,7 +97,7 @@ function formatTooltipLabel(value: string) {
   if (isNaN(date.getTime())) {
     return ''
   }
-  return date.toLocaleString('en-US', {
+  return date.toLocaleString('zh-CN', {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
@@ -227,15 +227,15 @@ export function UsageTimelineChart({
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <p className="text-xl font-semibold leading-none tracking-tight">Usage Timeline</p>
+        <p className="text-xl font-semibold leading-none tracking-tight">用量趋势</p>
         <div className="flex items-center gap-3 flex-wrap">
           <Select
             value={selectedRegion ?? ''}
             onValueChange={(value) => onRegionChange(value)}
             disabled={!regionUsage?.length}
           >
-            <SelectTrigger size="sm" className="w-[160px] rounded-lg" aria-label="Select region">
-              <SelectValue placeholder="Select region" />
+            <SelectTrigger size="sm" className="w-[160px] rounded-lg" aria-label="选择区域">
+              <SelectValue placeholder="选择区域" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
               {[...new Set(regionUsage?.map((u) => u.regionId))].map((regionId) => (
@@ -247,14 +247,14 @@ export function UsageTimelineChart({
           </Select>
           {isResourceMode && (
             <Select value={resourceFilter} onValueChange={(value) => setResourceFilter(value as ResourceFilter)}>
-              <SelectTrigger size="sm" className="w-[150px] rounded-lg" aria-label="Select resource">
+              <SelectTrigger size="sm" className="w-[150px] rounded-lg" aria-label="选择资源">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="rounded-xl">
-                <SelectItem value="all">All Resources</SelectItem>
-                <SelectItem value="cpu">Compute</SelectItem>
-                <SelectItem value="ram">Memory</SelectItem>
-                <SelectItem value="disk">Storage</SelectItem>
+                <SelectItem value="all">全部资源</SelectItem>
+                <SelectItem value="cpu">计算资源</SelectItem>
+                <SelectItem value="ram">内存</SelectItem>
+                <SelectItem value="disk">存储</SelectItem>
               </SelectContent>
             </Select>
           )}
@@ -267,8 +267,8 @@ export function UsageTimelineChart({
             variant="outline"
             size="sm"
           >
-            <ToggleGroupItem value="resources">Resources</ToggleGroupItem>
-            <ToggleGroupItem value="cost">Cost</ToggleGroupItem>
+            <ToggleGroupItem value="resources">资源</ToggleGroupItem>
+            <ToggleGroupItem value="cost">费用</ToggleGroupItem>
           </ToggleGroup>
         </div>
       </div>

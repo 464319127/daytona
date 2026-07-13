@@ -23,7 +23,7 @@ export const useUpdateOrganizationMemberAccessMutation = () => {
     mutationKey: mutationKeys.organization.members.updateAccess(),
     mutationFn: async ({ organizationId, userId, access }) => {
       if (!organizationId) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const response = await organizationsApi.updateAccessForOrganizationMember(organizationId, userId, access)

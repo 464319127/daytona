@@ -296,20 +296,20 @@ const SandboxDetailsSheet: React.FC<SandboxDetailsSheetProps> = ({
       >
         <SheetHeader className="flex flex-row items-start justify-between p-4 px-5 space-y-0 border-b border-border">
           <div className="min-w-0">
-            <SheetTitle>Sandbox Details</SheetTitle>
+            <SheetTitle>Sandbox 详情</SheetTitle>
           </div>
           <div className="flex flex-wrap items-center justify-end shrink-0">
             <Button variant="ghost" size="icon-sm" disabled={!hasPrev} onClick={() => handleNavigate('prev')}>
               <ChevronUp className="size-4" />
-              <span className="sr-only">Previous sandbox</span>
+              <span className="sr-only">上一个 Sandbox</span>
             </Button>
             <Button variant="ghost" size="icon-sm" disabled={!hasNext} onClick={() => handleNavigate('next')}>
               <ChevronDown className="size-4" />
-              <span className="sr-only">Next sandbox</span>
+              <span className="sr-only">下一个 Sandbox</span>
             </Button>
             <Button variant="ghost" size="icon-sm" onClick={() => handleOpenChange(false)} disabled={actionDisabled}>
               <X className="size-4" />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">关闭</span>
             </Button>
           </div>
         </SheetHeader>
@@ -317,8 +317,8 @@ const SandboxDetailsSheet: React.FC<SandboxDetailsSheetProps> = ({
         <SandboxSessionProvider>
           {isNotFound ? (
             <SandboxDetailsSheetEmptyState
-              title="Sandbox not found"
-              description="This sandbox may not exist, or you may not have access to it in this organization."
+              title="未找到 Sandbox"
+              description="此 Sandbox 可能不存在，或者你无权在此组织中访问它。"
             />
           ) : sandbox ? (
             <React.Suspense fallback={<SandboxDetailsSheetSkeleton />}>
@@ -347,8 +347,8 @@ const SandboxDetailsSheet: React.FC<SandboxDetailsSheetProps> = ({
             <SandboxDetailsSheetSkeleton />
           ) : (
             <SandboxDetailsSheetEmptyState
-              title="Failed to load sandbox"
-              description="Something went wrong while loading this sandbox. Please try again."
+              title="加载 Sandbox 失败"
+              description="加载此 Sandbox 时出现问题，请重试。"
             />
           )}
         </SandboxSessionProvider>

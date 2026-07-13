@@ -41,15 +41,15 @@ export function RevokeSshAccessDialog({ sandboxId, open, onOpenChange }: RevokeS
 
   const handleRevoke = async () => {
     if (!token.trim()) {
-      toast.error('Please enter a token to revoke')
+      toast.error('请输入要撤销的令牌')
       return
     }
     try {
       await revokeMutation.mutateAsync({ sandboxId, token })
-      toast.success('SSH access revoked successfully')
+      toast.success('SSH 访问已撤销')
       handleOpenChange(false)
     } catch (error) {
-      handleApiError(error, 'Failed to revoke SSH access')
+      handleApiError(error, '撤销 SSH 访问失败')
     }
   }
 
@@ -57,25 +57,25 @@ export function RevokeSshAccessDialog({ sandboxId, open, onOpenChange }: RevokeS
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-sm">
         <DialogHeader>
-          <DialogTitle>Revoke SSH Access</DialogTitle>
-          <DialogDescription>Enter the SSH access token you want to revoke.</DialogDescription>
+          <DialogTitle>撤销 SSH 访问</DialogTitle>
+          <DialogDescription>输入要撤销的 SSH 访问令牌。</DialogDescription>
         </DialogHeader>
         <Field>
-          <FieldLabel htmlFor="ssh-revoke-token">SSH Token</FieldLabel>
+          <FieldLabel htmlFor="ssh-revoke-token">SSH 令牌</FieldLabel>
           <Input
             id="ssh-revoke-token"
             value={token}
             onChange={(e) => setToken(e.target.value)}
-            placeholder="Paste token here"
+            placeholder="在此粘贴令牌"
           />
         </Field>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="secondary">Cancel</Button>
+            <Button variant="secondary">取消</Button>
           </DialogClose>
           <Button variant="destructive" onClick={handleRevoke} disabled={!token.trim() || revokeMutation.isPending}>
             {revokeMutation.isPending && <Spinner />}
-            Revoke
+            撤销
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -33,9 +33,9 @@ const BYTES_TO_GIB = 1024 * 1024 * 1024
 type ViewMode = '%' | 'GiB'
 
 const METRIC_GROUPS = [
-  { key: 'cpu', title: 'CPU (cores)', prefix: '.cpu.', hasToggle: false },
-  { key: 'memory', title: 'Memory', prefix: '.memory.', hasToggle: true },
-  { key: 'filesystem', title: 'Filesystem', prefix: '.filesystem.', hasToggle: true },
+  { key: 'cpu', title: 'CPU（核心）', prefix: '.cpu.', hasToggle: false },
+  { key: 'memory', title: '内存', prefix: '.memory.', hasToggle: true },
+  { key: 'filesystem', title: '文件系统', prefix: '.filesystem.', hasToggle: true },
 ]
 
 function isByteMetric(metricName: string): boolean {
@@ -186,7 +186,7 @@ function MetricGroupChart({
 function MetricsChartsSkeleton() {
   return (
     <div className="flex flex-col gap-6">
-      {['CPU', 'Memory', 'Filesystem'].map((title) => (
+      {['CPU', '内存', '文件系统'].map((title) => (
         <div key={title} className="min-h-[250px]">
           <div className="flex items-center gap-2 mb-2">
             <Skeleton className="h-4 w-20" />
@@ -202,8 +202,8 @@ function MetricsErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <Empty className="flex-1 border-0">
       <EmptyHeader>
-        <EmptyTitle>Failed to load metrics</EmptyTitle>
-        <EmptyDescription>Something went wrong while fetching metrics.</EmptyDescription>
+        <EmptyTitle>加载指标失败</EmptyTitle>
+        <EmptyDescription>获取指标时出现问题。</EmptyDescription>
       </EmptyHeader>
       <Button variant="outline" size="sm" onClick={onRetry}>
         <RefreshCw className="size-4" />
@@ -220,9 +220,9 @@ function MetricsEmptyState({ hasFilters, onClearFilters }: { hasFilters: boolean
         <EmptyMedia variant="icon">
           <BarChart3 className="size-4" />
         </EmptyMedia>
-        <EmptyTitle>{hasFilters ? 'No matching metrics found' : 'No metrics yet'}</EmptyTitle>
+        <EmptyTitle>{hasFilters ? '未找到匹配的指标' : '暂无指标'}</EmptyTitle>
         {hasFilters ? (
-          <EmptyDescription>No metrics matched your current filters.</EmptyDescription>
+          <EmptyDescription>没有指标符合当前筛选条件。</EmptyDescription>
         ) : (
           <EmptyDescription>
             Metrics may take a moment to appear after the sandbox starts.{' '}

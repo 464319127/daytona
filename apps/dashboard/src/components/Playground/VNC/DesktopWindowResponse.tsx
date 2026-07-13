@@ -31,8 +31,8 @@ const VNCErrorContent: React.FC<{ message: string }> = ({ message }) => {
   if (isMissingDependenciesError(message)) {
     return (
       <div className="text-muted-foreground/80 text-center text-sm">
-        <div className="font-medium text-muted-foreground">Computer-use functionality is not available.</div>
-        <div className="mt-3">Computer-use dependencies are missing in the runtime environment.</div>
+        <div className="font-medium text-muted-foreground">Computer Use 功能不可用。</div>
+        <div className="mt-3">运行环境中缺少 Computer Use 依赖项。</div>
         <div className="mt-2">
           <a
             href={`${DAYTONA_DOCS_URL}/en/vnc-access/`}
@@ -40,9 +40,9 @@ const VNCErrorContent: React.FC<{ message: string }> = ({ message }) => {
             rel="noopener noreferrer"
             className="text-primary hover:underline"
           >
-            Read the computer-use guide
+            阅读 Computer Use 指南
           </a>{' '}
-          to learn more.
+          了解更多信息。
         </div>
       </div>
     )
@@ -67,7 +67,7 @@ const VNCDesktopWindowResponse: React.FC<{ className?: string }> = ({ className 
 
   return (
     <Window className={className}>
-      <WindowTitleBar>Desktop Window </WindowTitleBar>
+      <WindowTitleBar>桌面窗口</WindowTitleBar>
       <WindowContent className="w-full flex flex-col items-center justify-center">
         <Group orientation="vertical" className="aspect-[4/3] border-border rounded-b-md">
           <Panel minSize={'20%'} className="overflow-auto">
@@ -77,7 +77,7 @@ const VNCDesktopWindowResponse: React.FC<{ className?: string }> = ({ className 
                   <AnimatePresence mode="wait">
                     {loadingVNCUrl ? (
                       <motion.div className="flex items-center gap-2" key="loading" {...motionLoadingProps}>
-                        <Spinner className="size-4 mr-2" /> Loading VNC...
+                        <Spinner className="size-4 mr-2" /> 正在加载 VNC...
                       </motion.div>
                     ) : (
                       <motion.div
@@ -85,12 +85,12 @@ const VNCDesktopWindowResponse: React.FC<{ className?: string }> = ({ className 
                         className="flex flex-col items-center justify-center gap-2 text-center max-w-sm text-pretty"
                         {...motionLoadingProps}
                       >
-                        {vnc.error && <VNCErrorContent message={vnc.error || 'There was an error loading VNC.'} />}
+                        {vnc.error && <VNCErrorContent message={vnc.error || '加载 VNC 时出错。'} />}
 
                         {sandbox.instance ? (
                           <Button variant="outline" className="mt-2" onClick={() => vnc.refetch()}>
                             <RefreshCcw className="size-4" />
-                            Retry
+                            重试
                           </Button>
                         ) : (
                           sandbox.error && <span className="text-sm text-muted-foreground">{sandbox.error}</span>
@@ -101,7 +101,7 @@ const VNCDesktopWindowResponse: React.FC<{ className?: string }> = ({ className 
                 </div>
               ) : (
                 <iframe
-                  title="VNC desktop window"
+                  title="VNC 桌面窗口"
                   src={`${vnc.url}/vnc.html?autoconnect=true&resize=scale`}
                   className="w-full h-full"
                 />
@@ -112,11 +112,11 @@ const VNCDesktopWindowResponse: React.FC<{ className?: string }> = ({ className 
           <Panel maxSize="80%" minSize="20%" panelRef={resultPanelRef} collapsedSize={0} collapsible defaultSize={0}>
             <div className="bg-background w-full border rounded-md overflow-auto flex flex-col h-full">
               <div className="flex justify-between border-b px-4 pr-2 py-1 text-xs items-center dark:bg-muted/50">
-                <div className="text-muted-foreground font-mono">Result</div>
+                <div className="text-muted-foreground font-mono">结果</div>
                 <div className="flex items-center gap-2">
                   <TooltipButton
                     onClick={() => resultPanelRef.current?.resize('80%')}
-                    tooltipText="Maximize"
+                    tooltipText="最大化"
                     className="h-6 w-6"
                     size="sm"
                     variant="ghost"
@@ -124,7 +124,7 @@ const VNCDesktopWindowResponse: React.FC<{ className?: string }> = ({ className 
                     <ChevronUpIcon className="w-4 h-4" />
                   </TooltipButton>
                   <TooltipButton
-                    tooltipText="Close"
+                    tooltipText="关闭"
                     className="h-6 w-6"
                     size="sm"
                     variant="ghost"
@@ -138,7 +138,7 @@ const VNCDesktopWindowResponse: React.FC<{ className?: string }> = ({ className 
                 <ResponseCard
                   responseContent={
                     VNCInteractionOptionsParamsState.responseContent || (
-                      <div className="text-muted-foreground font-mono">Interaction results will be shown here...</div>
+                      <div className="text-muted-foreground font-mono">交互结果将显示在这里...</div>
                     )
                   }
                 />

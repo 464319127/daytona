@@ -28,7 +28,7 @@ import { useResizeObserver } from 'usehooks-ts'
 
 const playgroundCategoriesData = [
   { value: PlaygroundCategories.SANDBOX, label: 'Sandbox' },
-  { value: PlaygroundCategories.TERMINAL, label: 'Terminal' },
+  { value: PlaygroundCategories.TERMINAL, label: '终端' },
   { value: PlaygroundCategories.VNC, label: 'VNC' },
 ]
 
@@ -92,7 +92,7 @@ const Playground: React.FC = () => {
       <PageHeader />
 
       <PageContent size="full" className="h-full flex flex-col flex-1 overflow-auto" ref={pageContentRef}>
-        <PageIntro title="Playground" className="mb-8" />
+        <PageIntro title="试验场" className="mb-8" />
         <div className="min-h-0 flex-1 -mx-4 flex flex-col">
           <PlaygroundProvider>
             <PlaygroundSandboxProvider activeTab={playgroundCategory}>

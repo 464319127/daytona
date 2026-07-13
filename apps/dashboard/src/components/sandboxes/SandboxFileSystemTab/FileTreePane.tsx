@@ -307,7 +307,7 @@ export function FileTreePane({
       }
 
       if (failedMoves.length > 0) {
-        handleFileSystemApiError(failedMoves[0], 'Failed to move item')
+        handleFileSystemApiError(failedMoves[0], '移动项目失败')
       }
     },
     onPrimaryAction: (item) => {
@@ -623,14 +623,14 @@ export function FileTreePane({
     try {
       const fileContents = Buffer.from(await sandboxInstance.fs.downloadFile(node.path))
       if (isProbablyBinary(fileContents)) {
-        toast.error('Binary file contents cannot be copied as text')
+        toast.error('二进制文件内容无法作为文本复制')
         return
       }
 
       await navigator.clipboard.writeText(fileContents.toString('utf-8'))
-      toast.success(`Copied contents of ${node.name || node.path}`)
+      toast.success(`已复制 ${node.name || node.path} 的内容`)
     } catch (error) {
-      handleFileSystemApiError(error, `Failed to copy ${node.path}`)
+      handleFileSystemApiError(error, `复制 ${node.path} 失败`)
     }
   }
 
@@ -639,12 +639,12 @@ export function FileTreePane({
       <div className="flex flex-1 min-h-0">
         <Empty className="border-0">
           <EmptyHeader>
-            <EmptyTitle>Failed to load filesystem</EmptyTitle>
-            <EmptyDescription>Something went wrong while listing the sandbox root directory.</EmptyDescription>
+            <EmptyTitle>加载文件系统失败</EmptyTitle>
+            <EmptyDescription>列出沙箱根目录时出错。</EmptyDescription>
           </EmptyHeader>
           <Button variant="outline" size="sm" onClick={handleRetryRoot}>
             <RefreshCwIcon className="size-4" />
-            Retry
+            重试
           </Button>
         </Empty>
       </div>
@@ -657,7 +657,7 @@ export function FileTreePane({
         actions={
           <>
             <TooltipButton
-              tooltipText="Refresh files"
+              tooltipText="刷新文件"
               variant="ghost"
               size="icon-sm"
               onClick={handleRefreshRoot}
@@ -670,7 +670,7 @@ export function FileTreePane({
               />
             </TooltipButton>
             <TooltipButton
-              tooltipText="Collapse all folders"
+              tooltipText="折叠所有文件夹"
               variant="ghost"
               size="icon-sm"
               onClick={handleCollapseAll}
@@ -685,8 +685,8 @@ export function FileTreePane({
       <div role="status" aria-live="polite" className="sr-only">
         {searchEnabled && !isSearchLoading && !searchFailed
           ? searchResults.length === 0
-            ? 'No files found'
-            : `${searchResults.length} files found`
+            ? '未找到文件'
+            : `找到 ${searchResults.length} 个文件`
           : null}
       </div>
 
@@ -703,18 +703,18 @@ export function FileTreePane({
           ) : searchEnabled && searchResults.length === 0 && !isSearchLoading && !searchFailed ? (
             <Empty className="border-0">
               <EmptyHeader>
-                <EmptyTitle>0 results</EmptyTitle>
+                <EmptyTitle>0 个结果</EmptyTitle>
                 <EmptyDescription>
-                  No files matched "{searchQuery}". Try another search or clear search.
+                  没有文件匹配“{searchQuery}”。请尝试其他搜索内容或清除搜索。
                 </EmptyDescription>
               </EmptyHeader>
               <Button variant="outline" size="sm" onClick={resetSearch}>
-                Clear search
+                清除搜索
               </Button>
             </Empty>
           ) : (
             <div
-              {...(!searchEnabled ? tree.getContainerProps('Sandbox filesystem') : {})}
+              {...(!searchEnabled ? tree.getContainerProps('Sandbox 文件系统') : {})}
               className={cn('relative min-h-full px-2 transition-opacity', {
                 'opacity-60': isTreeRefreshing,
               })}
@@ -774,10 +774,10 @@ export function FileTreePane({
                               Refresh
                             </DropdownMenuItem>
                             {!node.isDir ? (
-                              <DropdownMenuItem onClick={() => handleDownloadNode(node)}>Download</DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleDownloadNode(node)}>下载</DropdownMenuItem>
                             ) : null}
                             {!node.isDir && !getImageMimeType(node.path) ? (
-                              <DropdownMenuItem onClick={() => handleCopyNode(node)}>Copy contents</DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleCopyNode(node)}>复制内容</DropdownMenuItem>
                             ) : null}
                             {node.isDir ? (
                               <DropdownMenuItem onSelect={() => onRequestCreateFolder(node.path)}>

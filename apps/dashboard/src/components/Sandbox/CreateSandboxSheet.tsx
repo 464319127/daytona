@@ -87,7 +87,7 @@ const buildBaseFormSchema = (maxCpu?: number, maxMemory?: number, maxDisk?: numb
     name: z
       .string()
       .optional()
-      .refine((val) => !val || NAME_REGEX.test(val), 'Only letters, digits, dots, underscores and dashes are allowed'),
+      .refine((val) => !val || NAME_REGEX.test(val), '仅允许字母、数字、点、下划线和连字符'),
     regionId: z.string().optional(),
     cpu: resourceSchema('CPU', maxCpu),
     memory: resourceSchema('Memory', maxMemory),
@@ -96,10 +96,10 @@ const buildBaseFormSchema = (maxCpu?: number, maxMemory?: number, maxDisk?: numb
     autoArchiveInterval: z.number().min(0).optional(),
     autoDeleteInterval: z
       .number()
-      .refine((val) => val === -1 || val >= 0, 'Must be -1 (disabled) or a non-negative number')
+      .refine((val) => val === -1 || val >= 0, '必须为 -1（禁用）或非负数')
       .optional(),
-    envVars: z.array(keyValuePairSchema).optional().refine(noDuplicateKeys, 'Duplicate keys are not allowed'),
-    labels: z.array(keyValuePairSchema).optional().refine(noDuplicateKeys, 'Duplicate keys are not allowed'),
+    envVars: z.array(keyValuePairSchema).optional().refine(noDuplicateKeys, '不允许重复的键'),
+    labels: z.array(keyValuePairSchema).optional().refine(noDuplicateKeys, '不允许重复的键'),
     public: z.boolean().optional(),
     networkBlockAll: z.boolean().optional(),
     ephemeral: z.boolean().optional(),
@@ -223,7 +223,7 @@ export const CreateSandboxSheet = ({
     },
     onSubmit: async ({ value }) => {
       if (!selectedOrganization?.id) {
-        toast.error('Select an organization to create a sandbox.')
+        toast.error('请选择一个组织以创建沙箱。')
         return
       }
 
@@ -240,7 +240,7 @@ export const CreateSandboxSheet = ({
           const cause = error instanceof Error ? error.cause : undefined
           const status = isAxiosError(cause) ? cause.response?.status : undefined
           if (status !== 409) {
-            handleApiError(error, 'Failed to set default region')
+            handleApiError(error, '设置默认区域失败')
             return
           }
         }
@@ -295,7 +295,7 @@ export const CreateSandboxSheet = ({
           })
         }
 
-        toast.success(`Sandbox created`)
+        toast.success('沙箱已创建')
 
         setOpen(false)
 
@@ -303,7 +303,7 @@ export const CreateSandboxSheet = ({
           onSandboxCreated?.(sandbox)
         }
       } catch (error) {
-        handleApiError(error, 'Failed to create sandbox')
+        handleApiError(error, '创建沙箱失败')
       }
     },
   })
@@ -392,12 +392,12 @@ export const CreateSandboxSheet = ({
       }}
     >
       <SheetTrigger asChild>
-        <CreateResourceButton resource="Sandbox" />
+        <CreateResourceButton resource="沙箱" />
       </SheetTrigger>
       <SheetContent className={`w-dvw sm:w-[500px] p-0 flex flex-col gap-0 ${className ?? ''}`}>
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>Create Sandbox</SheetTitle>
-          <SheetDescription className="sr-only">Create a new sandbox in your organization.</SheetDescription>
+          <SheetTitle>创建沙箱</SheetTitle>
+          <SheetDescription className="sr-only">在组织中创建新沙箱。</SheetDescription>
         </SheetHeader>
         <ScrollArea fade="mask" className="flex-1 min-h-0">
           <form
@@ -415,7 +415,7 @@ export const CreateSandboxSheet = ({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>名称</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       id={field.name}
@@ -426,8 +426,7 @@ export const CreateSandboxSheet = ({
                       placeholder="my-sandbox"
                     />
                     <FieldDescription>
-                      Optional. If not provided, the sandbox ID will be used as the name. Names are reusable once a
-                      sandbox is destroyed.
+                      可选。未填写时将使用沙箱 ID 作为名称。沙箱销毁后，其名称可以重复使用。
                     </FieldDescription>
                     {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                       <FieldError errors={field.state.meta.errors} />
@@ -441,13 +440,13 @@ export const CreateSandboxSheet = ({
               {(source) => (
                 <Tabs value={source} onValueChange={handleSourceChange} className="gap-3">
                   <div className="flex flex-col gap-2">
-                    <FieldLabel>Source</FieldLabel>
+                    <FieldLabel>来源</FieldLabel>
                     <TabsList className="w-full">
                       <TabsTrigger value={Source.SNAPSHOT} className="flex-1">
-                        Snapshot
+                        快照
                       </TabsTrigger>
                       <TabsTrigger value={Source.IMAGE} className="flex-1">
-                        Image
+                        镜像
                       </TabsTrigger>
                     </TabsList>
                   </div>
@@ -456,7 +455,7 @@ export const CreateSandboxSheet = ({
                     <form.Field name="snapshot">
                       {(field) => (
                         <Field>
-                          <FieldLabel htmlFor={field.name}>Snapshot</FieldLabel>
+                          <FieldLabel htmlFor={field.name}>快照</FieldLabel>
                           <Select
                             value={field.state.value || NONE_VALUE}
                             onValueChange={(val) => field.handleChange(val === NONE_VALUE ? '' : val)}
@@ -468,12 +467,12 @@ export const CreateSandboxSheet = ({
                               loading={snapshotsLoading}
                             >
                               <SelectValue
-                                placeholder={snapshotsLoading ? 'Loading snapshots...' : 'Select a snapshot'}
+                                placeholder={snapshotsLoading ? '正在加载快照...' : '选择快照'}
                               />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value={NONE_VALUE}>
-                                {config.defaultSnapshot} <Badge variant="secondary">default</Badge>
+                                {config.defaultSnapshot} <Badge variant="secondary">默认</Badge>
                               </SelectItem>
                               {snapshotsData?.items?.map((snapshot) => (
                                 <SelectItem key={snapshot.id} value={snapshot.name}>
@@ -493,7 +492,7 @@ export const CreateSandboxSheet = ({
                         const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                         return (
                           <Field data-invalid={isInvalid}>
-                            <FieldLabel htmlFor={field.name}>Image</FieldLabel>
+                            <FieldLabel htmlFor={field.name}>镜像</FieldLabel>
                             <Input
                               aria-invalid={isInvalid}
                               id={field.name}
@@ -514,7 +513,7 @@ export const CreateSandboxSheet = ({
                       }}
                     </form.Field>
                     <div className="flex flex-col gap-2">
-                      <Label className="text-sm font-medium">Resources</Label>
+                      <Label className="text-sm font-medium">资源</Label>
                       <div className="flex flex-col gap-2">
                         <form.Field name="cpu">
                           {(field) => {
@@ -660,7 +659,7 @@ export const CreateSandboxSheet = ({
                                       <form.Field name="gpuType">
                                         {(field) => (
                                           <Field>
-                                            <FieldLabel htmlFor={field.name}>GPU type</FieldLabel>
+                                            <FieldLabel htmlFor={field.name}>GPU 类型</FieldLabel>
                                             <Select
                                               value={field.state.value ?? allowedGpuTypes[0]}
                                               onValueChange={(val) => field.handleChange(val as GpuType)}
@@ -699,10 +698,10 @@ export const CreateSandboxSheet = ({
             <form.Field name="regionId">
               {(field) => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Region</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>区域</FieldLabel>
                   <Select value={field.state.value} onValueChange={field.handleChange}>
                     <SelectTrigger className="h-8" id={field.name} disabled={loadingRegions} loading={loadingRegions}>
-                      <SelectValue placeholder={loadingRegions ? 'Loading regions...' : 'Select a region'} />
+                      <SelectValue placeholder={loadingRegions ? '正在加载区域...' : '选择区域'} />
                     </SelectTrigger>
                     <SelectContent>
                       {regions.map((region) => (
@@ -712,7 +711,7 @@ export const CreateSandboxSheet = ({
                       ))}
                     </SelectContent>
                   </Select>
-                  <FieldDescription>The region where the sandbox will be created.</FieldDescription>
+                    <FieldDescription>创建沙箱的目标区域。</FieldDescription>
                 </Field>
               )}
             </form.Field>
@@ -744,7 +743,7 @@ export const CreateSandboxSheet = ({
               </form.Field>
             )}
             <div className="flex flex-col gap-2">
-              <Label className="text-sm font-medium">Lifecycle</Label>
+              <Label className="text-sm font-medium">生命周期</Label>
               <div className="flex flex-col gap-2">
                 <form.Field name="autoStopInterval">
                   {(field) => (
@@ -752,7 +751,7 @@ export const CreateSandboxSheet = ({
                       <Label htmlFor={field.name} className="w-40 flex-shrink-0 flex items-center gap-1">
                         Auto-stop (min):
                         <Tooltip
-                          label={<InfoTooltipButton aria-label="Auto-stop information" />}
+                          label={<InfoTooltipButton aria-label="自动停止说明" />}
                           content={
                             <p>
                               Minutes of inactivity before stopping. Resets on preview access, SSH, or Toolbox API
@@ -784,7 +783,7 @@ export const CreateSandboxSheet = ({
                       <Label htmlFor={field.name} className="w-40 flex-shrink-0 flex items-center gap-1">
                         Auto-archive (min):
                         <Tooltip
-                          label={<InfoTooltipButton aria-label="Auto-archive information" />}
+                          label={<InfoTooltipButton aria-label="自动归档说明" />}
                           content={
                             <p>
                               Minutes a sandbox must remain continuously stopped before archiving.
@@ -817,7 +816,7 @@ export const CreateSandboxSheet = ({
                           <Label htmlFor={field.name} className="w-40 flex-shrink-0 flex items-center gap-1">
                             Auto-delete (min):
                             <Tooltip
-                              label={<InfoTooltipButton aria-label="Auto-delete information" />}
+                              label={<InfoTooltipButton aria-label="自动删除说明" />}
                               content={
                                 <p>
                                   Minutes a sandbox must remain continuously stopped before permanent deletion.
@@ -835,7 +834,7 @@ export const CreateSandboxSheet = ({
                             customInput={Input}
                             id={field.name}
                             className="w-full"
-                            placeholder="Disabled"
+                            placeholder="已禁用"
                             disabled={ephemeral}
                             decimalScale={0}
                             allowNegative
@@ -871,12 +870,12 @@ export const CreateSandboxSheet = ({
                           />
                           <div className="flex flex-col gap-1">
                             <Label htmlFor={field.name} className="text-sm font-normal">
-                              Ephemeral
+                              临时存储
                             </Label>
                             <FieldDescription>
                               {gpu
-                                ? 'Required for GPU sandboxes - automatically deleted when stopped.'
-                                : 'Automatically delete the sandbox when it stops.'}
+                                ? 'GPU Sandbox 必须启用，停止后会自动删除。'
+                                : 'Sandbox 停止后自动删除。'}
                             </FieldDescription>
                           </div>
                         </div>
@@ -892,12 +891,12 @@ export const CreateSandboxSheet = ({
                 const hasErrors = field.state.meta.errors.length > 0
                 return (
                   <Field data-invalid={hasErrors}>
-                    <FieldLabel>Environment Variables</FieldLabel>
+                    <FieldLabel>环境变量</FieldLabel>
                     <div className="flex flex-col gap-2">
                       {(field.state.value ?? []).map((_, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <Input
-                            placeholder="Key"
+                            placeholder="键"
                             value={field.state.value?.[index]?.key ?? ''}
                             onChange={(e) => {
                               const updated = [...(field.state.value ?? [])]
@@ -907,7 +906,7 @@ export const CreateSandboxSheet = ({
                             onPaste={(e) => handleEnvPaste(e, index)}
                           />
                           <Input
-                            placeholder="Value"
+                            placeholder="值"
                             value={field.state.value?.[index]?.value ?? ''}
                             onChange={(e) => {
                               const updated = [...(field.state.value ?? [])]
@@ -919,7 +918,7 @@ export const CreateSandboxSheet = ({
                             type="button"
                             variant="ghost"
                             size="icon"
-                            aria-label="Remove variable"
+                            aria-label="移除环境变量"
                             className="flex-shrink-0 h-8 w-8"
                             onClick={() => {
                               const updated = (field.state.value ?? []).filter((_, i) => i !== index)
@@ -971,12 +970,12 @@ export const CreateSandboxSheet = ({
                 const hasErrors = field.state.meta.errors.length > 0
                 return (
                   <Field data-invalid={hasErrors}>
-                    <FieldLabel>Labels</FieldLabel>
+                    <FieldLabel>标签</FieldLabel>
                     <div className="flex flex-col gap-2">
                       {(field.state.value ?? []).map((_, index) => (
                         <div key={index} className="flex items-center gap-2">
                           <Input
-                            placeholder="Key"
+                            placeholder="键"
                             value={field.state.value?.[index]?.key ?? ''}
                             onChange={(e) => {
                               const updated = [...(field.state.value ?? [])]
@@ -985,7 +984,7 @@ export const CreateSandboxSheet = ({
                             }}
                           />
                           <Input
-                            placeholder="Value"
+                            placeholder="值"
                             value={field.state.value?.[index]?.value ?? ''}
                             onChange={(e) => {
                               const updated = [...(field.state.value ?? [])]
@@ -997,7 +996,7 @@ export const CreateSandboxSheet = ({
                             type="button"
                             variant="ghost"
                             size="icon"
-                            aria-label="Remove label"
+                            aria-label="移除标签"
                             className="flex-shrink-0 h-8 w-8"
                             onClick={() => {
                               const updated = (field.state.value ?? []).filter((_, i) => i !== index)
@@ -1026,7 +1025,7 @@ export const CreateSandboxSheet = ({
             </form.Field>
 
             <div className="flex flex-col gap-4">
-              <Label className="text-sm font-medium">Network</Label>
+              <Label className="text-sm font-medium">网络</Label>
               <form.Field name="public">
                 {(field) => (
                   <div className="flex items-start gap-2">
@@ -1040,7 +1039,7 @@ export const CreateSandboxSheet = ({
                       <Label htmlFor={field.name} className="text-sm font-normal">
                         Public HTTP Preview
                       </Label>
-                      <FieldDescription>Allow public access to HTTP preview URLs.</FieldDescription>
+                      <FieldDescription>允许公开访问 HTTP 预览 URL。</FieldDescription>
                     </div>
                   </div>
                 )}
@@ -1058,7 +1057,7 @@ export const CreateSandboxSheet = ({
                       <Label htmlFor={field.name} className="text-sm font-normal">
                         Block All Network Access
                       </Label>
-                      <FieldDescription>Block all outbound network access from the sandbox.</FieldDescription>
+                      <FieldDescription>阻止沙箱的所有出站网络访问。</FieldDescription>
                     </div>
                   </div>
                 )}

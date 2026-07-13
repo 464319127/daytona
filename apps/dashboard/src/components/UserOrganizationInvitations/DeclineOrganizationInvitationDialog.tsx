@@ -39,7 +39,7 @@ export const DeclineOrganizationInvitationDialog: React.FC<DeclineOrganizationIn
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Decline Invitation</DialogTitle>
+          <DialogTitle>拒绝邀请</DialogTitle>
           <DialogDescription>
             Are you sure you want to decline this invitation to join the organization?
           </DialogDescription>

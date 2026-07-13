@@ -199,7 +199,7 @@ export const PlaygroundProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           })
 
         if (emptyFormItem) {
-          return `${emptyFormItem.label} parameter is required for this action`
+          return `此操作需要填写参数：${emptyFormItem.label}`
         }
       }
 

@@ -23,7 +23,7 @@ export const useUpdateOrganizationInvitationMutation = () => {
     mutationKey: mutationKeys.organization.invitations.update(),
     mutationFn: async ({ organizationId, invitationId, invitation }) => {
       if (!organizationId) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const response = await organizationsApi.updateOrganizationInvitation(organizationId, invitationId, invitation)

@@ -61,9 +61,9 @@ export function InvoicesTable({
             <TableEmptyState
               overlay
               colSpan={table.getAllColumns().length}
-              message="No invoices yet."
+              message="暂无发票。"
               icon={<FileText />}
-              description={<p>Invoices will appear here once they are generated.</p>}
+              description={<p>发票生成后将显示在这里。</p>}
             />
           ) : null
         }
@@ -132,7 +132,7 @@ export function InvoicesTable({
       </TableContainer>
 
       <div className="flex items-center justify-end">
-        <Pagination className="pb-2" table={table} entityName="Invoices" totalItems={totalItems} />
+        <Pagination className="pb-2" table={table} entityName="发票" totalItems={totalItems} />
       </div>
     </div>
   )

@@ -47,7 +47,7 @@ function FadeTabListButton({
             size="icon-sm"
             className="pointer-events-auto relative z-10 size-8 text-muted-foreground hover:text-foreground"
             onClick={onClick}
-            aria-label={isLeft ? 'Scroll tabs left' : 'Scroll tabs right'}
+            aria-label={isLeft ? '向左滚动标签页' : '向右滚动标签页'}
           >
             {isLeft ? <ChevronLeft className="size-4" /> : <ChevronRight className="size-4" />}
           </Button>

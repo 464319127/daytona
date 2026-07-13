@@ -35,9 +35,9 @@ interface CreateOrganizationRoleSheetProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  description: z.string().min(1, 'Description is required'),
-  permissions: z.array(z.enum(OrganizationRolePermissionsEnum)).min(1, 'At least one permission is required'),
+  name: z.string().min(1, '名称为必填项'),
+  description: z.string().min(1, '描述为必填项'),
+  permissions: z.array(z.enum(OrganizationRolePermissionsEnum)).min(1, '至少需要选择一项权限'),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -112,11 +112,11 @@ export const CreateOrganizationRoleSheet: React.FC<CreateOrganizationRoleSheetPr
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <CreateResourceButton resource="Role" className={className} />
+        <CreateResourceButton resource="角色" className={className} />
       </SheetTrigger>
       <SheetContent className="w-dvw sm:w-[560px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>Create Role</SheetTitle>
+          <SheetTitle>创建角色</SheetTitle>
           <SheetDescription className="sr-only">
             Define a custom role for managing access to the organization.
           </SheetDescription>
@@ -138,7 +138,7 @@ export const CreateOrganizationRoleSheet: React.FC<CreateOrganizationRoleSheetPr
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>名称</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       id={field.name}
@@ -146,7 +146,7 @@ export const CreateOrganizationRoleSheet: React.FC<CreateOrganizationRoleSheetPr
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Name"
+                      placeholder="名称"
                     />
                     {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                       <FieldError errors={field.state.meta.errors} />
@@ -161,7 +161,7 @@ export const CreateOrganizationRoleSheet: React.FC<CreateOrganizationRoleSheetPr
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>描述</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       id={field.name}
@@ -169,7 +169,7 @@ export const CreateOrganizationRoleSheet: React.FC<CreateOrganizationRoleSheetPr
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Description"
+                      placeholder="描述"
                     />
                     {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                       <FieldError errors={field.state.meta.errors} />
@@ -211,7 +211,7 @@ export const CreateOrganizationRoleSheet: React.FC<CreateOrganizationRoleSheetPr
 
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Permissions</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>权限</FieldLabel>
                     <div className="space-y-6">
                       {ORGANIZATION_ROLE_PERMISSIONS_GROUPS.map((group) => {
                         const groupIsChecked = isGroupChecked(group, field.state.value)

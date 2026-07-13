@@ -122,7 +122,7 @@ export function ApiKeyTable({ data, loading, isLoadingKey, onRevokeRequest }: Da
           debounced
           value={globalFilter}
           onValueChange={handleChangeFilter}
-          placeholder="Search by Name or Permission"
+          placeholder="按名称或权限搜索"
           containerClassName="min-w-0 flex-1 sm:max-w-sm"
         />
       </div>
@@ -133,14 +133,14 @@ export function ApiKeyTable({ data, loading, isLoadingKey, onRevokeRequest }: Da
             <TableEmptyState
               overlay
               colSpan={columns.length}
-              message={hasSearch ? 'No matching API Keys found.' : 'No API Keys yet.'}
+              message={hasSearch ? '未找到匹配的 API 密钥。' : '暂无 API 密钥。'}
               icon={<KeyRound />}
               description={
                 hasSearch ? null : (
                   <div className="space-y-2">
-                    <p>API Keys authenticate requests made through the Daytona SDK or CLI.</p>
+                    <p>API 密钥用于验证通过 Daytona SDK 或 CLI 发出的请求。</p>
                     <p>
-                      Generate one and{' '}
+                      创建一个，然后{' '}
                       <a
                         href="https://www.daytona.io/docs/api-keys"
                         target="_blank"
@@ -270,7 +270,7 @@ const columns: ColumnDef<ApiKeyList>[] = [
     accessorKey: 'permissions',
     size: 170,
     header: () => {
-      return <div className="px-3">Permissions</div>
+      return <div className="px-3">权限</div>
     },
     cell: ({ row }) => {
       return (
@@ -349,7 +349,7 @@ const columns: ColumnDef<ApiKeyList>[] = [
         <div className="flex justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu" disabled={isLoading}>
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单" disabled={isLoading}>
                 {isLoading ? <Loader2 className="size-4 animate-spin" /> : <MoreHorizontal />}
               </Button>
             </DropdownMenuTrigger>
@@ -406,11 +406,11 @@ function PermissionsTooltip({
     <Popover>
       <PopoverTrigger>
         <Badge variant={badgeVariant} className="whitespace-nowrap">
-          {badgeText} <span className="hidden xs:inline ml-1">Access</span>
+          {badgeText} <span className="hidden xs:inline ml-1">权限</span>
         </Badge>
       </PopoverTrigger>
       <PopoverContent className="p-0">
-        <p className="p-2 text-muted-foreground text-xs font-medium border-b">Permissions</p>
+        <p className="p-2 text-muted-foreground text-xs font-medium border-b">权限</p>
         <div className="flex flex-col">
           {availableGroups.map((group) => {
             const selectedPermissions = group.permissions.filter((p) => permissions.includes(p))

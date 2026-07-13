@@ -29,7 +29,7 @@ export const useOrganizationRoles = () => {
         const response = await organizationsApi.listOrganizationRoles(selectedOrganization.id)
         setRoles(response.data)
       } catch (error) {
-        handleApiError(error, 'Failed to fetch organization roles')
+        handleApiError(error, '获取组织角色失败')
       } finally {
         setLoadingRoles(false)
       }

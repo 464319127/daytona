@@ -68,13 +68,13 @@ export function SvixProvider({ children }: SvixProviderProps) {
           size={isWebhooksListPage ? 'full' : 'default'}
           className={cn({ 'overflow-hidden': isWebhooksListPage })}
         >
-          <PageIntro title="Webhooks" className={cn({ 'mb-8': isWebhooksListPage })} />
+          <PageIntro title="Webhook" className={cn({ 'mb-8': isWebhooksListPage })} />
           <Card className={cn({ 'mx-4': isWebhooksListPage })}>
             <CardHeader>
-              <CardTitle className="text-center">Oops, something went wrong</CardTitle>
+              <CardTitle className="text-center">出现错误</CardTitle>
             </CardHeader>
             <CardContent className="flex justify-between items-center flex-col gap-3">
-              <div>Failed to load webhooks. Please try again later.</div>
+              <div>加载 Webhook 失败，请稍后重试。</div>
               <Button variant="outline" onClick={() => refetch()}>
                 <RefreshCcw className="mr-2 h-4 w-4" />
                 Retry

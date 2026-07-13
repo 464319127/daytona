@@ -26,7 +26,7 @@ export const useActivateSnapshotMutation = ({
   return useMutation<SnapshotDto, unknown, ActivateSnapshotMutationVariables>({
     mutationFn: async ({ snapshotId, organizationId }) => {
       if (!organizationId) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
       const response = await snapshotApi.activateSnapshot(snapshotId, organizationId)
       return response.data

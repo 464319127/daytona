@@ -40,8 +40,8 @@ export const LeaveOrganizationDialog: React.FC<LeaveOrganizationDialogProps> = (
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Leave Organization</DialogTitle>
-          <DialogDescription>Are you sure you want to leave this organization?</DialogDescription>
+          <DialogTitle>离开组织</DialogTitle>
+          <DialogDescription>确定要退出此组织吗？</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>

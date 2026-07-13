@@ -65,7 +65,7 @@ function SandboxDetailsTabsList({
 function SandboxOverviewTabTrigger() {
   return (
     <div className="h-[42px] shrink-0 border-b border-border">
-      <div className="inline-flex h-[41px] items-center px-4 py-0 text-sm font-medium text-foreground">Overview</div>
+      <div className="inline-flex h-[41px] items-center px-4 py-0 text-sm font-medium text-foreground">概览</div>
     </div>
   )
 }
@@ -155,10 +155,10 @@ function SandboxDetailsSheetContent({
                           onClick={() => onResetToOverview()}
                         >
                           <ChevronsRight className="size-4" />
-                          <span className="sr-only">Collapse</span>
+                          <span className="sr-only">收起</span>
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent>Collapse</TooltipContent>
+                      <TooltipContent>收起</TooltipContent>
                     </Tooltip>
                   }
                 />

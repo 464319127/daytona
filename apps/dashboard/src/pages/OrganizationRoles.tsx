@@ -39,11 +39,11 @@ const OrganizationRoles: React.FC = () => {
         description: description?.trim(),
         permissions,
       })
-      toast.success('Role created successfully')
+      toast.success('角色已创建')
       await refreshRoles(false)
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to create role')
+      handleApiError(error, '创建角色失败')
       return false
     }
   }
@@ -64,11 +64,11 @@ const OrganizationRoles: React.FC = () => {
         description: description?.trim(),
         permissions,
       })
-      toast.success('Role updated successfully')
+      toast.success('角色已更新')
       await refreshRoles(false)
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to update role')
+      handleApiError(error, '更新角色失败')
       return false
     } finally {
       setLoadingRoleAction((prev) => ({ ...prev, [roleId]: false }))
@@ -82,11 +82,11 @@ const OrganizationRoles: React.FC = () => {
     setLoadingRoleAction((prev) => ({ ...prev, [roleId]: true }))
     try {
       await organizationsApi.deleteOrganizationRole(selectedOrganization.id, roleId)
-      toast.success('Role deleted successfully')
+      toast.success('角色已删除')
       await refreshRoles(false)
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to delete role')
+      handleApiError(error, '删除角色失败')
       return false
     } finally {
       setLoadingRoleAction((prev) => ({ ...prev, [roleId]: false }))
@@ -97,7 +97,7 @@ const OrganizationRoles: React.FC = () => {
     () => [
       {
         id: 'create-role',
-        label: 'Create Role',
+        label: '创建角色',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: () => createRoleSheetRef.current?.open(),
       },
@@ -105,7 +105,7 @@ const OrganizationRoles: React.FC = () => {
     [],
   )
 
-  useRegisterCommands(rootCommands, { groupId: 'role-actions', groupLabel: 'Role actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'role-actions', groupLabel: '角色操作', groupOrder: 0 })
 
   return (
     <PageLayout>
@@ -113,7 +113,7 @@ const OrganizationRoles: React.FC = () => {
 
       <PageContent>
         <PageIntro
-          title="Roles"
+          title="角色"
           actions={<CreateOrganizationRoleSheet onCreateRole={handleCreateRole} ref={createRoleSheetRef} />}
         />
         <OrganizationRoleTable

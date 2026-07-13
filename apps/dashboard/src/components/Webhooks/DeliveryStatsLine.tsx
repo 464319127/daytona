@@ -16,10 +16,10 @@ const transition = {
 } as const
 
 const SEGMENTS = [
-  { key: 'success', label: 'Success', color: 'bg-green-500', dotColor: 'bg-green-500' },
-  { key: 'fail', label: 'Failed', color: 'bg-red-500', dotColor: 'bg-red-500' },
-  { key: 'pending', label: 'Pending', color: 'bg-muted-foreground/50', dotColor: 'bg-muted-foreground/50' },
-  { key: 'sending', label: 'Sending', color: 'bg-white', dotColor: 'bg-white border border-border' },
+  { key: 'success', label: '成功', color: 'bg-green-500', dotColor: 'bg-green-500' },
+  { key: 'fail', label: '失败', color: 'bg-red-500', dotColor: 'bg-red-500' },
+  { key: 'pending', label: '待处理', color: 'bg-muted-foreground/50', dotColor: 'bg-muted-foreground/50' },
+  { key: 'sending', label: '发送中', color: 'bg-white', dotColor: 'bg-white border border-border' },
 ] as const
 
 interface DeliveryStatsLineProps {

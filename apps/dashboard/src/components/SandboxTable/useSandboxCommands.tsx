@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0
  */
 
-import { pluralize } from '@/lib/utils'
 import { BulkActionCounts } from '@/lib/utils/sandbox'
 import { ArchiveIcon, CheckSquare2Icon, MinusSquareIcon, PlayIcon, SquareIcon, TrashIcon } from 'lucide-react'
 import { useMemo } from 'react'
@@ -40,7 +39,7 @@ export function useSandboxCommands({
     if (selectableCount !== selectedCount) {
       commands.push({
         id: 'select-all-sandboxes',
-        label: 'Select All Sandboxes',
+        label: '选择全部 Sandbox',
         icon: <CheckSquare2Icon className="w-4 h-4" />,
         onSelect: () => toggleAllRowsSelected(true),
         chainable: true,
@@ -50,7 +49,7 @@ export function useSandboxCommands({
     if (selectedCount > 0) {
       commands.push({
         id: 'deselect-all-sandboxes',
-        label: 'Deselect All Sandboxes',
+        label: '取消选择全部 Sandbox',
         icon: <MinusSquareIcon className="w-4 h-4" />,
         onSelect: () => toggleAllRowsSelected(false),
         chainable: true,
@@ -60,7 +59,7 @@ export function useSandboxCommands({
     if (writePermitted && bulkActionCounts.startable > 0) {
       commands.push({
         id: 'start-sandboxes',
-        label: `Start ${pluralize(bulkActionCounts.startable, 'Sandbox', 'Sandboxes')}`,
+        label: `启动 ${bulkActionCounts.startable} 个 Sandbox`,
         icon: <PlayIcon className="w-4 h-4" />,
         onSelect: onStart,
       })
@@ -69,7 +68,7 @@ export function useSandboxCommands({
     if (writePermitted && bulkActionCounts.stoppable > 0) {
       commands.push({
         id: 'stop-sandboxes',
-        label: `Stop ${pluralize(bulkActionCounts.stoppable, 'Sandbox', 'Sandboxes')}`,
+        label: `停止 ${bulkActionCounts.stoppable} 个 Sandbox`,
         icon: <SquareIcon className="w-4 h-4" />,
         onSelect: onStop,
       })
@@ -78,7 +77,7 @@ export function useSandboxCommands({
     if (writePermitted && bulkActionCounts.archivable > 0) {
       commands.push({
         id: 'archive-sandboxes',
-        label: `Archive ${pluralize(bulkActionCounts.archivable, 'Sandbox', 'Sandboxes')}`,
+        label: `归档 ${bulkActionCounts.archivable} 个 Sandbox`,
         icon: <ArchiveIcon className="w-4 h-4" />,
         onSelect: onArchive,
       })
@@ -87,7 +86,7 @@ export function useSandboxCommands({
     if (deletePermitted && bulkActionCounts.deletable > 0) {
       commands.push({
         id: 'delete-sandboxes',
-        label: `Delete ${pluralize(bulkActionCounts.deletable, 'Sandbox', 'Sandboxes')}`,
+        label: `删除 ${bulkActionCounts.deletable} 个 Sandbox`,
         icon: <TrashIcon className="w-4 h-4" />,
         onSelect: onDelete,
       })
@@ -107,5 +106,5 @@ export function useSandboxCommands({
     onArchive,
   ])
 
-  useRegisterCommands(rootCommands, { groupId: 'sandbox-actions', groupLabel: 'Sandbox actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'sandbox-actions', groupLabel: 'Sandbox 操作', groupOrder: 0 })
 }

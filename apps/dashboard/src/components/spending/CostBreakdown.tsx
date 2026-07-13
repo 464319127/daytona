@@ -75,11 +75,11 @@ export function CostBreakdown({ usageData, showTotal, isLoading, isError, onRetr
         color: 'hsl(var(--chart-1))',
       },
       ramGB: {
-        label: 'RAM',
+        label: '内存',
         color: 'hsl(var(--chart-2))',
       },
       diskGB: {
-        label: 'Disk',
+        label: '磁盘',
         color: 'hsl(var(--chart-3))',
       },
     }
@@ -93,37 +93,37 @@ export function CostBreakdown({ usageData, showTotal, isLoading, isError, onRetr
     <Card>
       <CardHeader className="flex flex-col sm:flex-row sm:items-center gap-2 space-y-0 border-b p-4">
         <div className="flex-1">
-          <CardTitle>Monthly Cost Breakdown</CardTitle>
+          <CardTitle>每月费用明细</CardTitle>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <FacetFilter
-            title="Filters"
+            title="筛选"
             className="h-8 pr-1"
             options={[
               { label: 'CPU', value: 'cpu' },
-              { label: 'RAM', value: 'ramGB' },
-              { label: 'Disk', value: 'diskGB' },
+              { label: '内存', value: 'ramGB' },
+              { label: '磁盘', value: 'diskGB' },
             ]}
             selectedValues={filters}
             setSelectedValues={setFilters}
           />
           <Select value={chartType} onValueChange={(value) => setChartType(value as 'bar' | 'area')}>
-            <SelectTrigger size="sm" className="w-[80px] rounded-lg" aria-label="Select a chart type">
-              <SelectValue placeholder="Bar" />
+            <SelectTrigger size="sm" className="w-[80px] rounded-lg" aria-label="选择图表类型">
+              <SelectValue placeholder="柱状图" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
-              <SelectItem value="bar">Bar</SelectItem>
-              <SelectItem value="area">Area</SelectItem>
+              <SelectItem value="bar">柱状图</SelectItem>
+              <SelectItem value="area">面积图</SelectItem>
             </SelectContent>
           </Select>
           <Select value={timeRange.toString()} onValueChange={(value) => setTimeRange(Number(value))}>
-            <SelectTrigger size="sm" className="w-[150px] rounded-lg" aria-label="Select the range of months">
-              <SelectValue placeholder="Last 12 months" />
+            <SelectTrigger size="sm" className="w-[150px] rounded-lg" aria-label="选择月份范围">
+              <SelectValue placeholder="最近 12 个月" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
-              <SelectItem value="12">Last 12 months</SelectItem>
-              <SelectItem value="6">Last 6 months</SelectItem>
-              <SelectItem value="3">Last 3 months</SelectItem>
+              <SelectItem value="12">最近 12 个月</SelectItem>
+              <SelectItem value="6">最近 6 个月</SelectItem>
+              <SelectItem value="3">最近 3 个月</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -134,8 +134,8 @@ export function CostBreakdown({ usageData, showTotal, isLoading, isError, onRetr
             <EmptyMedia variant="icon" className="bg-destructive-background text-destructive">
               <AlertCircle />
             </EmptyMedia>
-            <EmptyTitle className="text-destructive">Failed to load billing data</EmptyTitle>
-            <EmptyDescription>Something went wrong while fetching billing data. Please try again.</EmptyDescription>
+            <EmptyTitle className="text-destructive">加载账单数据失败</EmptyTitle>
+            <EmptyDescription>获取账单数据时出错，请重试。</EmptyDescription>
           </EmptyHeader>
           {onRetry && (
             <EmptyContent>
@@ -152,7 +152,7 @@ export function CostBreakdown({ usageData, showTotal, isLoading, isError, onRetr
             <EmptyMedia variant="icon">
               <BarChart3 />
             </EmptyMedia>
-            <EmptyTitle>No billing data yet</EmptyTitle>
+            <EmptyTitle>暂无账单数据</EmptyTitle>
             <EmptyDescription>
               Monthly cost data will show up here once your organization has usage to report.
             </EmptyDescription>

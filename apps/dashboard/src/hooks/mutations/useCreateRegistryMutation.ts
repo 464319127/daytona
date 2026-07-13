@@ -20,7 +20,7 @@ export const useCreateRegistryMutation = () => {
   return useMutation<DockerRegistry, unknown, CreateRegistryMutationVariables>({
     mutationFn: async ({ registry, organizationId }) => {
       if (!organizationId) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
       const response = await dockerRegistryApi.createRegistry(registry, organizationId)
       return response.data

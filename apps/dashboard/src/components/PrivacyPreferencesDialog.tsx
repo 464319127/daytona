@@ -36,7 +36,7 @@ export function PrivacyPreferencesDialog({ open, onOpenChange, preferences, onSa
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Privacy Preferences</DialogTitle>
+          <DialogTitle>隐私偏好</DialogTitle>
         </DialogHeader>
 
         <DialogDescription>
@@ -47,7 +47,7 @@ export function PrivacyPreferencesDialog({ open, onOpenChange, preferences, onSa
           <div className="rounded-md border mx-5">
             <div className="flex items-start justify-between space-x-2 p-3 bg-muted/50">
               <div className="space-y-1">
-                <p className="font-medium text-sm">Essential</p>
+                <p className="font-medium text-sm">必要功能</p>
                 <p className="text-xs text-muted-foreground">
                   Required for login sessions and core functionality. Cannot be disabled.
                 </p>
@@ -59,7 +59,7 @@ export function PrivacyPreferencesDialog({ open, onOpenChange, preferences, onSa
 
             <div className="flex items-start justify-between space-x-2 p-3">
               <div className="space-y-1">
-                <p className="font-medium text-sm">Analytics</p>
+                <p className="font-medium text-sm">数据分析</p>
                 <p className="text-xs text-muted-foreground">
                   Collects anonymous usage data to help us understand how the product is used and improve it.
                 </p>
@@ -74,7 +74,7 @@ export function PrivacyPreferencesDialog({ open, onOpenChange, preferences, onSa
 
             <div className="flex items-start justify-between space-x-2 p-3">
               <div className="space-y-1">
-                <p className="font-medium text-sm">Preferences</p>
+                <p className="font-medium text-sm">偏好设置</p>
                 <p className="text-xs text-muted-foreground">
                   Remembers your settings like theme and layout across sessions.
                 </p>
@@ -89,7 +89,7 @@ export function PrivacyPreferencesDialog({ open, onOpenChange, preferences, onSa
 
             <div className="flex items-start justify-between space-x-2 p-3">
               <div className="space-y-1">
-                <p className="font-medium text-sm">Marketing</p>
+                <p className="font-medium text-sm">营销</p>
                 <p className="text-xs text-muted-foreground">
                   Used for communications about Daytona features and updates.
                 </p>
@@ -106,7 +106,7 @@ export function PrivacyPreferencesDialog({ open, onOpenChange, preferences, onSa
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSave}>Save Preferences</Button>
+          <Button onClick={handleSave}>保存偏好</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -37,7 +37,7 @@ export function AnnouncementBanner({ text, learnMoreUrl, onDismiss }: Announceme
           size="sm"
           className="h-auto p-1 hover:bg-primary-foreground/10 text-primary-foreground hover:text-primary-foreground"
           onClick={onDismiss}
-          aria-label="Dismiss announcement"
+          aria-label="关闭公告"
         >
           <X className="h-4 w-4" />
         </Button>

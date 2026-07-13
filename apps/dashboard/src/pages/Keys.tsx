@@ -63,9 +63,9 @@ const Keys: React.FC = () => {
         name: key.name,
         organizationId: selectedOrganization.id,
       })
-      toast.success('API key revoked successfully')
+      toast.success('API 密钥已撤销')
     } catch (error) {
-      handleApiError(error, 'Failed to revoke API key')
+      handleApiError(error, '撤销 API 密钥失败')
     } finally {
       setLoadingKeys((prev) => ({ ...prev, [loadingId]: false }))
     }
@@ -91,14 +91,14 @@ const Keys: React.FC = () => {
     return [
       {
         id: 'create-key',
-        label: 'Create API Key',
+        label: '创建 API 密钥',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: () => createApiKeySheetRef.current?.open(),
       },
     ]
   }, [selectedOrganization?.id])
 
-  useRegisterCommands(rootCommands, { groupId: 'api-key-actions', groupLabel: 'API key actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'api-key-actions', groupLabel: 'API 密钥操作', groupOrder: 0 })
 
   return (
     <PageLayout contained>
@@ -106,7 +106,7 @@ const Keys: React.FC = () => {
 
       <PageContent size="full" className="overflow-hidden">
         <PageIntro
-          title="API Keys"
+          title="API 密钥"
           actions={
             <CreateApiKeySheet
               availablePermissions={availablePermissions}
@@ -138,15 +138,15 @@ const Keys: React.FC = () => {
           >
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Confirm API Key Revocation</DialogTitle>
+                <DialogTitle>确认撤销 API 密钥</DialogTitle>
                 <DialogDescription>
-                  Are you sure you want to revoke the API key "{apiKeyToRevoke.name}"? This action cannot be undone.
+                  确定要撤销 API 密钥“{apiKeyToRevoke.name}”吗？此操作无法撤销。
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
                 <DialogClose asChild>
                   <Button type="button" variant="secondary">
-                    Cancel
+                    取消
                   </Button>
                 </DialogClose>
                 <Button
@@ -155,7 +155,7 @@ const Keys: React.FC = () => {
                   disabled={isLoadingKey(apiKeyToRevoke)}
                 >
                   {isLoadingKey(apiKeyToRevoke) && <Spinner />}
-                  Revoke
+                  撤销
                 </Button>
               </DialogFooter>
             </DialogContent>

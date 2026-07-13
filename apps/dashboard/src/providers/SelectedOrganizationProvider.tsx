@@ -108,7 +108,7 @@ export function SelectedOrganizationProvider(props: Props) {
         setSelectedOrganizationId(organizationId)
         return true
       } else {
-        toast.error('Failed to switch organization', {
+        toast.error('切换组织失败', {
           closeButton: true,
         })
         return false

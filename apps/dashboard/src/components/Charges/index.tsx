@@ -41,13 +41,13 @@ export function ChargesTable({ data, loading, onRowClick }: ChargesTableProps) {
             <TableEmptyState
               overlay
               colSpan={table.getAllColumns().length}
-              message={hasSearch ? 'No matching charges found.' : 'No charges yet.'}
+              message={hasSearch ? '未找到匹配的扣款记录。' : '暂无扣款记录。'}
               icon={<Receipt />}
               description={
                 hasSearch ? (
-                  <p>Try adjusting your search query.</p>
+                  <p>请尝试调整搜索条件。</p>
                 ) : (
-                  <p>Charges will appear here as payments are attempted on your organization.</p>
+                  <p>组织发起支付后，扣款记录将显示在这里。</p>
                 )
               }
             />
@@ -118,7 +118,7 @@ export function ChargesTable({ data, loading, onRowClick }: ChargesTableProps) {
       </TableContainer>
 
       <div className="flex items-center justify-end">
-        <Pagination className="pb-2" table={table} entityName="Charges" />
+        <Pagination className="pb-2" table={table} entityName="扣款记录" />
       </div>
     </div>
   )

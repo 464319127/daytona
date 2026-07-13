@@ -84,7 +84,7 @@ export function useSandboxesQuery(params: SandboxQueryParams) {
     queryKey: queryKeys.sandboxes.list(selectedOrganization?.id ?? '', params),
     queryFn: async () => {
       if (!selectedOrganization) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const { cursor, limit, filters = {}, sorting = {} } = params

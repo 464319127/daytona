@@ -18,10 +18,10 @@ import VNCMouseOperations from './Mouse'
 import VNCScreenshotOperations from './Screenshot'
 
 const VNCInteractionOptionsSectionsData = [
-  { value: VNCInteractionOptionsSections.DISPLAY, label: 'Display' },
-  { value: VNCInteractionOptionsSections.KEYBOARD, label: 'Keyboard' },
-  { value: VNCInteractionOptionsSections.MOUSE, label: 'Mouse' },
-  { value: VNCInteractionOptionsSections.SCREENSHOT, label: 'Screenshot' },
+  { value: VNCInteractionOptionsSections.DISPLAY, label: '显示器' },
+  { value: VNCInteractionOptionsSections.KEYBOARD, label: '键盘' },
+  { value: VNCInteractionOptionsSections.MOUSE, label: '鼠标' },
+  { value: VNCInteractionOptionsSections.SCREENSHOT, label: '截图' },
 ]
 
 const sectionIcons = {
@@ -46,7 +46,7 @@ const VNCInteractionOptions: React.FC = () => {
     (invokeApi) => {
       return async (actionFormData) => {
         // Set running message
-        setVNCInteractionOptionsParamValue('responseContent', `Running ${actionFormData.methodName}...`)
+        setVNCInteractionOptionsParamValue('responseContent', `正在运行 ${actionFormData.methodName}...`)
 
         try {
           // Call the action API method
@@ -73,7 +73,7 @@ const VNCInteractionOptions: React.FC = () => {
       <div>
         <h2>Computer Use</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Automate GUI interactions or manually control the desktop environment.
+          自动执行 GUI 交互，或手动控制桌面环境。
         </p>
       </div>
       <Accordion

@@ -132,7 +132,7 @@ export function RegionTable({
           debounced
           value={globalFilter ?? ''}
           onValueChange={handleChangeFilter}
-          placeholder="Search by Name or ID"
+          placeholder="按名称或 ID 搜索"
           containerClassName="min-w-0 flex-1 sm:max-w-sm"
         />
       </div>
@@ -143,9 +143,9 @@ export function RegionTable({
             <TableEmptyState
               overlay
               colSpan={regionColumns.length}
-              message={hasSearch ? 'No matching regions found.' : 'No custom regions found.'}
+              message={hasSearch ? '未找到匹配的区域。' : '暂无自定义区域。'}
               icon={<MapPinned />}
-              description={hasSearch ? null : <p>Create regions for grouping runners and sandboxes.</p>}
+              description={hasSearch ? null : <p>创建区域以对 Runner 和沙箱进行分组。</p>}
               action={
                 hasSearch ? (
                   <Button variant="outline" onClick={() => handleChangeFilter('')}>
@@ -247,7 +247,7 @@ const regionColumns: ColumnDef<Region>[] = [
       return (
         <div className="w-full truncate flex items-center gap-1 group/copy-button">
           <span className="truncate block">{row.original.name}</span>
-          <CopyButton value={row.original.name} size="icon-xs" autoHide tooltipText="Copy Name" />
+          <CopyButton value={row.original.name} size="icon-xs" autoHide tooltipText="复制名称" />
         </div>
       )
     },
@@ -260,7 +260,7 @@ const regionColumns: ColumnDef<Region>[] = [
       return (
         <div className="w-full truncate flex items-center gap-1 group/copy-button">
           <span className="truncate block">{row.original.id}</span>
-          <CopyButton value={row.original.id} size="icon-xs" autoHide tooltipText="Copy ID" />
+          <CopyButton value={row.original.id} size="icon-xs" autoHide tooltipText="复制 ID" />
         </div>
       )
     },
@@ -304,7 +304,7 @@ const regionColumns: ColumnDef<Region>[] = [
         <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu" disabled={isLoading}>
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单" disabled={isLoading}>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>

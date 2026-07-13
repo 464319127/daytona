@@ -33,7 +33,7 @@ const FormSelectInput: React.FC<FormSelectInputProps> = ({
         {loading ? (
           <div className="w-full flex items-center justify-center gap-2">
             <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-            <span className="text-muted-foreground">Loading...</span>
+            <span className="text-muted-foreground">正在加载...</span>
           </div>
         ) : (
           <SelectValue id={formItem.key} placeholder={formItem.placeholder} />

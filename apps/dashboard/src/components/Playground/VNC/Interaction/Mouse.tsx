@@ -27,9 +27,9 @@ import FormNumberInput from '../../Inputs/NumberInput'
 import FormSelectInput from '../../Inputs/SelectInput'
 
 const mouseButtonFormData: ParameterFormItem & { key: 'button' } = {
-  label: 'Button',
+  label: '按键',
   key: 'button',
-  placeholder: 'Select mouse button',
+  placeholder: '选择鼠标按键',
 }
 
 type MouseActionWithParamsFormData = MouseActionFormData<MouseClick | MouseDrag | MouseMove | MouseScroll>
@@ -52,14 +52,14 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
   const mouseScrollParams = VNCInteractionOptionsParamsState['mouseScrollParams']
 
   const mouseClickNumberParamsFormData: (NumberParameterFormItem & { key: 'x' | 'y' })[] = [
-    { label: 'Coord X', key: 'x', min: 0, max: Infinity, placeholder: '100', required: true },
-    { label: 'Coord Y', key: 'y', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: 'X 坐标', key: 'x', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: 'Y 坐标', key: 'y', min: 0, max: Infinity, placeholder: '100', required: true },
   ]
 
   const mouseDoubleClickFormData: ParameterFormItem & { key: 'double' } = {
-    label: 'Double click',
+    label: '双击',
     key: 'double',
-    placeholder: 'Is mouse double click',
+    placeholder: '是否双击鼠标',
   }
 
   const mouseClickParamsFormData: ParameterFormData<MouseClick> = [
@@ -69,45 +69,45 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
   ]
 
   const mouseDragNumberParamsFormData: (NumberParameterFormItem & { key: 'startX' | 'startY' | 'endX' | 'endY' })[] = [
-    { label: 'Start X', key: 'startX', min: 0, max: Infinity, placeholder: '100', required: true },
-    { label: 'Start Y', key: 'startY', min: 0, max: Infinity, placeholder: '100', required: true },
-    { label: 'End X', key: 'endX', min: 0, max: Infinity, placeholder: '100', required: true },
-    { label: 'End Y', key: 'endY', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: '起点 X', key: 'startX', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: '起点 Y', key: 'startY', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: '终点 X', key: 'endX', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: '终点 Y', key: 'endY', min: 0, max: Infinity, placeholder: '100', required: true },
   ]
   const mouseDragParamsFormData: ParameterFormData<MouseDrag> = [...mouseDragNumberParamsFormData, mouseButtonFormData]
 
   const mouseMoveNumberParamsFormData: (NumberParameterFormItem & { key: 'x' | 'y' })[] = [
-    { label: 'Coord X', key: 'x', min: 0, max: Infinity, placeholder: '100', required: true },
-    { label: 'Coord Y', key: 'y', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: 'X 坐标', key: 'x', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: 'Y 坐标', key: 'y', min: 0, max: Infinity, placeholder: '100', required: true },
   ]
   const mouseMoveParamsFormData: ParameterFormData<MouseMove> = mouseMoveNumberParamsFormData
 
   const mouseScrollNumberParamsFormData: (NumberParameterFormItem & { key: 'x' | 'y' })[] = [
-    { label: 'Coord X', key: 'x', min: 0, max: Infinity, placeholder: '100', required: true },
-    { label: 'Coord Y', key: 'y', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: 'X 坐标', key: 'x', min: 0, max: Infinity, placeholder: '100', required: true },
+    { label: 'Y 坐标', key: 'y', min: 0, max: Infinity, placeholder: '100', required: true },
   ]
 
   const mouseScrollDirectionFormData: ParameterFormItem & { key: 'direction' } = {
-    label: 'Scroll direction',
+    label: '滚动方向',
     key: 'direction',
-    placeholder: 'Mouse scroll direction',
+    placeholder: '鼠标滚动方向',
   }
 
   const mouseScrollDirectionOptions = [
     {
       value: MouseScrollDirection.DOWN,
-      label: 'Down',
+      label: '向下',
     },
     {
       value: MouseScrollDirection.UP,
-      label: 'Up',
+      label: '向上',
     },
   ]
 
   const mouseScrollAmountFormData: NumberParameterFormItem & { key: 'amount' } = {
-    label: 'Scroll amount',
+    label: '滚动量',
     key: 'amount',
-    placeholder: 'Mouse scroll amount',
+    placeholder: '鼠标滚动量',
     min: 1,
     max: Infinity,
   }
@@ -122,7 +122,7 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
     {
       methodName: MouseActions.CLICK,
       label: 'click()',
-      description: 'Clicks the mouse at the specified coordinates',
+      description: '在指定坐标单击鼠标',
       parametersFormItems: mouseClickParamsFormData,
       parametersState: mouseClickParams,
       onChangeParamsValidationDisabled: true,
@@ -130,7 +130,7 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
     {
       methodName: MouseActions.DRAG,
       label: 'drag()',
-      description: 'Drags the mouse from start coordinates to end coordinates',
+      description: '将鼠标从起点坐标拖动到终点坐标',
       parametersFormItems: mouseDragParamsFormData,
       parametersState: mouseDragParams,
       onChangeParamsValidationDisabled: true,
@@ -138,7 +138,7 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
     {
       methodName: MouseActions.MOVE,
       label: 'move()',
-      description: 'Moves the mouse cursor to the specified coordinates',
+      description: '将鼠标光标移动到指定坐标',
       parametersFormItems: mouseMoveParamsFormData,
       parametersState: mouseMoveParams,
       onChangeParamsValidationDisabled: true,
@@ -157,7 +157,7 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
     {
       methodName: MouseActions.GET_POSITION,
       label: 'getPosition()',
-      description: 'Gets the current mouse cursor position',
+      description: '获取当前鼠标光标位置',
     },
   ]
 
@@ -173,7 +173,7 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
           mouseClickParams.button ?? undefined,
           mouseClickParams.double,
         )
-        mouseActionResponseText = `Mouse clicked at (${mouseClickResponse.x}, ${mouseClickResponse.y})`
+        mouseActionResponseText = `鼠标已在 (${mouseClickResponse.x}, ${mouseClickResponse.y}) 单击`
         break
       }
       case MouseActions.DRAG: {
@@ -184,12 +184,12 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
           mouseDragParams.endY,
           mouseDragParams.button ?? undefined,
         )
-        mouseActionResponseText = `Mouse drag ended at (${mouseDragResponse.x}, ${mouseDragResponse.y})`
+        mouseActionResponseText = `鼠标拖动结束于 (${mouseDragResponse.x}, ${mouseDragResponse.y})`
         break
       }
       case MouseActions.MOVE: {
         const mouseMoveResponse = await MouseActionsClient[MouseActions.MOVE](mouseMoveParams.x, mouseMoveParams.y)
-        mouseActionResponseText = `Mouse moved to (${mouseMoveResponse.x}, ${mouseMoveResponse.y})`
+        mouseActionResponseText = `鼠标已移动到 (${mouseMoveResponse.x}, ${mouseMoveResponse.y})`
         break
       }
       case MouseActions.SCROLL: {
@@ -207,7 +207,7 @@ const VNCMouseOperations: React.FC<VNCInteractionOptionsSectionComponentProps> =
       }
       case MouseActions.GET_POSITION: {
         const mousePositionResponse = await MouseActionsClient[MouseActions.GET_POSITION]()
-        mouseActionResponseText = `Mouse is at (${mousePositionResponse.x}, ${mousePositionResponse.y})`
+        mouseActionResponseText = `鼠标位于 (${mousePositionResponse.x}, ${mousePositionResponse.y})`
         break
       }
     }
@@ -405,15 +405,15 @@ const MouseButtonSelect = <T extends MouseClick | MouseDrag>({
   const mouseButtonOptions = [
     {
       value: MouseButton.LEFT,
-      label: 'Left',
+      label: '左键',
     },
     {
       value: MouseButton.MIDDLE,
-      label: 'Middle',
+      label: '中键',
     },
     {
       value: MouseButton.RIGHT,
-      label: 'Right',
+      label: '右键',
     },
   ]
 

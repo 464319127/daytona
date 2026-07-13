@@ -52,14 +52,14 @@ export const DeleteOrganizationDialog: React.FC<DeleteOrganizationDialogProps> =
     >
       <DialogTrigger asChild>
         <Button variant="destructive" className="w-auto px-4">
-          Delete Organization
+          删除组织
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Organization</DialogTitle>
+          <DialogTitle>删除组织</DialogTitle>
           <DialogDescription>
-            This will permanently delete all associated data. This action cannot be undone.
+            此操作将永久删除所有关联数据，且无法撤销。
           </DialogDescription>
         </DialogHeader>
         <form
@@ -73,7 +73,7 @@ export const DeleteOrganizationDialog: React.FC<DeleteOrganizationDialogProps> =
           <div className="space-y-6">
             <div className="space-y-3">
               <Label htmlFor="confirm-action">
-                Please type <span className="font-bold cursor-text select-all">{organizationName}</span> to confirm
+                请输入 <span className="font-bold cursor-text select-all">{organizationName}</span> 以确认
               </Label>
               <Input
                 id="confirm-action"
@@ -87,12 +87,12 @@ export const DeleteOrganizationDialog: React.FC<DeleteOrganizationDialogProps> =
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary" disabled={loading}>
-              Cancel
+              取消
             </Button>
           </DialogClose>
           {loading ? (
             <Button type="button" variant="destructive" disabled>
-              Deleting...
+              正在删除...
             </Button>
           ) : (
             <Button
@@ -101,7 +101,7 @@ export const DeleteOrganizationDialog: React.FC<DeleteOrganizationDialogProps> =
               variant="destructive"
               disabled={confirmName !== organizationName}
             >
-              Delete
+              删除
             </Button>
           )}
         </DialogFooter>

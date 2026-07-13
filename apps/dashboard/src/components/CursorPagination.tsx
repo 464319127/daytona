@@ -37,18 +37,18 @@ export function CursorPagination({
         <SelectContent side="top">
           {PAGE_SIZE_OPTIONS.map((size) => (
             <SelectItem key={size} value={`${size}`}>
-              {size} per page
+              每页 {size} 条
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
       <div className="flex items-center space-x-2">
         <Button variant="outline" className="h-8 w-8 p-0" onClick={onPreviousPage} disabled={!hasPreviousPage}>
-          <span className="sr-only">Go to previous page</span>
+          <span className="sr-only">跳到上一页</span>
           <ChevronLeft />
         </Button>
         <Button variant="outline" className="h-8 w-8 p-0" onClick={onNextPage} disabled={!hasNextPage}>
-          <span className="sr-only">Go to next page</span>
+          <span className="sr-only">跳到下一页</span>
           <ChevronRight />
         </Button>
       </div>

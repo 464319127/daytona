@@ -41,8 +41,8 @@ const IMAGE_NAME_REGEX = /^[a-zA-Z0-9_.\-:]+(\/[a-zA-Z0-9_.\-:]+)*(@sha256:[a-f0
 
 const snapshotNameSchema = z
   .string()
-  .min(1, 'Snapshot name is required')
-  .refine((name) => IMAGE_NAME_REGEX.test(name), 'Only letters, digits, dots, colons, slashes and dashes are allowed')
+  .min(1, 'Snapshot 名称为必填项')
+  .refine((name) => IMAGE_NAME_REGEX.test(name), '仅允许字母、数字、点、冒号、斜杠和连字符')
 
 const SANDBOX_CLASS_OPTIONS: { value: SandboxClass; label: string }[] = [
   { value: SandboxClass.CONTAINER, label: 'Container' },
@@ -131,7 +131,7 @@ export const CreateSnapshotSheet = ({
     },
     onSubmit: async ({ value }) => {
       if (!selectedOrganization?.id) {
-        toast.error('Select an organization to create a snapshot.')
+        toast.error('请选择一个组织以创建快照。')
         return
       }
 
@@ -154,11 +154,11 @@ export const CreateSnapshotSheet = ({
           organizationId: selectedOrganization.id,
         })
 
-        toast.success(`Creating snapshot ${value.name.trim()}`)
+        toast.success(`正在创建快照 ${value.name.trim()}`)
         onSnapshotCreated?.(snapshot)
         setOpen(false)
       } catch (error) {
-        handleApiError(error, 'Failed to create snapshot')
+        handleApiError(error, '创建快照失败')
       }
     },
   })
@@ -195,7 +195,7 @@ export const CreateSnapshotSheet = ({
       </SheetTrigger>
       <SheetContent className={`w-dvw sm:w-[500px] p-0 flex flex-col gap-0 ${className ?? ''}`}>
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>Create Snapshot</SheetTitle>
+          <SheetTitle>创建快照</SheetTitle>
           <SheetDescription className="sr-only">
             Register a new snapshot to be used for spinning up sandboxes in your organization.
           </SheetDescription>
@@ -216,7 +216,7 @@ export const CreateSnapshotSheet = ({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Snapshot Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>快照名称</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       id={field.name}
@@ -242,7 +242,7 @@ export const CreateSnapshotSheet = ({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Image</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>镜像</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       id={field.name}
@@ -266,10 +266,10 @@ export const CreateSnapshotSheet = ({
             <form.Field name="regionId">
               {(field) => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Region</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>区域</FieldLabel>
                   <Select value={field.state.value} onValueChange={field.handleChange}>
                     <SelectTrigger className="h-8" id={field.name} disabled={loadingRegions} loading={loadingRegions}>
-                      <SelectValue placeholder={loadingRegions ? 'Loading regions...' : 'Select a region'} />
+                      <SelectValue placeholder={loadingRegions ? '正在加载区域...' : '选择区域'} />
                     </SelectTrigger>
                     <SelectContent>
                       {regions.map((region) => (
@@ -279,7 +279,7 @@ export const CreateSnapshotSheet = ({
                       ))}
                     </SelectContent>
                   </Select>
-                  <FieldDescription>The region where the snapshot will be available.</FieldDescription>
+                  <FieldDescription>快照可用的区域。</FieldDescription>
                 </Field>
               )}
             </form.Field>
@@ -288,7 +288,7 @@ export const CreateSnapshotSheet = ({
               <form.Field name="sandboxClass">
                 {(field) => (
                   <Field>
-                    <FieldLabel htmlFor={field.name}>Sandbox Class</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>沙箱规格</FieldLabel>
                     <Select
                       value={field.state.value ?? SandboxClass.CONTAINER}
                       onValueChange={(value) => field.handleChange(value as SandboxClass)}
@@ -316,7 +316,7 @@ export const CreateSnapshotSheet = ({
             )}
 
             <div className="flex flex-col gap-2">
-              <Label className="text-sm font-medium">Resources</Label>
+              <Label className="text-sm font-medium">资源</Label>
               <div className="flex flex-col gap-2">
                 <form.Field name="cpu">
                   {(field) => (
@@ -416,7 +416,7 @@ export const CreateSnapshotSheet = ({
                               <form.Field name="gpuType">
                                 {(field) => (
                                   <Field>
-                                    <FieldLabel htmlFor={field.name}>GPU type</FieldLabel>
+                                    <FieldLabel htmlFor={field.name}>GPU 类型</FieldLabel>
                                     <Select
                                       value={field.state.value ?? allowedGpuTypes[0]}
                                       onValueChange={(val) => field.handleChange(val as GpuType)}
@@ -451,7 +451,7 @@ export const CreateSnapshotSheet = ({
             <form.Field name="entrypoint">
               {(field) => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Entrypoint (optional)</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>入口点（可选）</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}

@@ -29,33 +29,33 @@ interface BulkActionData {
 }
 
 function getBulkActionData(action: BulkAction, count: number): BulkActionData {
-  const countText = count === 1 ? 'this sandbox' : `these ${count} selected sandboxes`
+  const countText = count === 1 ? '此 Sandbox' : `选中的 ${count} 个 Sandbox`
 
   switch (action) {
     case BulkAction.Delete:
       return {
-        title: 'Delete Sandboxes',
-        description: `Are you sure you want to delete ${countText}? This action cannot be undone.`,
-        buttonLabel: 'Delete',
+        title: '删除 Sandbox',
+        description: `确定要删除${countText}吗？此操作无法撤销。`,
+        buttonLabel: '删除',
         buttonVariant: 'destructive',
       }
     case BulkAction.Start:
       return {
-        title: 'Start Sandboxes',
-        description: `Are you sure you want to start ${countText}?`,
-        buttonLabel: 'Start',
+        title: '启动 Sandbox',
+        description: `确定要启动${countText}吗？`,
+        buttonLabel: '启动',
       }
     case BulkAction.Stop:
       return {
-        title: 'Stop Sandboxes',
-        description: `Are you sure you want to stop ${countText}?`,
-        buttonLabel: 'Stop',
+        title: '停止 Sandbox',
+        description: `确定要停止${countText}吗？`,
+        buttonLabel: '停止',
       }
     case BulkAction.Archive:
       return {
-        title: 'Archive Sandboxes',
-        description: `Are you sure you want to archive ${countText}? Archived sandboxes can be restored later.`,
-        buttonLabel: 'Archive',
+        title: '归档 Sandbox',
+        description: `确定要归档${countText}吗？归档后的 Sandbox 可以稍后恢复。`,
+        buttonLabel: '归档',
       }
   }
 }
@@ -81,7 +81,7 @@ export function BulkActionAlertDialog({ action, count, onConfirm, onCancel }: Bu
             <AlertDialogDescription>{data.description}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>取消</AlertDialogCancel>
             <AlertDialogAction onClick={onConfirm} variant={data.buttonVariant}>
               {data.buttonLabel}
             </AlertDialogAction>

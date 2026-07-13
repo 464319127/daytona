@@ -27,8 +27,8 @@ interface CreateOrganizationSheetProps {
 }
 
 const formSchema = z.object({
-  name: z.string().trim().min(1, 'Organization name is required'),
-  defaultRegionId: z.string().min(1, 'Region is required'),
+  name: z.string().trim().min(1, '组织名称为必填项'),
+  defaultRegionId: z.string().min(1, '区域为必填项'),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -120,7 +120,7 @@ export const CreateOrganizationSheet: React.FC<CreateOrganizationSheetProps> = (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
       <SheetContent className="w-dvw sm:w-[560px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>Create Organization</SheetTitle>
+          <SheetTitle>创建组织</SheetTitle>
           <SheetDescription className="sr-only">
             Create a new organization to share resources and collaborate with others.
           </SheetDescription>
@@ -131,8 +131,8 @@ export const CreateOrganizationSheet: React.FC<CreateOrganizationSheetProps> = (
             {!loadingRegions && regions.length === 0 ? (
               <Alert variant="destructive">
                 <TriangleAlertIcon />
-                <AlertTitle>No regions available</AlertTitle>
-                <AlertDescription>Organization cannot be created because no regions are available.</AlertDescription>
+                <AlertTitle>暂无可用区域</AlertTitle>
+                <AlertDescription>由于没有可用区域，无法创建组织。</AlertDescription>
               </Alert>
             ) : (
               <form
@@ -150,7 +150,7 @@ export const CreateOrganizationSheet: React.FC<CreateOrganizationSheetProps> = (
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor={field.name}>Organization Name</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>组织名称</FieldLabel>
                         <Input
                           aria-invalid={isInvalid}
                           id={field.name}
@@ -158,7 +158,7 @@ export const CreateOrganizationSheet: React.FC<CreateOrganizationSheetProps> = (
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="Name"
+                          placeholder="名称"
                         />
                         {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                           <FieldError errors={field.state.meta.errors} />
@@ -173,7 +173,7 @@ export const CreateOrganizationSheet: React.FC<CreateOrganizationSheetProps> = (
                     const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                     return (
                       <Field data-invalid={isInvalid}>
-                        <FieldLabel htmlFor={field.name}>Region</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>区域</FieldLabel>
                         <Select value={field.state.value} onValueChange={field.handleChange}>
                           <SelectTrigger
                             className="h-8"
@@ -182,7 +182,7 @@ export const CreateOrganizationSheet: React.FC<CreateOrganizationSheetProps> = (
                             loading={loadingRegions}
                             aria-invalid={isInvalid}
                           >
-                            <SelectValue placeholder={loadingRegions ? 'Loading regions...' : 'Select a region'} />
+                            <SelectValue placeholder={loadingRegions ? '正在加载区域...' : '选择区域'} />
                           </SelectTrigger>
                           <SelectContent>
                             {regions.map((region) => (

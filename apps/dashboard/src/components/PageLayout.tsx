@@ -74,7 +74,7 @@ function PageHeader(props: ComponentProps<'header'>) {
       actions={
         <>
           <PageHeaderExternalAction
-            label="Docs"
+            label="文档"
             href={DAYTONA_DOCS_URL}
             icon={<BookOpen className="size-4" />}
             variant="link"
@@ -123,11 +123,11 @@ function PageHeaderSupportAction() {
       variant="link"
       size="sm"
       className="text-muted-foreground hover:text-foreground"
-      aria-label="Support"
+      aria-label="支持"
       onClick={toggle}
     >
       <LifeBuoyIcon className="size-4" />
-      <span className="hidden md:inline">Support</span>
+      <span className="hidden md:inline">支持</span>
       {unreadCount > 0 ? (
         <span className="relative ml-0.5 flex size-2">
           <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500 opacity-75" />
@@ -157,44 +157,44 @@ function PageHeaderProfileMenu() {
           variant="outline"
           size="sm"
           className="ml-1 h-8 max-w-44 gap-2 bg-input/50 px-2 text-muted-foreground hover:text-foreground md:px-2.5"
-          aria-label="Profile"
+          aria-label="个人资料"
         >
           {user?.profile.picture ? (
             <img
               src={user.profile.picture}
-              alt={user.profile.name || 'Profile picture'}
+              alt={user.profile.name || '个人头像'}
               className="size-4 shrink-0 rounded-sm"
             />
           ) : (
             <SquareUserRound className="size-4 shrink-0" />
           )}
           <span className="hidden min-w-0 truncate md:block">
-            {user?.profile.name || user?.profile.email || 'Profile'}
+            {user?.profile.name || user?.profile.email || '个人资料'}
           </span>
           <ChevronsUpDown className="hidden size-4 shrink-0 opacity-50 md:block" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" align="end" className="w-64">
         <div className="px-2 py-1.5">
-          <div className="truncate text-sm font-medium">{user?.profile.name || 'Profile'}</div>
+          <div className="truncate text-sm font-medium">{user?.profile.name || '个人资料'}</div>
           <div className="truncate text-xs text-muted-foreground">{user?.profile.email || ''}</div>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link to={RoutePath.ACCOUNT_SETTINGS}>
             <Settings className="size-4" />
-            Account Settings
+            账号设置
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
           {theme === 'dark' ? <SunIcon className="size-4" /> : <MoonIcon className="size-4" />}
-          {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          {theme === 'dark' ? '浅色模式' : '深色模式'}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link to={RoutePath.USER_INVITATIONS}>
             <Mail className="size-4" />
-            Invitations
+            邀请
             {organizationInvitationsCount > 0 && (
               <span className="ml-auto rounded-full bg-secondary px-2 py-0.5 text-xs font-medium">
                 {organizationInvitationsCount}
@@ -205,13 +205,13 @@ function PageHeaderProfileMenu() {
         <DropdownMenuItem asChild>
           <Link to={RoutePath.ONBOARDING}>
             <ListChecks className="size-4" />
-            Onboarding
+            入门指南
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="size-4" />
-          Sign out
+          退出登录
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -44,9 +44,9 @@ import { useSvix } from 'svix-react'
 import { z } from 'zod'
 
 const formSchema = z.object({
-  url: z.string().min(1, 'URL is required').url('Must be a valid URL'),
-  description: z.string().trim().min(1, 'Name is required'),
-  filterTypes: z.array(z.string()).min(1, 'At least one event is required'),
+  url: z.string().min(1, 'URL 为必填项').url('请输入有效的 URL'),
+  description: z.string().trim().min(1, '名称为必填项'),
+  filterTypes: z.array(z.string()).min(1, '请至少选择一个事件'),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -151,7 +151,7 @@ export const UpsertEndpointSheet = ({
       try {
         if (isEditMode) {
           if (!endpoint) {
-            toast.error('No endpoint selected for editing.')
+            toast.error('未选择要编辑的端点。')
             return
           }
 
@@ -163,16 +163,16 @@ export const UpsertEndpointSheet = ({
               filterTypes: value.filterTypes.length > 0 ? value.filterTypes : undefined,
             },
           })
-          toast.success('Endpoint updated')
+          toast.success('端点已更新')
         } else {
           await createEndpointMutation.mutateAsync(value)
-          toast.success('Endpoint created')
+          toast.success('端点已创建')
         }
 
         onSuccess?.()
         handleOpenChange(false)
       } catch (error) {
-        handleApiError(error, `Failed to ${isEditMode ? 'update' : 'create'} endpoint`)
+        handleApiError(error, isEditMode ? '更新端点失败' : '创建端点失败')
       }
     },
   })
@@ -210,12 +210,12 @@ export const UpsertEndpointSheet = ({
       {trigger === undefined ? (
         <SheetTrigger asChild>
           {isEditMode ? (
-            <Button variant="default" size="sm" disabled={disabled} className={className} title="Edit Endpoint">
-              Edit Endpoint
+            <Button variant="default" size="sm" disabled={disabled} className={className} title="编辑端点">
+              编辑端点
             </Button>
           ) : (
-            <CreateResourceButton resource="Endpoint" disabled={disabled} className={className} title="Create Endpoint">
-              Endpoint
+            <CreateResourceButton resource="端点" disabled={disabled} className={className} title="创建端点">
+              端点
             </CreateResourceButton>
           )}
         </SheetTrigger>
@@ -224,9 +224,9 @@ export const UpsertEndpointSheet = ({
       )}
       <SheetContent className="w-dvw sm:w-[500px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>{isEditMode ? 'Edit Endpoint' : 'Create Endpoint'}</SheetTitle>
+          <SheetTitle>{isEditMode ? '编辑端点' : '创建端点'}</SheetTitle>
           <SheetDescription className="sr-only">
-            {isEditMode ? 'Update the endpoint configuration.' : 'Configure a new endpoint to receive webhook events.'}
+            {isEditMode ? '更新端点配置。' : '配置用于接收 Webhook 事件的新端点。'}
           </SheetDescription>
         </SheetHeader>
 
@@ -246,7 +246,7 @@ export const UpsertEndpointSheet = ({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Endpoint Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>端点名称</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       autoComplete="off"
@@ -255,7 +255,7 @@ export const UpsertEndpointSheet = ({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="My Webhook Endpoint"
+                      placeholder="我的 Webhook 端点"
                     />
                     {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                       <FieldError errors={field.state.meta.errors} />
@@ -270,7 +270,7 @@ export const UpsertEndpointSheet = ({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Endpoint URL</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>端点 URL</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       autoComplete="off"
@@ -296,7 +296,7 @@ export const UpsertEndpointSheet = ({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel>Events</FieldLabel>
+                    <FieldLabel>事件</FieldLabel>
                     <Popover open={eventsPopoverOpen} onOpenChange={setEventsPopoverOpen} modal>
                       <PopoverTrigger asChild>
                         <Button
@@ -310,10 +310,10 @@ export const UpsertEndpointSheet = ({
                         >
                           <div className="flex flex-wrap gap-1">
                             {selectedEvents.length === 0 ? (
-                              <span className="text-muted-foreground">Select events...</span>
+                              <span className="text-muted-foreground">选择事件...</span>
                             ) : selectedEvents.length > 2 ? (
                               <Badge variant="secondary" className="rounded-sm px-1 font-normal">
-                                {selectedEvents.length} events selected
+                                已选择 {selectedEvents.length} 个事件
                               </Badge>
                             ) : (
                               selectedEvents.map((event) => (
@@ -328,9 +328,9 @@ export const UpsertEndpointSheet = ({
                       </PopoverTrigger>
                       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
                         <Command>
-                          <CommandInput placeholder="Search events..." />
+                          <CommandInput placeholder="搜索事件..." />
                           <CommandList>
-                            <CommandEmpty>No events found.</CommandEmpty>
+                            <CommandEmpty>未找到事件。</CommandEmpty>
                             {WEBHOOK_EVENT_CATEGORIES.map((category) => (
                               <CommandGroup key={category} heading={category}>
                                 {WEBHOOK_EVENTS.filter((event) => event.category === category).map((event) => (
@@ -360,7 +360,7 @@ export const UpsertEndpointSheet = ({
 
         <SheetFooter className="border-t border-border p-4 px-5">
           <Button type="button" variant="secondary" onClick={() => handleOpenChange(false)}>
-            Cancel
+            取消
           </Button>
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
@@ -376,7 +376,7 @@ export const UpsertEndpointSheet = ({
                 }
               >
                 {isSubmitting && <Spinner />}
-                {isEditMode ? 'Save' : 'Create'}
+                {isEditMode ? '保存' : '创建'}
               </Button>
             )}
           />

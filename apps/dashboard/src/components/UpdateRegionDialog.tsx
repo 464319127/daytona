@@ -85,8 +85,8 @@ export const UpdateRegionDialog: React.FC<UpdateRegionDialogProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Update Region: {region.name}</DialogTitle>
-          <DialogDescription>Modify the URLs for this region.</DialogDescription>
+          <DialogTitle>更新区域：{region.name}</DialogTitle>
+          <DialogDescription>修改此区域的 URL。</DialogDescription>
         </DialogHeader>
 
         <form
@@ -108,7 +108,7 @@ export const UpdateRegionDialog: React.FC<UpdateRegionDialogProps> = ({
               placeholder="https://proxy.example.com"
             />
             <p className="text-sm text-muted-foreground mt-1 pl-1">
-              (Optional) URL of the custom proxy for this region
+              （可选）此区域的自定义 Proxy URL
             </p>
           </div>
 
@@ -123,7 +123,7 @@ export const UpdateRegionDialog: React.FC<UpdateRegionDialogProps> = ({
               placeholder="https://ssh-gateway.example.com"
             />
             <p className="text-sm text-muted-foreground mt-1 pl-1">
-              (Optional) URL of the custom SSH gateway for this region
+              （可选）此区域的自定义 SSH Gateway URL
             </p>
           </div>
 
@@ -138,8 +138,7 @@ export const UpdateRegionDialog: React.FC<UpdateRegionDialogProps> = ({
               placeholder="https://snapshot-manager.example.com"
             />
             <p className="text-sm text-muted-foreground mt-1 pl-1">
-              (Optional) URL of the custom snapshot manager for this region. Cannot be changed if snapshots exist in
-              this region.
+              （可选）此区域的自定义 Snapshot Manager URL。如果该区域中存在 Snapshot，则无法更改。
             </p>
           </div>
         </form>
@@ -147,16 +146,16 @@ export const UpdateRegionDialog: React.FC<UpdateRegionDialogProps> = ({
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              Cancel
+              取消
             </Button>
           </DialogClose>
           {loading ? (
             <Button type="button" variant="default" disabled>
-              Updating...
+              更新中...
             </Button>
           ) : (
             <Button type="submit" form="update-region-form" variant="default" disabled={loading || !hasChanges}>
-              Update
+              更新
             </Button>
           )}
         </DialogFooter>

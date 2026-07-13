@@ -61,7 +61,7 @@ const DateCell: React.FC<{ value?: string | null }> = ({ value }) => {
     <div className="w-full truncate">
       <span>
         {timestamp != null
-          ? new Date(timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+          ? new Date(timestamp).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })
           : '—'}
       </span>
     </div>
@@ -72,7 +72,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
   {
     id: 'number',
     header: ({ column }) => {
-      return <SortableHeader column={column} label="Invoice" />
+      return <SortableHeader column={column} label="发票" />
     },
     accessorKey: 'number',
     cell: ({ row }) => {
@@ -90,7 +90,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     id: 'issuingDate',
     size: 140,
     header: ({ column }) => {
-      return <SortableHeader column={column} label="Date" />
+      return <SortableHeader column={column} label="日期" />
     },
     cell: ({ row }) => <DateCell value={row.original.issuingDate} />,
     accessorFn: (row) => parseTimestamp(row.issuingDate) ?? -Infinity,
@@ -105,7 +105,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     id: 'paymentDueDate',
     size: 140,
     header: ({ column }) => {
-      return <SortableHeader column={column} label="Due Date" />
+      return <SortableHeader column={column} label="到期日期" />
     },
     cell: ({ row }) => <DateCell value={row.original.paymentDueDate} />,
     accessorFn: (row) => parseTimestamp(row.paymentDueDate) ?? -Infinity,
@@ -120,7 +120,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     id: 'totalAmountCents',
     size: 120,
     header: ({ column }) => {
-      return <SortableHeader column={column} label="Amount" />
+      return <SortableHeader column={column} label="金额" />
     },
     cell: ({ row }) => {
       return (
@@ -138,7 +138,7 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     id: 'paymentStatus',
     size: 120,
     header: ({ column }) => {
-      return <SortableHeader column={column} label="Status" />
+      return <SortableHeader column={column} label="状态" />
     },
     cell: ({ row }) => {
       const invoice = row.original
@@ -147,18 +147,18 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
       const isOverdue = invoice.paymentOverdue
 
       let variant: 'success' | 'destructive' | 'secondary' = 'secondary'
-      let label = 'Pending'
+      let label = '待处理'
 
       if (isSucceeded) {
         variant = 'success'
-        label = 'Paid'
+        label = '已支付'
       } else if (isOverdue || isFailed) {
         variant = 'destructive'
-        label = isOverdue ? 'Overdue' : 'Failed'
+        label = isOverdue ? '已逾期' : '失败'
       }
 
       if (invoice.status === 'voided') {
-        label = 'Voided'
+        label = '已作废'
       }
 
       return (
@@ -179,11 +179,11 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
     id: 'type',
     size: 120,
     header: ({ column }) => {
-      return <SortableHeader column={column} label="Type" />
+      return <SortableHeader column={column} label="类型" />
     },
     cell: ({ row }) => {
       const type = row.original.type
-      const displayType = type === 'subscription' ? 'Subscription' : 'One Time'
+      const displayType = type === 'subscription' ? '订阅' : '一次性'
       return (
         <div className="w-full truncate">
           <span>{displayType}</span>

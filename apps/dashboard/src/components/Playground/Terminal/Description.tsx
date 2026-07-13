@@ -26,15 +26,15 @@ const TerminalDescription: React.FC = () => {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2>Web Terminal</h2>
+        <h2>Web 终端</h2>
         <p className="text-muted-foreground text-sm mt-1">
-          Run commands, view files, and debug directly in the browser.
+          直接在浏览器中运行命令、查看文件并调试。
         </p>
       </div>
       <div className="text-sm">
         <h3 className="text-muted-foreground flex items-center gap-2 font-semibold py-3">
           <TerminalIcon className="size-4" />
-          Common Commands
+          常用命令
         </h3>
         <ul className="flex flex-col gap-1.5">
           {sampleCommands.map((cmd) => (

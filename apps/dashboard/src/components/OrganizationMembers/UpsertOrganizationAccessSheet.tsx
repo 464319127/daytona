@@ -44,7 +44,7 @@ const baseFormSchema = z.object({
 })
 
 const formSchema = baseFormSchema.extend({
-  email: z.email('A valid email address is required'),
+  email: z.email('请输入有效的邮箱地址'),
 })
 type FormValues = z.infer<typeof formSchema>
 
@@ -219,15 +219,15 @@ export const UpsertOrganizationAccessSheet: React.FC<UpsertOrganizationAccessShe
 
   const initialAssignedRoleIdSet = useMemo(() => new Set(initialMember?.assignedRoleIds ?? []), [initialMember])
 
-  const resolvedTitle = title ?? (isCreateMode ? 'Invite Member' : 'Update Access')
+  const resolvedTitle = title ?? (isCreateMode ? '邀请成员' : '更新访问权限')
 
   const resolvedDescription =
     description ??
     (isCreateMode
-      ? 'Give them access to the organization with an appropriate role and assignments.'
-      : 'Manage access to the organization with an appropriate role and assignments.')
+      ? '通过适当的角色和分配项授予其组织访问权限。'
+      : '通过适当的角色和分配项管理组织访问权限。')
 
-  const submitLabel = isCreateMode ? 'Invite' : 'Save'
+  const submitLabel = isCreateMode ? '邀请' : '保存'
 
   const formId = `${mode}-organization-access-form`
 
@@ -236,7 +236,7 @@ export const UpsertOrganizationAccessSheet: React.FC<UpsertOrganizationAccessShe
       {trigger === undefined ? (
         <SheetTrigger asChild>
           {isCreateMode ? (
-            <CreateResourceButton resource="Member" className={className} disabled={disabled} label="Invite">
+            <CreateResourceButton resource="成员" className={className} disabled={disabled} label="邀请">
               Member
             </CreateResourceButton>
           ) : (
@@ -272,7 +272,7 @@ export const UpsertOrganizationAccessSheet: React.FC<UpsertOrganizationAccessShe
                   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                   return (
                     <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>Email</FieldLabel>
+                      <FieldLabel htmlFor={field.name}>邮箱</FieldLabel>
                       <Input
                         aria-invalid={isInvalid}
                         id={field.name}
@@ -292,7 +292,7 @@ export const UpsertOrganizationAccessSheet: React.FC<UpsertOrganizationAccessShe
               </form.Field>
             ) : initialMember?.email ? (
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">邮箱</FieldLabel>
                 <Input id="email" value={initialMember.email} type="email" disabled readOnly />
               </Field>
             ) : null}
@@ -300,7 +300,7 @@ export const UpsertOrganizationAccessSheet: React.FC<UpsertOrganizationAccessShe
             <form.Field name="role">
               {(field) => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Role</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>角色</FieldLabel>
                   <RadioGroup
                     className="gap-6"
                     value={field.state.value}
@@ -356,7 +356,7 @@ export const UpsertOrganizationAccessSheet: React.FC<UpsertOrganizationAccessShe
                           const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                           return (
                             <Field data-invalid={isInvalid}>
-                              <FieldLabel htmlFor={field.name}>Assignments</FieldLabel>
+                              <FieldLabel htmlFor={field.name}>分配项</FieldLabel>
                               <div className="grid gap-6">
                                 <div className="grid grid-cols-[auto_1fr] items-start gap-4">
                                   <Checkbox id="role-viewer" checked={true} disabled={true} />

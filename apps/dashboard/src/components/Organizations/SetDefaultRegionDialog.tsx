@@ -56,11 +56,11 @@ export const SetDefaultRegionDialog: React.FC<SetDefaultRegionDialogProps> = ({ 
         organizationId: selectedOrganization.id,
         defaultRegionId,
       })
-      toast.success('Default region set successfully')
+      toast.success('默认区域 set successfully')
       setOpen(false)
       void refreshOrganizations(selectedOrganization.id)
     } catch (error) {
-      handleApiError(error, 'Failed to set default region')
+      handleApiError(error, '设置默认区域失败')
     }
   }
 
@@ -76,15 +76,15 @@ export const SetDefaultRegionDialog: React.FC<SetDefaultRegionDialogProps> = ({ 
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Set Default Region</DialogTitle>
+          <DialogTitle>设置默认区域</DialogTitle>
           <DialogDescription>
             Your organization needs a default region to create sandboxes and manage resources.
           </DialogDescription>
         </DialogHeader>
         {!loadingRegions && regions.length === 0 ? (
           <div className="p-3 rounded-md bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
-            <p className="font-medium">No regions available</p>
-            <p className="text-sm mt-1">Default region cannot be set because no regions are available.</p>
+            <p className="font-medium">暂无可用区域</p>
+            <p className="text-sm mt-1">默认区域 cannot be set because no regions are available.</p>
           </div>
         ) : (
           <form
@@ -96,10 +96,10 @@ export const SetDefaultRegionDialog: React.FC<SetDefaultRegionDialogProps> = ({ 
             }}
           >
             <div className="space-y-3">
-              <Label htmlFor={regionSelectId}>Region</Label>
+              <Label htmlFor={regionSelectId}>区域</Label>
               <Select value={defaultRegionId} onValueChange={setDefaultRegionId}>
                 <SelectTrigger className="h-8" id={regionSelectId} disabled={loadingRegions} loading={loadingRegions}>
-                  <SelectValue placeholder={loadingRegions ? 'Loading regions...' : 'Select a region'} />
+                  <SelectValue placeholder={loadingRegions ? '正在加载区域...' : '选择区域'} />
                 </SelectTrigger>
                 <SelectContent>
                   {regions.map((region) => (

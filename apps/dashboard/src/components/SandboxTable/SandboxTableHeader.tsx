@@ -49,8 +49,8 @@ import { SandboxTableHeaderProps } from './types'
 
 const RESOURCE_FILTERS = [
   { type: 'cpu' as const, label: 'CPU', icon: Cpu },
-  { type: 'memory' as const, label: 'Memory', icon: MemoryStick },
-  { type: 'disk' as const, label: 'Disk', icon: HardDrive },
+  { type: 'memory' as const, label: '内存', icon: MemoryStick },
+  { type: 'disk' as const, label: '磁盘', icon: HardDrive },
 ]
 
 const SANDBOX_TABLE_COLUMN_LABELS: Record<string, string> = {
@@ -111,15 +111,15 @@ export function SandboxTableHeader({
             debounced
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onValueChange={(value) => table.getColumn('name')?.setFilterValue(value)}
-            placeholder="Search by Name"
+            placeholder="按名称搜索"
             containerClassName="min-w-0 flex-1 sm:max-w-sm"
           />
 
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="shrink-0" aria-label="Filter">
+              <Button variant="outline" className="shrink-0" aria-label="筛选">
                 <ListFilter className="w-4 h-4" />
-                <span className="max-[420px]:hidden">Filter</span>
+                <span className="max-[420px]:hidden">筛选</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40" align="start">
@@ -254,7 +254,7 @@ export function SandboxTableHeader({
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent className="p-3 w-48">
                     <BooleanFilter
-                      label="Public"
+                      label="公开"
                       onFilterChange={(value) => table.getColumn('isPublic')?.setFilterValue(value)}
                       value={table.getColumn('isPublic')?.getFilterValue() as boolean | undefined}
                     />
@@ -269,7 +269,7 @@ export function SandboxTableHeader({
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent className="p-3 w-48">
                     <BooleanFilter
-                      label="Recoverable"
+                      label="可恢复"
                       onFilterChange={(value) => table.getColumn('isRecoverable')?.setFilterValue(value)}
                       value={table.getColumn('isRecoverable')?.getFilterValue() as boolean | undefined}
                     />
@@ -287,7 +287,7 @@ export function SandboxTableHeader({
             onClick={onRefresh}
             disabled={isRefreshing}
             className="shrink-0"
-            tooltipText="Refresh"
+            tooltipText="刷新"
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </TooltipButton>
@@ -358,14 +358,14 @@ export function SandboxTableHeader({
           )}
           {hasIsPublicFilter && (
             <BooleanFilterIndicator
-              label="Public"
+              label="公开"
               value={table.getColumn('isPublic')?.getFilterValue() as boolean | undefined}
               onFilterChange={(value) => table.getColumn('isPublic')?.setFilterValue(value)}
             />
           )}
           {hasIsRecoverableFilter && (
             <BooleanFilterIndicator
-              label="Recoverable"
+              label="可恢复"
               value={table.getColumn('isRecoverable')?.getFilterValue() as boolean | undefined}
               onFilterChange={(value) => table.getColumn('isRecoverable')?.setFilterValue(value)}
             />
@@ -388,15 +388,15 @@ function SandboxTableSettings({ table }: Pick<SandboxTableHeaderProps, 'table'>)
       <Tooltip>
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon-sm" aria-label="Table settings">
+            <Button variant="outline" size="icon-sm" aria-label="表格设置">
               <Columns className="size-4" />
             </Button>
           </DropdownMenuTrigger>
         </TooltipTrigger>
-        <TooltipContent>Table settings</TooltipContent>
+        <TooltipContent>表格设置</TooltipContent>
       </Tooltip>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel>Columns</DropdownMenuLabel>
+        <DropdownMenuLabel>列</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {hideableColumns.map((column) => (
           <DropdownMenuCheckboxItem

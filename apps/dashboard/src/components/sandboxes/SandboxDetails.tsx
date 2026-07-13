@@ -105,15 +105,15 @@ export default function SandboxDetails() {
     if (!sandbox) return
     try {
       await startMutation.mutateAsync({ sandboxId: sandbox.id })
-      toast.success('Sandbox started')
+      toast.success('沙箱已启动')
     } catch (error) {
-      handleApiError(error, 'Failed to start sandbox', {
+      handleApiError(error, '启动沙箱失败', {
         action:
           error instanceof OrganizationSuspendedError &&
           config.billingApiUrl &&
           authenticatedUserOrganizationMember?.role === OrganizationUserRoleEnum.OWNER ? (
             <Button variant="secondary" onClick={() => navigate(RoutePath.BILLING_WALLET)}>
-              Go to billing
+              前往账单
             </Button>
           ) : null,
       })
@@ -124,9 +124,9 @@ export default function SandboxDetails() {
     if (!sandbox) return
     try {
       await stopMutation.mutateAsync({ sandboxId: sandbox.id })
-      toast.success('Sandbox stopped')
+      toast.success('沙箱已停止')
     } catch (error) {
-      handleApiError(error, 'Failed to stop sandbox')
+      handleApiError(error, '停止沙箱失败')
     }
   }
 
@@ -134,9 +134,9 @@ export default function SandboxDetails() {
     if (!sandbox) return
     try {
       await archiveMutation.mutateAsync({ sandboxId: sandbox.id })
-      toast.success('Sandbox archived')
+      toast.success('沙箱已归档')
     } catch (error) {
-      handleApiError(error, 'Failed to archive sandbox')
+      handleApiError(error, '归档 Sandbox 失败')
     }
   }
 
@@ -144,9 +144,9 @@ export default function SandboxDetails() {
     if (!sandbox) return
     try {
       await recoverMutation.mutateAsync({ sandboxId: sandbox.id })
-      toast.success('Sandbox recovery started')
+      toast.success('沙箱恢复已开始')
     } catch (error) {
-      handleApiError(error, 'Failed to recover sandbox')
+      handleApiError(error, '恢复沙箱失败')
     }
   }
 
@@ -154,25 +154,25 @@ export default function SandboxDetails() {
     if (!sandbox) return
     try {
       await deleteMutation.mutateAsync({ sandboxId: sandbox.id })
-      toast.success('Sandbox deleted')
+      toast.success('沙箱已删除')
       setDeleteDialogOpen(false)
       navigate(RoutePath.SANDBOXES)
     } catch (error) {
-      handleApiError(error, 'Failed to delete sandbox')
+      handleApiError(error, '删除 Sandbox 失败')
     }
   }
 
   const handleScreenRecordings = async () => {
     if (!sandbox || !isStoppable(sandbox)) {
-      toast.error('Sandbox must be started to access Screen Recordings')
+      toast.error('必须先启动沙箱才能访问屏幕录像')
       return
     }
     try {
       const response = await sandboxApi.getSignedPortPreviewUrl(sandbox.id, 33333, selectedOrganization?.id)
       window.open(response.data.url, '_blank', 'noopener,noreferrer')
-      toast.success('Opening Screen Recordings dashboard...')
+      toast.success('正在打开屏幕录像控制台...')
     } catch (error) {
-      handleApiError(error, 'Failed to open Screen Recordings')
+      handleApiError(error, '打开屏幕录像失败')
     }
   }
 
@@ -180,7 +180,7 @@ export default function SandboxDetails() {
     <SandboxSessionProvider>
       <PageLayout className="max-h-screen overflow-hidden">
         <PageHeader>
-          <PageTitle>Sandboxes</PageTitle>
+          <PageTitle>沙箱</PageTitle>
         </PageHeader>
 
         <SandboxHeader
@@ -209,8 +209,8 @@ export default function SandboxDetails() {
                 <EmptyMedia variant="icon">
                   <Container className="size-4" />
                 </EmptyMedia>
-                <EmptyTitle>Sandbox not found</EmptyTitle>
-                <EmptyDescription>Are you sure you're in the right organization?</EmptyDescription>
+                <EmptyTitle>未找到沙箱</EmptyTitle>
+                <EmptyDescription>请确认当前选择的组织是否正确。</EmptyDescription>
               </EmptyHeader>
               <Button variant="outline" size="sm" onClick={() => navigate(RoutePath.SANDBOXES)}>
                 Back to Sandboxes
@@ -229,14 +229,14 @@ export default function SandboxDetails() {
                   className="flex flex-col overflow-hidden"
                 >
                   <div className="flex items-center px-5 border-b border-border shrink-0 h-[41px]">
-                    <span className="text-sm font-medium">Overview</span>
+                    <span className="text-sm font-medium">概览</span>
                   </div>
                   <ScrollArea fade="mask" className="flex-1 min-h-0">
                     {isLoading ? (
                       <InfoPanelSkeleton />
                     ) : isError || !sandbox ? (
                       <div className="flex flex-col items-center justify-center gap-3 p-8 text-center text-muted-foreground">
-                        <p className="text-sm">Failed to load sandbox details.</p>
+                        <p className="text-sm">加载沙箱详情失败。</p>
                         <Button variant="outline" size="sm" onClick={() => refetch()}>
                           <RefreshCw className="size-4" />
                           Retry
@@ -273,15 +273,15 @@ export default function SandboxDetails() {
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Delete Sandbox</AlertDialogTitle>
+              <AlertDialogTitle>删除 Sandbox</AlertDialogTitle>
               <AlertDialogDescription>
                 Are you sure you want to delete this sandbox? This action cannot be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={deleteMutation.isPending}>Cancel</AlertDialogCancel>
+              <AlertDialogCancel disabled={deleteMutation.isPending}>取消</AlertDialogCancel>
               <AlertDialogAction variant="destructive" onClick={handleDelete} disabled={deleteMutation.isPending}>
-                {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+                {deleteMutation.isPending ? '正在删除...' : '删除'}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

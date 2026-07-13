@@ -52,7 +52,7 @@ export function useSnapshotQuery(
     queryKey: queryKeys.snapshots.detail(selectedOrganization?.id ?? '', snapshotId ?? ''),
     queryFn: async () => {
       if (!selectedOrganization) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       if (!snapshotId) {
@@ -88,7 +88,7 @@ export function useSnapshotsQuery(params: SnapshotQueryParams) {
     queryKey: queryKeys.snapshots.list(selectedOrganization?.id ?? '', params),
     queryFn: async () => {
       if (!selectedOrganization) {
-        throw new Error('No organization selected')
+        throw new Error('未选择组织')
       }
 
       const { page, pageSize, filters = {}, sorting = DEFAULT_SNAPSHOT_SORTING } = params

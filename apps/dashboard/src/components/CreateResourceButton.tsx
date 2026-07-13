@@ -17,7 +17,7 @@ export function CreateResourceButton({
   resource,
   children,
   className,
-  label = 'Create',
+  label = '创建',
   ...props
 }: CreateResourceButtonProps) {
   return (

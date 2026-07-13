@@ -190,7 +190,7 @@ export function OrganizationMemberTable({
             debounced
             value={globalFilter}
             onValueChange={handleChangeFilter}
-            placeholder="Search by Email, Role, or Assignment"
+            placeholder="按邮箱、角色或分配项搜索"
             containerClassName="min-w-0 flex-1 sm:max-w-sm"
           />
         </div>
@@ -203,13 +203,13 @@ export function OrganizationMemberTable({
               <TableEmptyState
                 overlay
                 colSpan={table.getVisibleLeafColumns().length}
-                message={hasSearch ? 'No matching Members found.' : 'No Members found.'}
+                message={hasSearch ? '未找到匹配的成员。' : '暂无成员。'}
                 icon={<Users />}
-                description={hasSearch ? null : 'Invite people to collaborate in your organization.'}
+                description={hasSearch ? null : '邀请其他人加入你的组织进行协作。'}
                 action={
                   hasSearch ? (
                     <Button variant="outline" onClick={() => handleChangeFilter('')}>
-                      Clear filters
+                      清除筛选条件
                     </Button>
                   ) : null
                 }
@@ -285,10 +285,10 @@ export function OrganizationMemberTable({
             }
           }}
           initialMember={initialMemberAccess}
-          title="Update Access"
-          description="Manage access to the organization with an appropriate role and assignments."
+          title="更新访问权限"
+          description="使用适当的角色和分配项管理组织访问权限。"
           onSubmit={({ role, assignedRoleIds }) => handleUpdateMemberAccess(role, assignedRoleIds)}
-          reducedRoleWarning="Removing assignments will automatically revoke any API keys this member created using permissions granted from those assignments."
+          reducedRoleWarning="移除分配项会自动撤销该成员使用这些分配项所授权限创建的所有 API 密钥。"
         />
       )}
 
@@ -317,7 +317,7 @@ const columns: ColumnDef<OrganizationUser>[] = [
   {
     accessorKey: 'role',
     header: () => {
-      return <div className="px-3 w-24">Role</div>
+      return <div className="px-3 w-24">角色</div>
     },
     cell: ({ row, table }) => {
       const { ownerMode, currentUserId, onUpdateMemberRole } = getMeta(table)
@@ -339,14 +339,14 @@ const columns: ColumnDef<OrganizationUser>[] = [
     id: 'assignedRoles',
     accessorKey: 'assignedRoles',
     header: () => {
-      return <div className="px-3 w-32">Assignments</div>
+      return <div className="px-3 w-32">分配项</div>
     },
     cell: ({ row, table }) => {
       const { currentUserId, onUpdateAssignedRoles } = getMeta(table)
       const canUpdateAccess = row.original.userId !== currentUserId
 
       if (row.original.role === OrganizationUserRoleEnum.OWNER) {
-        return <div className="px-3 text-sm text-muted-foreground">Full Access</div>
+        return <div className="px-3 text-sm text-muted-foreground">完整权限</div>
       }
 
       const roleCount = row.original.assignedRoles?.length || 0
@@ -376,14 +376,14 @@ const columns: ColumnDef<OrganizationUser>[] = [
         <div className="text-right">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+              <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
               {canUpdateAccess && (
-                <DropdownMenuItem onClick={() => onUpdateMemberRole(row.original)}>Change Role</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onUpdateMemberRole(row.original)}>更改角色</DropdownMenuItem>
               )}
               {canUpdateAccess && row.original.role !== OrganizationUserRoleEnum.OWNER && (
                 <DropdownMenuItem onClick={() => onUpdateAssignedRoles(row.original)}>

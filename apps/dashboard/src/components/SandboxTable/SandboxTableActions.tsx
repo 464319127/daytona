@@ -39,14 +39,14 @@ export function SandboxTableActions({
   const isVmSandbox = sandbox.sandboxClass === SandboxClass.LINUX_VM || sandbox.sandboxClass === SandboxClass.WINDOWS
   const primaryActionTooltip =
     sandbox.state === SandboxState.STARTING
-      ? 'Starting sandbox'
+      ? '正在启动 Sandbox'
       : sandbox.state === SandboxState.STOPPING
-        ? 'Stopping sandbox'
+        ? '正在停止 Sandbox'
         : sandbox.state === SandboxState.STARTED
-          ? 'Stop sandbox'
+          ? '停止 Sandbox'
           : sandbox.state === SandboxState.ERROR && sandbox.recoverable
-            ? 'Recover sandbox'
-            : 'Start sandbox'
+            ? '恢复 Sandbox'
+            : '启动 Sandbox'
 
   const menuItems = useMemo(() => {
     const items = []
@@ -55,21 +55,21 @@ export function SandboxTableActions({
       if (sandbox.state === SandboxState.STARTED) {
         items.push({
           key: 'stop',
-          label: 'Stop',
+          label: '停止',
           onClick: () => onStop(sandbox.id),
           disabled: isLoading,
         })
       } else if (sandbox.state === SandboxState.STOPPED || sandbox.state === SandboxState.ARCHIVED) {
         items.push({
           key: 'start',
-          label: 'Start',
+          label: '启动',
           onClick: () => onStart(sandbox.id),
           disabled: isLoading,
         })
       } else if (sandbox.state === SandboxState.ERROR && sandbox.recoverable) {
         items.push({
           key: 'recover',
-          label: 'Recover',
+          label: '恢复',
           onClick: () => onRecover(sandbox.id),
           disabled: isLoading,
         })
@@ -78,7 +78,7 @@ export function SandboxTableActions({
       if (sandbox.state === SandboxState.STOPPED) {
         items.push({
           key: 'archive',
-          label: 'Archive',
+          label: '归档',
           onClick: () => onArchive(sandbox.id),
           disabled: isLoading,
         })
@@ -97,7 +97,7 @@ export function SandboxTableActions({
         })
         items.push({
           key: 'screen-recordings',
-          label: 'Screen Recordings',
+          label: '屏幕录像',
           onClick: () => onScreenRecordings(sandbox.id),
           disabled: isLoading,
         })
@@ -106,7 +106,7 @@ export function SandboxTableActions({
       if (sandbox.gpu === 0 && (sandbox.state === SandboxState.STARTED || sandbox.state === SandboxState.STOPPED)) {
         items.push({
           key: 'create-snapshot',
-          label: 'Create Snapshot',
+          label: '创建 Snapshot',
           onClick: () => onCreateSnapshot?.(),
           disabled: isLoading,
         })
@@ -115,7 +115,7 @@ export function SandboxTableActions({
       if (isVmSandbox && sandbox.state === SandboxState.STARTED) {
         items.push({
           key: 'fork',
-          label: 'Fork',
+          label: '创建 Fork',
           onClick: () => onFork?.(),
           disabled: isLoading,
         })
@@ -124,13 +124,13 @@ export function SandboxTableActions({
       // Add SSH access options
       items.push({
         key: 'create-ssh',
-        label: 'Create SSH Access',
+        label: '创建 SSH 访问',
         onClick: () => onCreateSshAccess(sandbox.id),
         disabled: isLoading,
       })
       items.push({
         key: 'revoke-ssh',
-        label: 'Revoke SSH Access',
+        label: '撤销 SSH 访问',
         onClick: () => onRevokeSshAccess(sandbox.id),
         disabled: isLoading,
       })
@@ -140,7 +140,7 @@ export function SandboxTableActions({
     if (isVmSandbox) {
       items.push({
         key: 'view-forks',
-        label: 'View Fork Tree',
+        label: '查看 Fork 树',
         onClick: () => onViewForks?.(),
         disabled: isLoading,
       })
@@ -153,7 +153,7 @@ export function SandboxTableActions({
 
       items.push({
         key: 'delete',
-        label: 'Delete',
+        label: '删除',
         onClick: () => onDelete(sandbox.id),
         disabled: isLoading,
         className: 'text-red-600 dark:text-red-400',
@@ -226,7 +226,7 @@ export function SandboxTableActions({
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Open terminal"
+            aria-label="打开终端"
             onClick={(e) => {
               e.stopPropagation()
               onOpenTerminal?.()
@@ -240,7 +240,7 @@ export function SandboxTableActions({
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+          <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
             <MoreHorizontal className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>

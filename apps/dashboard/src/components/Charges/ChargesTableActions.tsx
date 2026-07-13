@@ -17,7 +17,7 @@ export function ChargesTableActions({ charge }: ChargesTableActionsProps) {
     <div className="flex items-center justify-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon-sm" aria-label="Open menu">
+          <Button variant="ghost" size="icon-sm" aria-label="打开菜单">
             <MoreHorizontalIcon className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
@@ -25,7 +25,7 @@ export function ChargesTableActions({ charge }: ChargesTableActionsProps) {
           <DropdownMenuItem className="cursor-pointer" asChild>
             <a href={charge.receiptUrl} target="_blank" rel="noopener noreferrer">
               <ExternalLinkIcon className="mr-2 h-4 w-4" />
-              View receipt
+              查看收据
             </a>
           </DropdownMenuItem>
         </DropdownMenuContent>

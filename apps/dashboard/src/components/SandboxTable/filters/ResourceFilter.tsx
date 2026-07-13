@@ -24,21 +24,21 @@ interface ResourceFilterProps {
 
 const RESOURCE_CONFIG = {
   cpu: { label: 'vCPU', displayLabel: 'CPU' },
-  memory: { label: 'Memory (GiB)', displayLabel: 'Memory' },
-  disk: { label: 'Disk (GiB)', displayLabel: 'Disk' },
+  memory: { label: '内存 (GiB)', displayLabel: '内存' },
+  disk: { label: '磁盘 (GiB)', displayLabel: '磁盘' },
 } as const
 
 export function ResourceFilterIndicator({ value, onFilterChange, resourceType }: ResourceFilterProps) {
   const { title, label } = useMemo(() => {
-    let title = 'All'
-    let label = 'Resources'
+    let title = '全部'
+    let label = '资源'
 
     if (resourceType) {
       const resourceValue = value[resourceType]
       if (resourceValue?.min || resourceValue?.max) {
         const config = RESOURCE_CONFIG[resourceType]
         const unit = resourceType === 'cpu' ? 'vCPU' : 'GiB'
-        title = `${resourceValue.min ?? 'Any'} - ${resourceValue.max ?? 'Any'} ${unit}`
+        title = `${resourceValue.min ?? '任意'} - ${resourceValue.max ?? '任意'} ${unit}`
         label = config.displayLabel
       }
     } else {
@@ -50,7 +50,7 @@ export function ResourceFilterIndicator({ value, onFilterChange, resourceType }:
           filters.push(`${config.displayLabel}: ${resourceValue.min ?? 'any'}-${resourceValue.max ?? 'any'} ${unit}`)
         }
       })
-      title = filters.length > 0 ? filters.join('; ') : 'All'
+      title = filters.length > 0 ? filters.join('; ') : '全部'
     }
 
     return { title, label }
@@ -130,7 +130,7 @@ export function ResourceFilter({ value, onFilterChange, resourceType }: Resource
         <div className="flex items-center gap-2">
           <Input
             type="number"
-            placeholder="Min"
+            placeholder="最小值"
             min={0}
             value={currentValues.min ?? ''}
             onChange={(e) => {
@@ -142,7 +142,7 @@ export function ResourceFilter({ value, onFilterChange, resourceType }: Resource
           <div className="w-8 h-[1px] bg-border"></div>
           <Input
             type="number"
-            placeholder="Max"
+            placeholder="最大值"
             min={0}
             value={currentValues.max ?? ''}
             onChange={(e) => {

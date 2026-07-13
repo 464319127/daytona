@@ -101,11 +101,11 @@ function TracesTableSkeleton() {
       <TableHeader>
         <TableRow>
           <TableHead className="w-10" />
-          <TableHead>Trace ID</TableHead>
-          <TableHead>Root Span</TableHead>
-          <TableHead>Start Time</TableHead>
-          <TableHead>Duration</TableHead>
-          <TableHead className="text-center">Spans</TableHead>
+          <TableHead>追踪 ID</TableHead>
+          <TableHead>根 Span</TableHead>
+          <TableHead>开始时间</TableHead>
+          <TableHead>耗时</TableHead>
+          <TableHead className="text-center">Span 数量</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -140,8 +140,8 @@ function TracesErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <Empty className="flex-1 border-0">
       <EmptyHeader>
-        <EmptyTitle>Failed to load traces</EmptyTitle>
-        <EmptyDescription>Something went wrong while fetching traces.</EmptyDescription>
+        <EmptyTitle>加载追踪数据失败</EmptyTitle>
+        <EmptyDescription>获取追踪数据时出错。</EmptyDescription>
       </EmptyHeader>
       <Button variant="outline" size="sm" onClick={onRetry}>
         <RefreshCw className="size-4" />
@@ -158,9 +158,9 @@ function TracesEmptyState({ hasFilters, onClearFilters }: { hasFilters: boolean;
         <EmptyMedia variant="icon">
           <Activity className="size-4" />
         </EmptyMedia>
-        <EmptyTitle>{hasFilters ? 'No matching traces found' : 'No traces yet'}</EmptyTitle>
+        <EmptyTitle>{hasFilters ? '未找到匹配的跟踪' : '暂无跟踪'}</EmptyTitle>
         {hasFilters ? (
-          <EmptyDescription>No traces matched your current filters.</EmptyDescription>
+          <EmptyDescription>没有符合当前筛选条件的追踪记录。</EmptyDescription>
         ) : (
           <EmptyDescription>
             Traces will appear here when the sandbox emits telemetry.{' '}
@@ -231,7 +231,7 @@ function TraceExpandedRow({ sandboxId, trace }: { sandboxId: string; trace: Trac
         </div>
         <div className="w-1/2 flex flex-col overflow-hidden">
           <div className="flex items-center gap-2 px-3 py-2 border-b border-border bg-muted/30 shrink-0">
-            <span className="text-xs font-medium text-muted-foreground">Select a span</span>
+            <span className="text-xs font-medium text-muted-foreground">选择 Span</span>
           </div>
           <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
             Click a span to see details
@@ -244,7 +244,7 @@ function TraceExpandedRow({ sandboxId, trace }: { sandboxId: string; trace: Trac
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 h-[340px] text-muted-foreground">
-        <p className="text-sm">Failed to load spans.</p>
+        <p className="text-sm">加载 Span 失败。</p>
         <Button variant="outline" size="sm" onClick={() => refetch()}>
           <RefreshCw className="size-4" />
           Retry
@@ -265,7 +265,7 @@ function TraceExpandedRow({ sandboxId, trace }: { sandboxId: string; trace: Trac
     <div className="flex h-[340px] border-t border-border">
       <div className="w-1/2 border-r border-border flex flex-col overflow-hidden">
         <div className="flex items-center gap-2 px-3 py-2 border-b border-border bg-muted/30 shrink-0">
-          <span className="text-xs font-medium text-muted-foreground">Spans</span>
+          <span className="text-xs font-medium text-muted-foreground">Span</span>
           <span className="text-xs text-muted-foreground">({spanTree.length})</span>
         </div>
         <ScrollArea fade="mask" className="flex-1 min-h-0">
@@ -311,33 +311,33 @@ function TraceExpandedRow({ sandboxId, trace }: { sandboxId: string; trace: Trac
       <div className="w-1/2 flex flex-col overflow-hidden">
         <div className="flex items-center gap-2 px-3 py-2 border-b border-border bg-muted/30 shrink-0">
           <span className="text-xs font-medium text-muted-foreground">
-            {selectedSpan ? 'Span Detail' : 'Select a span'}
+            {selectedSpan ? 'Span 详情' : '选择 Span'}
           </span>
         </div>
         {selectedSpan ? (
           <ScrollArea fade="mask" className="flex-1 min-h-0">
             <div className="p-3 space-y-3 text-xs">
-              <DetailRow label="Name" mono={false}>
+              <DetailRow label="名称" mono={false}>
                 {selectedSpan.spanName}
               </DetailRow>
               <DetailRow label="Span ID">
                 <span className="font-mono">{selectedSpan.spanId}</span>
-                <CopyButton value={selectedSpan.spanId} tooltipText="Copy" size="icon-xs" />
+                <CopyButton value={selectedSpan.spanId} tooltipText="复制" size="icon-xs" />
               </DetailRow>
               {selectedSpan.parentSpanId && (
-                <DetailRow label="Parent Span ID">
+                <DetailRow label="父 Span ID">
                   <span className="font-mono">{selectedSpan.parentSpanId}</span>
-                  <CopyButton value={selectedSpan.parentSpanId} tooltipText="Copy" size="icon-xs" />
+                  <CopyButton value={selectedSpan.parentSpanId} tooltipText="复制" size="icon-xs" />
                 </DetailRow>
               )}
-              <DetailRow label="Start">
+              <DetailRow label="开始时间">
                 <span className="font-mono">{formatTimestamp(selectedSpan.timestamp)}</span>
               </DetailRow>
-              <DetailRow label="Duration">
+              <DetailRow label="耗时">
                 <span className="font-mono">{formatNsDuration(selectedSpan.durationNs)}</span>
               </DetailRow>
               {selectedSpan.statusCode && (
-                <DetailRow label="Status">
+                <DetailRow label="状态">
                   <span
                     className={cn(
                       'inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium',
@@ -469,11 +469,11 @@ export function SandboxTracesTab({ sandboxId }: { sandboxId: string }) {
             <TableHeader className="sticky top-0 z-10 bg-background after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-border">
               <TableRow>
                 <TableHead className="w-10" />
-                <TableHead>Trace ID</TableHead>
-                <TableHead>Root Span</TableHead>
-                <TableHead>Start Time</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead className="text-center">Spans</TableHead>
+                <TableHead>追踪 ID</TableHead>
+                <TableHead>根 Span</TableHead>
+                <TableHead>开始时间</TableHead>
+                <TableHead>耗时</TableHead>
+                <TableHead className="text-center">Span 数量</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -498,7 +498,7 @@ export function SandboxTracesTab({ sandboxId }: { sandboxId: string }) {
                           <span>{truncateId(trace.traceId)}</span>
                           <CopyButton
                             value={trace.traceId}
-                            tooltipText="Copy Trace ID"
+                            tooltipText="复制追踪 ID"
                             size="icon-xs"
                             className="[@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover/trace-row:opacity-100 transition-opacity"
                             onClick={(e) => e.stopPropagation()}

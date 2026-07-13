@@ -97,10 +97,10 @@ const OrganizationMembers: React.FC = () => {
         userId,
         access: { role, assignedRoleIds },
       })
-      toast.success('Access updated successfully')
+      toast.success('访问权限已更新')
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to update access')
+      handleApiError(error, '更新访问权限失败')
       return false
     }
   }
@@ -114,13 +114,13 @@ const OrganizationMembers: React.FC = () => {
         organizationId: selectedOrganization.id,
         userId,
       })
-      toast.success('Member removed successfully')
+      toast.success('成员已成功移除')
       if (userId === user?.profile.sub) {
         await refreshOrganizations()
       }
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to remove member')
+      handleApiError(error, '移除成员失败')
       return false
     }
   }
@@ -138,10 +138,10 @@ const OrganizationMembers: React.FC = () => {
         organizationId: selectedOrganization.id,
         invitation: { email, role, assignedRoleIds },
       })
-      toast.success('Invitation created successfully')
+      toast.success('邀请已创建')
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to create invitation')
+      handleApiError(error, '创建邀请失败')
       return false
     }
   }
@@ -160,10 +160,10 @@ const OrganizationMembers: React.FC = () => {
         invitationId,
         invitation: { role, assignedRoleIds },
       })
-      toast.success('Invitation updated successfully')
+      toast.success('邀请已更新')
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to update invitation')
+      handleApiError(error, '更新邀请失败')
       return false
     }
   }
@@ -177,10 +177,10 @@ const OrganizationMembers: React.FC = () => {
         organizationId: selectedOrganization.id,
         invitationId,
       })
-      toast.success('Invitation cancelled successfully')
+      toast.success('邀请已取消')
       return true
     } catch (error) {
-      handleApiError(error, 'Failed to cancel invitation')
+      handleApiError(error, '取消邀请失败')
       return false
     }
   }
@@ -196,14 +196,14 @@ const OrganizationMembers: React.FC = () => {
     return [
       {
         id: 'create-organization-invitation',
-        label: 'Invite Member',
+        label: '邀请成员',
         icon: <PlusIcon className="w-4 h-4" />,
         onSelect: () => createInvitationSheetRef.current?.open(),
       },
     ]
   }, [canInviteMembers])
 
-  useRegisterCommands(rootCommands, { groupId: 'member-actions', groupLabel: 'Member actions', groupOrder: 0 })
+  useRegisterCommands(rootCommands, { groupId: 'member-actions', groupLabel: '成员操作', groupOrder: 0 })
 
   const handleCreateOrganization = async (name: string, defaultRegionId: string): Promise<Organization | null> => {
     try {
@@ -213,11 +213,11 @@ const OrganizationMembers: React.FC = () => {
           defaultRegionId,
         })
       ).data
-      toast.success('Organization created successfully')
+      toast.success('组织已创建')
       await refreshOrganizations(organization.id)
       return organization
     } catch (error) {
-      handleApiError(error, 'Failed to create organization')
+      handleApiError(error, '创建组织失败')
       return null
     }
   }
@@ -228,7 +228,7 @@ const OrganizationMembers: React.FC = () => {
 
       <PageContent>
         <PageIntro
-          title="Members"
+          title="成员"
           actions={
             canInviteMembers ? (
               <UpsertOrganizationAccessSheet
@@ -246,15 +246,15 @@ const OrganizationMembers: React.FC = () => {
                 <EmptyMedia variant="icon">
                   <Building2 />
                 </EmptyMedia>
-                <EmptyTitle>Organizations support member invitations</EmptyTitle>
+                <EmptyTitle>组织支持成员邀请</EmptyTitle>
                 <EmptyDescription>
-                  Personal accounts cannot invite members. Create an organization to collaborate with other users.
+                  个人账号无法邀请成员。请创建组织以便与其他用户协作。
                 </EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
                 <Button variant="secondary" size="sm" onClick={() => createOrganizationSheetRef.current?.open()}>
                   <PlusIcon />
-                  Create Organization
+                  创建组织
                 </Button>
               </EmptyContent>
             </Empty>
@@ -279,7 +279,7 @@ const OrganizationMembers: React.FC = () => {
 
             {authenticatedUserIsOwner && (
               <div>
-                <h1 className="text-2xl font-medium mb-3">Invitations</h1>
+                <h1 className="text-2xl font-medium mb-3">邀请</h1>
 
                 {invitationsError ? (
                   <Empty className="py-12 rounded-md border">
@@ -287,15 +287,15 @@ const OrganizationMembers: React.FC = () => {
                       <EmptyMedia variant="icon" className="bg-destructive-background text-destructive">
                         <AlertCircle />
                       </EmptyMedia>
-                      <EmptyTitle className="text-destructive">Failed to load invitations</EmptyTitle>
+                      <EmptyTitle className="text-destructive">加载邀请失败</EmptyTitle>
                       <EmptyDescription>
-                        Something went wrong while fetching organization invitations. Please try again.
+                        获取组织邀请时出错，请重试。
                       </EmptyDescription>
                     </EmptyHeader>
                     <EmptyContent>
                       <Button variant="secondary" size="sm" onClick={() => refetchInvitations()}>
                         <RefreshCw />
-                        Retry
+                        重试
                       </Button>
                     </EmptyContent>
                   </Empty>

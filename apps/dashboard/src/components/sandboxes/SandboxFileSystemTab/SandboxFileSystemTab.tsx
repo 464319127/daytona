@@ -172,13 +172,13 @@ function SandboxFileSystem({ sandbox }: { sandbox: SandboxListItem }) {
         await deleteNodeMutation.mutateAsync(node)
         await fileTreePaneRef.current?.refreshPath(parentPath)
 
-        toast.success(`Deleted ${node.path}`)
+        toast.success(`已删除 ${node.path}`)
       } catch (error) {
         if (deletedSelectedNode) {
           openNode(selectedNode?.path ?? node.path)
         }
 
-        handleApiError(error, `Failed to delete ${node.path}`)
+        handleApiError(error, `删除 ${node.path} 失败`)
         throw error
       }
     },
@@ -215,9 +215,9 @@ function SandboxFileSystem({ sandbox }: { sandbox: SandboxListItem }) {
             } satisfies SandboxFileSystemNode)
           ).path,
         )
-        toast.success(`Created folder ${newFolderPath}`)
+        toast.success(`已创建文件夹 ${newFolderPath}`)
       } catch (error) {
-        handleApiError(error, `Failed to create ${newFolderPath}`)
+        handleApiError(error, `创建 ${newFolderPath} 失败`)
         throw error
       }
     },
@@ -343,8 +343,8 @@ function SandboxFileSystem({ sandbox }: { sandbox: SandboxListItem }) {
               <EmptyMedia variant="icon">
                 <HardDriveIcon className="size-4" />
               </EmptyMedia>
-              <EmptyTitle>Sandbox is not running</EmptyTitle>
-              <EmptyDescription>Start the sandbox to browse and inspect its filesystem.</EmptyDescription>
+              <EmptyTitle>沙箱未运行</EmptyTitle>
+              <EmptyDescription>请启动沙箱以浏览和检查其文件系统。</EmptyDescription>
             </EmptyHeader>
           </Empty>
         </div>
@@ -361,8 +361,8 @@ function SandboxFileSystem({ sandbox }: { sandbox: SandboxListItem }) {
               <EmptyMedia variant="icon">
                 <Spinner />
               </EmptyMedia>
-              <EmptyTitle>Loading filesystem</EmptyTitle>
-              <EmptyDescription>Preparing the sandbox filesystem for browsing.</EmptyDescription>
+              <EmptyTitle>正在加载文件系统</EmptyTitle>
+              <EmptyDescription>正在准备沙箱文件系统以供浏览。</EmptyDescription>
             </EmptyHeader>
           </Empty>
         </div>
@@ -379,8 +379,8 @@ function SandboxFileSystem({ sandbox }: { sandbox: SandboxListItem }) {
               <EmptyMedia variant="icon">
                 <HardDriveIcon className="size-4" />
               </EmptyMedia>
-              <EmptyTitle>Sandbox is unavailable</EmptyTitle>
-              <EmptyDescription>The filesystem can’t be shown because the sandbox is not available.</EmptyDescription>
+              <EmptyTitle>沙箱不可用</EmptyTitle>
+              <EmptyDescription>沙箱当前不可用，无法显示文件系统。</EmptyDescription>
             </EmptyHeader>
           </Empty>
         </div>
@@ -454,7 +454,7 @@ function SandboxFileSystem({ sandbox }: { sandbox: SandboxListItem }) {
                   fileTreePaneRef.current?.restoreFocus(lastOpenedNodePath)
                 }}
               >
-                <DialogTitle className="sr-only">{selectedNodePath ?? 'Contents'}</DialogTitle>
+                <DialogTitle className="sr-only">{selectedNodePath ?? '内容'}</DialogTitle>
                 <DialogDescription className="sr-only">
                   Previewing sandbox filesystem contents inside the filesystem tab.
                 </DialogDescription>

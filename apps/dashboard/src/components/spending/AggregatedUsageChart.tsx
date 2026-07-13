@@ -35,8 +35,8 @@ const transition = {
 
 const SEGMENTS = [
   { key: 'cpu' as const, label: 'CPU', color: 'bg-[hsl(var(--chart-1))]' },
-  { key: 'ram' as const, label: 'RAM', color: 'bg-[hsl(var(--chart-2))]' },
-  { key: 'disk' as const, label: 'Disk', color: 'bg-[hsl(var(--chart-3))]' },
+  { key: 'ram' as const, label: '内存', color: 'bg-[hsl(var(--chart-2))]' },
+  { key: 'disk' as const, label: '磁盘', color: 'bg-[hsl(var(--chart-3))]' },
 ]
 
 export const UsageSummary: React.FC<AggregatedUsageChartProps> = ({ data, isLoading }) => {
@@ -46,7 +46,7 @@ export const UsageSummary: React.FC<AggregatedUsageChartProps> = ({ data, isLoad
   return (
     <div className="flex gap-4 sm:gap-12 sm:flex-row flex-col p-4">
       <div className="flex flex-col gap-1">
-        <div>Total Cost</div>
+        <div>总费用</div>
         <div className="relative">
           <div className={cn('text-2xl font-semibold', isLoading && 'invisible')}>
             $
@@ -59,7 +59,7 @@ export const UsageSummary: React.FC<AggregatedUsageChartProps> = ({ data, isLoad
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        <div>Sandboxes</div>
+        <div>沙箱</div>
         <div className="relative">
           <div className={cn('text-2xl font-semibold', isLoading && 'invisible')}>
             <NumberFlow value={sandboxCount} />
@@ -86,10 +86,10 @@ export const AggregatedUsageChart: React.FC<AggregatedUsageChartProps> = ({ data
         <StatItem label="CPU" suffix={cpu.suffix} isLoading={isLoading}>
           <NumberFlow value={cpu.value} format={{ minimumFractionDigits: 1, maximumFractionDigits: 1 }} />
         </StatItem>
-        <StatItem label="RAM" suffix={ram.suffix} isLoading={isLoading}>
+        <StatItem label="内存" suffix={ram.suffix} isLoading={isLoading}>
           <NumberFlow value={ram.value} format={{ minimumFractionDigits: 1, maximumFractionDigits: 1 }} />
         </StatItem>
-        <StatItem label="Disk" suffix={disk.suffix} isLoading={isLoading}>
+        <StatItem label="磁盘" suffix={disk.suffix} isLoading={isLoading}>
           <NumberFlow value={disk.value} format={{ minimumFractionDigits: 1, maximumFractionDigits: 1 }} />
         </StatItem>
       </div>
@@ -136,7 +136,7 @@ export const ResourceUsageBreakdown: React.FC<{ data: ModelsAggregatedUsage | un
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <p className="text-xl font-semibold leading-none tracking-tight">Resource Breakdown</p>
+      <p className="text-xl font-semibold leading-none tracking-tight">资源明细</p>
       <div className="flex flex-col gap-2">
         <div className="w-full h-2 bg-muted rounded-full overflow-clip flex">
           {total === 0

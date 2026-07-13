@@ -42,14 +42,14 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 const baseFormSchema = z.object({
-  name: z.string().min(1, 'Registry name is required'),
+  name: z.string().min(1, '镜像仓库名称为必填项'),
   url: z.string(),
-  username: z.string().min(1, 'Username is required'),
+  username: z.string().min(1, '用户名为必填项'),
   project: z.string(),
 })
 
 const createFormSchema = baseFormSchema.extend({
-  password: z.string().min(1, 'Password is required'),
+  password: z.string().min(1, '密码为必填项'),
 })
 
 const editFormSchema = baseFormSchema.extend({
@@ -59,15 +59,15 @@ const editFormSchema = baseFormSchema.extend({
 // ECR resolves credentials server-side via STS:AssumeRole, so the form
 // doesn't collect a password. URL is required (no docker.io fallback).
 const ecrCreateFormSchema = baseFormSchema.extend({
-  url: z.string().trim().min(1, 'Registry URL is required'),
-  username: z.string().trim().min(1, 'Role ARN is required'),
+  url: z.string().trim().min(1, '镜像仓库 URL 为必填项'),
+  username: z.string().trim().min(1, '角色 ARN 为必填项'),
   password: z.string(),
 })
 
 // Google Artifact Registry: URL is region-specific, must be provided.
 const gcpCreateFormSchema = baseFormSchema.extend({
-  url: z.string().trim().min(1, 'Registry URL is required'),
-  password: z.string().trim().min(1, 'Service Account JSON Key is required'),
+  url: z.string().trim().min(1, '镜像仓库 URL 为必填项'),
+  password: z.string().trim().min(1, '服务账号 JSON 密钥为必填项'),
 })
 
 type FormValues = z.infer<typeof createFormSchema>
@@ -182,7 +182,7 @@ export const UpsertRegistrySheet = ({
     },
     onSubmit: async ({ value }) => {
       if (!selectedOrganization?.id) {
-        toast.error(`Select an organization to ${isEditMode ? 'edit' : 'create'} a registry.`)
+        toast.error(`请选择组织以${isEditMode ? '编辑' : '创建'}镜像仓库。`)
         return
       }
 
@@ -202,7 +202,7 @@ export const UpsertRegistrySheet = ({
       try {
         if (isEditMode) {
           if (!registry) {
-            toast.error('No registry selected for editing.')
+            toast.error('未选择要编辑的镜像仓库。')
             return
           }
 
@@ -211,18 +211,18 @@ export const UpsertRegistrySheet = ({
             registry: payload,
             organizationId: selectedOrganization.id,
           })
-          toast.success('Registry edited successfully')
+          toast.success('镜像仓库编辑成功')
         } else {
           await createRegistryMutation.mutateAsync({
             registry: payload,
             organizationId: selectedOrganization.id,
           })
-          toast.success('Registry created successfully')
+          toast.success('注册表已成功创建')
         }
 
         handleOpenChange(false)
       } catch (error) {
-        handleApiError(error, `Failed to ${isEditMode ? 'edit' : 'create'} registry`)
+        handleApiError(error, isEditMode ? '编辑镜像仓库失败' : '创建镜像仓库失败')
       }
     },
   })
@@ -263,11 +263,11 @@ export const UpsertRegistrySheet = ({
       {trigger === undefined ? (
         <SheetTrigger asChild>
           {isEditMode ? (
-            <Button variant="default" size="sm" disabled={disabled} className={className} title="Edit Registry">
+            <Button variant="default" size="sm" disabled={disabled} className={className} title="编辑注册表">
               Edit Registry
             </Button>
           ) : (
-            <CreateResourceButton resource="Registry" disabled={disabled} className={className} title="Create Registry">
+            <CreateResourceButton resource="注册表" disabled={disabled} className={className} title="创建注册表">
               Registry
             </CreateResourceButton>
           )}
@@ -277,7 +277,7 @@ export const UpsertRegistrySheet = ({
       )}
       <SheetContent className="w-dvw sm:w-[460px] p-0 flex flex-col gap-0">
         <SheetHeader className="border-b border-border p-4 px-5 items-center flex text-left flex-row">
-          <SheetTitle>{isEditMode ? 'Edit Registry' : 'Create Registry'}</SheetTitle>
+          <SheetTitle>{isEditMode ? '编辑镜像仓库' : '创建镜像仓库'}</SheetTitle>
           <SheetDescription className="sr-only">
             Registry details must be provided for images that are not publicly available.
           </SheetDescription>
@@ -316,7 +316,7 @@ export const UpsertRegistrySheet = ({
                 const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
                 return (
                   <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Registry Name</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>注册表名称</FieldLabel>
                     <Input
                       aria-invalid={isInvalid}
                       id={field.name}
@@ -324,7 +324,7 @@ export const UpsertRegistrySheet = ({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="My Registry"
+                      placeholder="我的镜像仓库"
                     />
                     {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                       <FieldError errors={field.state.meta.errors} />
@@ -420,13 +420,13 @@ export const UpsertRegistrySheet = ({
                             variant="ghost"
                             size="icon-xs"
                             onClick={() => setPasswordVisible((visible) => !visible)}
-                            aria-label={passwordVisible ? 'Hide password' : 'Show password'}
+                            aria-label={passwordVisible ? '隐藏密码' : '显示密码'}
                           >
                             {passwordVisible ? <EyeOffIcon className="h-4 w-4" /> : <EyeIcon className="h-4 w-4" />}
                           </InputGroupButton>
                         </InputGroup>
                       )}
-                      {isEditMode && <FieldDescription>Leave empty to keep the current password.</FieldDescription>}
+                      {isEditMode && <FieldDescription>留空以保留当前密码。</FieldDescription>}
                       {activeSpec.password.helper && <FieldDescription>{activeSpec.password.helper}</FieldDescription>}
                       {field.state.meta.errors.length > 0 && field.state.meta.isTouched && (
                         <FieldError errors={field.state.meta.errors} />
@@ -484,7 +484,7 @@ export const UpsertRegistrySheet = ({
                 }
               >
                 {isSubmitting && <Spinner />}
-                {isEditMode ? 'Edit' : 'Add'}
+                {isEditMode ? '编辑' : '添加'}
               </Button>
             )}
           />
