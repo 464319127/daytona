@@ -34,6 +34,7 @@ services:
       - POSTHOG_API_KEY=phc_bYtEsdMDrNLydXPD4tufkBrHKgfO2zbycM30LOowYNv
       - POSTHOG_HOST=https://d18ag4dodbta3l.cloudfront.net
       - POSTHOG_ENVIRONMENT=local
+      - OPENFEATURE_FORCE_ENABLED_FLAGS=organization_infrastructure
       - TRANSIENT_REGISTRY_URL=http://registry:6000
       - TRANSIENT_REGISTRY_ADMIN=admin
       - TRANSIENT_REGISTRY_PASSWORD=password

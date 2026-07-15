@@ -243,7 +243,8 @@ function RequiredPermissionsOrganizationPageWrapper({
 }
 
 function RequiredFeatureFlagWrapper({ children, flagKey }: { children: ReactNode; flagKey: FeatureFlags }) {
-  const flagEnabled = useFeatureFlagEnabled(flagKey)
+  const remoteFlagEnabled = useFeatureFlagEnabled(flagKey)
+  const flagEnabled = flagKey === FeatureFlags.ORGANIZATION_INFRASTRUCTURE || remoteFlagEnabled
 
   if (!flagEnabled) {
     return <Navigate to={RoutePath.DASHBOARD} replace />
