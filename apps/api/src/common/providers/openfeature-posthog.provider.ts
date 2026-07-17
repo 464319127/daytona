@@ -41,12 +41,9 @@ export class OpenFeaturePostHogProvider implements Provider {
 
   /**
    * Returns true if the given flag key is listed in the
-   * `OPENFEATURE_FORCE_ENABLED_FLAGS` env var (comma-separated). Used by the
-   * E2E setup to force-enable feature-flag-gated endpoints (e.g.
-   * `sandbox_resize`) when no real flag provider (PostHog) is configured.
-   *
-   * Production deployments configure PostHog and never hit the unconfigured
-   * code path that consults this list, so this is a no-op in production.
+   * `OPENFEATURE_FORCE_ENABLED_FLAGS` env var (comma-separated). This lets
+   * self-hosted and test deployments override boolean flags independently of
+   * the configured PostHog provider.
    */
   private static isForceEnabled(flagKey: string): boolean {
     const raw = process.env.OPENFEATURE_FORCE_ENABLED_FLAGS
@@ -167,17 +164,18 @@ export class OpenFeaturePostHogProvider implements Provider {
     context: EvaluationContext,
     logger: Logger,
   ): Promise<ResolutionDetails<any>> {
+    // Self-hosted deployments can force-enable boolean flags regardless of
+    // whether PostHog is configured.
+    if (typeof defaultValue === 'boolean' && OpenFeaturePostHogProvider.isForceEnabled(flagKey)) {
+      logger.debug(`Force-enabling flag ${flagKey} via OPENFEATURE_FORCE_ENABLED_FLAGS`)
+      return {
+        value: true,
+        reason: StandardResolutionReasons.STATIC,
+      }
+    }
+
     // If PostHog is not configured, return default value
     if (!this.isConfigured || !this.client) {
-      // Only override Boolean flags - forcing a non-boolean to `true`
-      // would cause the resolver to throw TypeMismatchError downstream.
-      if (typeof defaultValue === 'boolean' && OpenFeaturePostHogProvider.isForceEnabled(flagKey)) {
-        logger.debug(`Force-enabling flag ${flagKey} via OPENFEATURE_FORCE_ENABLED_FLAGS`)
-        return {
-          value: true,
-          reason: StandardResolutionReasons.STATIC,
-        }
-      }
       logger.debug(`PostHog not configured, returning default value for flag ${flagKey}`)
       return {
         value: defaultValue,
