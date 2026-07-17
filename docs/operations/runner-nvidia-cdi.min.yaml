@@ -1,0 +1,78 @@
+cdiVersion: 0.5.0
+kind: nvidia.com/gpu
+
+containerEdits:
+  deviceNodes:
+    - path: /dev/nvidiactl
+    - path: /dev/nvidia-uvm
+    - path: /dev/nvidia-uvm-tools
+  mounts:
+    - hostPath: /usr/lib64/libcuda.so.525.125.06
+      containerPath: /lib64/libcuda.so.525.125.06
+      options: [ro, nosuid, nodev, bind]
+    - hostPath: /usr/lib64/libcuda.so.525.125.06
+      containerPath: /lib64/libcuda.so.1
+      options: [ro, nosuid, nodev, bind]
+    - hostPath: /usr/lib64/libcuda.so.525.125.06
+      containerPath: /lib64/libcuda.so
+      options: [ro, nosuid, nodev, bind]
+    - hostPath: /usr/lib64/libnvidia-ml.so.525.125.06
+      containerPath: /lib64/libnvidia-ml.so.525.125.06
+      options: [ro, nosuid, nodev, bind]
+    - hostPath: /usr/lib64/libnvidia-ml.so.525.125.06
+      containerPath: /lib64/libnvidia-ml.so.1
+      options: [ro, nosuid, nodev, bind]
+    - hostPath: /usr/lib64/libnvidia-ptxjitcompiler.so.525.125.06
+      containerPath: /lib64/libnvidia-ptxjitcompiler.so.525.125.06
+      options: [ro, nosuid, nodev, bind]
+    - hostPath: /usr/lib64/libnvidia-ptxjitcompiler.so.525.125.06
+      containerPath: /lib64/libnvidia-ptxjitcompiler.so.1
+      options: [ro, nosuid, nodev, bind]
+    - hostPath: /usr/bin/nvidia-smi
+      containerPath: /usr/bin/nvidia-smi
+      options: [ro, nosuid, nodev, bind]
+
+devices:
+  - name: "0"
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia0
+  - name: "1"
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia1
+  - name: "2"
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia2
+  - name: "3"
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia3
+  - name: "4"
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia4
+  - name: "5"
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia5
+  - name: "6"
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia6
+  - name: "7"
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia7
+  - name: all
+    containerEdits:
+      deviceNodes:
+        - path: /dev/nvidia0
+        - path: /dev/nvidia1
+        - path: /dev/nvidia2
+        - path: /dev/nvidia3
+        - path: /dev/nvidia4
+        - path: /dev/nvidia5
+        - path: /dev/nvidia6
+        - path: /dev/nvidia7

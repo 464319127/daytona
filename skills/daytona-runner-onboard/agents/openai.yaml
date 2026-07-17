@@ -1,0 +1,4 @@
+interface:
+  display_name: "Daytona Runner Onboard"
+  short_description: "Register a Runner with offline GPU support"
+  default_prompt: "Use $daytona-runner-onboard to add this machine to a Daytona control plane with offline image migration and GPU validation."
