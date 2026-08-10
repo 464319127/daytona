@@ -1,0 +1,4 @@
+# Replace these values with the settings required by the selected image and model.
+SGLANG_MODE=single
+BASE_PORT=30000
+SINGLE_NUM=1

@@ -41,13 +41,13 @@ func isAndroidDeviceContainer(c *container.InspectResponse) bool {
 	return c.Config.Labels[androidDeviceLabel] == "true"
 }
 
-func (d *DockerClient) getContainerConfigs(sandboxDto dto.CreateSandboxDTO, image *image.InspectResponse, volumeMountPathBinds []string, gpuIndex *int) (*container.Config, *container.HostConfig, *network.NetworkingConfig, error) {
-	containerConfig, err := d.getContainerCreateConfig(sandboxDto, image, gpuIndex)
+func (d *DockerClient) getContainerConfigs(sandboxDto dto.CreateSandboxDTO, image *image.InspectResponse, volumeMountPathBinds []string, gpuIndices []int) (*container.Config, *container.HostConfig, *network.NetworkingConfig, error) {
+	containerConfig, err := d.getContainerCreateConfig(sandboxDto, image, gpuIndices)
 	if err != nil {
 		return nil, nil, nil, err
 	}
 
-	hostConfig, err := d.getContainerHostConfig(sandboxDto, volumeMountPathBinds, gpuIndex)
+	hostConfig, err := d.getContainerHostConfig(sandboxDto, volumeMountPathBinds, gpuIndices)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -57,7 +57,7 @@ func (d *DockerClient) getContainerConfigs(sandboxDto dto.CreateSandboxDTO, imag
 	return containerConfig, hostConfig, networkingConfig, nil
 }
 
-func (d *DockerClient) getContainerCreateConfig(sandboxDto dto.CreateSandboxDTO, image *image.InspectResponse, gpuIndex *int) (*container.Config, error) {
+func (d *DockerClient) getContainerCreateConfig(sandboxDto dto.CreateSandboxDTO, image *image.InspectResponse, gpuIndices []int) (*container.Config, error) {
 	if image == nil {
 		return nil, fmt.Errorf("image not found for sandbox: %s", sandboxDto.Id)
 	}
@@ -68,19 +68,15 @@ func (d *DockerClient) getContainerCreateConfig(sandboxDto dto.CreateSandboxDTO,
 		"DAYTONA_SANDBOX_USER=" + sandboxDto.OsUser,
 	}
 
-	// GPU sandboxes run non-privileged so CDI's per-device cgroup rules
-	// actually take effect. CDI already restricts the container to the one
-	// allocated physical GPU (see DeviceRequests below), and Linux/CUDA
-	// renumber the exposed devices starting at 0 - so from inside the
-	// container the GPU is always index 0 regardless of which host slot
-	// was allocated. Hard-code the env vars to "0" so CUDA/userspace tools
-	// don't try to address a host-side index that doesn't exist in the
-	// container's view (which would break e.g. cudaSetDevice while letting
-	// nvidia-smi work).
-	if gpuIndex != nil {
+	if len(gpuIndices) > 0 {
+		logicalIndices := make([]string, len(gpuIndices))
+		for i := range gpuIndices {
+			logicalIndices[i] = strconv.Itoa(i)
+		}
+		visibleDevices := strings.Join(logicalIndices, ",")
 		envVars = append(envVars,
-			"NVIDIA_VISIBLE_DEVICES=0",
-			"CUDA_VISIBLE_DEVICES=0",
+			"NVIDIA_VISIBLE_DEVICES="+visibleDevices,
+			"CUDA_VISIBLE_DEVICES="+visibleDevices,
 		)
 	}
 
@@ -119,8 +115,17 @@ func (d *DockerClient) getContainerCreateConfig(sandboxDto dto.CreateSandboxDTO,
 			labels["daytona.organization_name"] = orgName
 		}
 	}
-	if gpuIndex != nil {
-		labels[GpuIndexLabel] = strconv.Itoa(*gpuIndex)
+	if len(gpuIndices) > 0 {
+		indices := slices.Clone(gpuIndices)
+		slices.Sort(indices)
+		labelIndices := make([]string, len(indices))
+		for i, index := range indices {
+			labelIndices[i] = strconv.Itoa(index)
+		}
+		labels[GpuIndicesLabel] = strings.Join(labelIndices, ",")
+		if len(indices) == 1 {
+			labels[GpuIndexLabel] = labelIndices[0]
+		}
 	}
 
 	// Android-device sandboxes run the image's native entrypoint (e.g. the docker-android
@@ -177,11 +182,21 @@ func (d *DockerClient) getContainerCreateConfig(sandboxDto dto.CreateSandboxDTO,
 	}, nil
 }
 
-func (d *DockerClient) getContainerHostConfig(sandboxDto dto.CreateSandboxDTO, volumeMountPathBinds []string, gpuIndex *int) (*container.HostConfig, error) {
+func (d *DockerClient) getContainerHostConfig(sandboxDto dto.CreateSandboxDTO, volumeMountPathBinds []string, gpuIndices []int) (*container.HostConfig, error) {
 	// Android-device sandboxes run on plain docker runtime, without the bundled
 	// daytona daemon, and require /dev/kvm to be mounted for emulator acceleration.
 	if sandboxDto.IsAndroidSandbox() {
-		return d.getAndroidDeviceHostConfig(sandboxDto, volumeMountPathBinds), nil
+		hostConfig := d.getAndroidDeviceHostConfig(sandboxDto, volumeMountPathBinds)
+		if len(gpuIndices) > 0 {
+			if !d.resourceLimitsDisabled {
+				hostConfig.Resources.CPUPeriod = 100000
+				hostConfig.Resources.CPUQuota = gpuSandboxCPUCores * 100000
+				hostConfig.Resources.Memory = common.GBToBytes(float64(gpuSandboxMemoryGiB))
+				hostConfig.Resources.MemorySwap = common.GBToBytes(float64(gpuSandboxMemoryGiB))
+			}
+			hostConfig.DeviceRequests = gpuDeviceRequests(gpuIndices)
+		}
+		return hostConfig, nil
 	}
 
 	var binds []string
@@ -202,7 +217,7 @@ func (d *DockerClient) getContainerHostConfig(sandboxDto dto.CreateSandboxDTO, v
 		// CDI cgroup rules, so GPU sandboxes have to opt out to keep their
 		// allocated card isolated. Non-GPU sandboxes still need privileged
 		// for their current workloads.
-		Privileged: gpuIndex == nil,
+		Privileged: len(gpuIndices) == 0,
 		Binds:      binds,
 	}
 
@@ -219,7 +234,7 @@ func (d *DockerClient) getContainerHostConfig(sandboxDto dto.CreateSandboxDTO, v
 	cpuQuota := sandboxDto.CpuQuota
 	memoryQuotaGiB := sandboxDto.MemoryQuota
 	storageQuotaGiB := sandboxDto.StorageQuota
-	if gpuIndex != nil {
+	if len(gpuIndices) > 0 {
 		cpuQuota = gpuSandboxCPUCores
 		memoryQuotaGiB = gpuSandboxMemoryGiB
 		storageQuotaGiB = gpuSandboxDiskGiB
@@ -245,14 +260,22 @@ func (d *DockerClient) getContainerHostConfig(sandboxDto dto.CreateSandboxDTO, v
 		}
 	}
 
-	if d.gpuEnabled && gpuIndex != nil {
-		hostConfig.DeviceRequests = []container.DeviceRequest{{
-			Driver:    "cdi",
-			DeviceIDs: []string{fmt.Sprintf("nvidia.com/gpu=%d", *gpuIndex)},
-		}}
+	if d.gpuEnabled && len(gpuIndices) > 0 {
+		hostConfig.DeviceRequests = gpuDeviceRequests(gpuIndices)
 	}
 
 	return hostConfig, nil
+}
+
+func gpuDeviceRequests(gpuIndices []int) []container.DeviceRequest {
+	deviceIDs := make([]string, len(gpuIndices))
+	for i, index := range gpuIndices {
+		deviceIDs[i] = fmt.Sprintf("nvidia.com/gpu=%d", index)
+	}
+	return []container.DeviceRequest{{
+		Driver:    "cdi",
+		DeviceIDs: deviceIDs,
+	}}
 }
 
 func (d *DockerClient) getContainerNetworkingConfig(sandboxDto dto.CreateSandboxDTO) *network.NetworkingConfig {

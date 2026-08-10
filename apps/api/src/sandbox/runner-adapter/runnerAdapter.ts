@@ -15,6 +15,7 @@ import { SandboxState } from '../enums/sandbox-state.enum'
 import { SandboxClass } from '../enums/sandbox-class.enum'
 import { BackupState } from '../enums/backup-state.enum'
 import { RunnerServiceInfo } from '../common/runner-service-info'
+import { RunnerCapabilities } from '../common/runner-capabilities'
 
 export interface RunnerSandboxInfo {
   state: SandboxState
@@ -64,6 +65,7 @@ export interface RunnerInfo {
   serviceHealth?: RunnerServiceInfo[]
   metrics?: RunnerMetrics
   appVersion?: string
+  capabilities?: RunnerCapabilities
 }
 
 export interface StartSandboxResponse {

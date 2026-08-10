@@ -26,7 +26,12 @@ export function resolveGpuTypePreferences(
   gpuTypePreferences: GpuType[] | undefined,
   allowedGpuTypes: GpuType[] | null | undefined,
 ): GpuType[] | undefined {
-  if (gpu <= 0) return undefined
+  if (gpu <= 0) {
+    if (gpuTypePreferences && gpuTypePreferences.length > 0) {
+      throw new BadRequestError('GPU type cannot be specified for a CPU sandbox.')
+    }
+    return undefined
+  }
 
   if (allowedGpuTypes == null) {
     return gpuTypePreferences && gpuTypePreferences.length > 0 ? gpuTypePreferences : undefined

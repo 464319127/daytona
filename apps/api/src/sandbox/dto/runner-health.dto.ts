@@ -7,6 +7,17 @@ import { ApiProperty, ApiPropertyOptional, ApiSchema } from '@nestjs/swagger'
 import { IsArray, IsBoolean, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 
+@ApiSchema({ name: 'RunnerCapabilities' })
+export class RunnerCapabilitiesDto {
+  @ApiPropertyOptional({
+    description: 'Whether the runner can assign multiple GPUs to one sandbox',
+    example: true,
+  })
+  @IsOptional()
+  @IsBoolean()
+  multiGpuPerSandbox?: boolean
+}
+
 @ApiSchema({ name: 'RunnerHealthMetrics' })
 export class RunnerHealthMetricsDto {
   @ApiProperty({
@@ -153,6 +164,15 @@ export class RunnerHealthcheckDto {
   @ValidateNested({ each: true })
   @Type(() => RunnerServiceHealthDto)
   serviceHealth?: RunnerServiceHealthDto[]
+
+  @ApiPropertyOptional({
+    description: 'Capabilities supported by this runner version',
+    type: RunnerCapabilitiesDto,
+  })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => RunnerCapabilitiesDto)
+  capabilities?: RunnerCapabilitiesDto
 
   @ApiPropertyOptional({
     description: 'Runner domain',

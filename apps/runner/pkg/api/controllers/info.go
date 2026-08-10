@@ -50,7 +50,8 @@ func RunnerInfo(ctx *gin.Context) {
 			CurrentSnapshotCount:         int(metrics.SnapshotCount),
 			CurrentStartedSandboxes:      int64(metrics.StartedSandboxCount),
 		},
-		AppVersion: internal.Version,
+		Capabilities: dto.RunnerCapabilities{MultiGpuPerSandbox: true},
+		AppVersion:   internal.Version,
 	}
 
 	ctx.JSON(http.StatusOK, response)

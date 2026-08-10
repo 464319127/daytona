@@ -12,6 +12,7 @@ import {
   FindOptionsWhere,
   In,
   IsNull,
+  JsonContains,
   MoreThanOrEqual,
   Not,
   Or,
@@ -51,6 +52,7 @@ import { normalizeGpuType } from '../utils/gpu-type-normalizer.util'
 import { SandboxRepository } from '../repositories/sandbox.repository'
 import { SnapshotRepository } from '../repositories/snapshot.repository'
 import { RunnerServiceInfo } from '../common/runner-service-info'
+import { RunnerCapabilities } from '../common/runner-capabilities'
 
 @Injectable()
 export class RunnerService {
@@ -306,6 +308,9 @@ export class RunnerService {
 
     if (params.gpu > 0) {
       runnerFilter.gpu = MoreThanOrEqual(params.gpu)
+      if (params.gpu > 1) {
+        runnerFilter.capabilities = JsonContains({ multiGpuPerSandbox: true })
+      }
       if (typeof params.gpuType === 'string') {
         runnerFilter.gpuType = params.gpuType
       }
@@ -316,10 +321,9 @@ export class RunnerService {
 
     const excludedRunnerIds = new Set((params.excludedRunnerIds ?? []).filter((id): id is string => !!id))
 
-    // A runner with runner.gpu = N can host up to N concurrent GPU sandboxes.
-    // Skip runners that have already reached their GPU sandbox capacity.
+    // Exclude runners whose remaining capacity cannot fit the complete request.
     if (params.gpu > 0) {
-      const fullRunnerIds = await this.getRunnersAtGpuCapacity()
+      const fullRunnerIds = await this.getRunnersWithoutGpuCapacity(params.gpu)
       for (const id of fullRunnerIds) {
         excludedRunnerIds.add(id)
       }
@@ -413,6 +417,7 @@ export class RunnerService {
       gpuType?: string
     },
     appVersion?: string,
+    capabilities?: RunnerCapabilities,
   ): Promise<void> {
     const runner = await this.findOne(runnerId)
     if (!runner) {
@@ -445,6 +450,8 @@ export class RunnerService {
     if (appVersion) {
       updateData.appVersion = appVersion
     }
+
+    updateData.capabilities = capabilities ?? {}
 
     if (serviceHealth !== undefined) {
       updateData.serviceHealth = serviceHealth
@@ -609,6 +616,7 @@ export class RunnerService {
                     runnerInfo?.serviceHealth,
                     runnerInfo?.metrics,
                     runnerInfo?.appVersion,
+                    runnerInfo?.capabilities,
                   )
                 })(),
                 new Promise((_, reject) => {
@@ -789,6 +797,9 @@ export class RunnerService {
 
     const availableRunners = await this.findAvailableRunners(params)
     if (availableRunners.length === 0) {
+      if (params.gpu > 0) {
+        throw new BadRequestError(`No runner has ${params.gpu} available GPUs`)
+      }
       throw new BadRequestError('No available runners')
     }
     return pickRandom(availableRunners)
@@ -803,7 +814,7 @@ export class RunnerService {
    *
    * @throws {BadRequestError} If any precondition is not met.
    */
-  assertRunnerCanHost(runner: Runner): void {
+  async assertRunnerCanHost(runner: Runner, requestedGpu = 0): Promise<void> {
     if (runner.state !== RunnerState.READY) {
       throw new BadRequestError(`Runner ${runner.id} is not READY (current: ${runner.state})`)
     }
@@ -819,6 +830,15 @@ export class RunnerService {
       throw new BadRequestError(
         `Runner ${runner.id} does not meet availability score threshold (${runner.availabilityScore} < ${minScore})`,
       )
+    }
+    if (requestedGpu > 0 && (runner.gpu === null || runner.gpu < requestedGpu)) {
+      throw new BadRequestError(`Runner ${runner.id} has GPU capacity ${runner.gpu ?? 0}, requested ${requestedGpu}`)
+    }
+    if (requestedGpu > 1 && runner.capabilities?.multiGpuPerSandbox !== true) {
+      throw new BadRequestError(`Runner ${runner.id} does not support multiple GPUs per sandbox`)
+    }
+    if (requestedGpu > 0 && !(await this.canRunnerFitGpu(runner.id, requestedGpu))) {
+      throw new BadRequestError(`Runner ${runner.id} does not have ${requestedGpu} available GPUs`)
     }
   }
 
@@ -951,9 +971,8 @@ export class RunnerService {
   }
 
   /**
-   * Returns runner IDs that have reached their GPU sandbox capacity. A runner
-   * with `runner.gpu = N` can host up to N concurrent GPU sandboxes; this
-   * method returns runners where the count of GPU sandboxes is `>= N`.
+   * Returns runner IDs whose remaining capacity cannot fit requestedGpu. GPU
+   * capacity is consumed by SUM(sandbox.gpu), not the number of sandboxes.
    *
    * Every GPU sandbox in any state other than DESTROYED / ARCHIVED /
    * BUILD_FAILED counts toward capacity - including STOPPED, ERROR, RESIZING,
@@ -970,7 +989,7 @@ export class RunnerService {
    * BUILD_FAILED is excluded because the build failed before a GPU container
    * was created on the runner, so no physical card is reserved.
    */
-  async getRunnersAtGpuCapacity(): Promise<string[]> {
+  async getRunnersWithoutGpuCapacity(requestedGpu: number): Promise<string[]> {
     const rows = await this.sandboxRepository
       .createQueryBuilder('sandbox')
       .innerJoin(Runner, 'runner', 'runner.id = sandbox.runnerId')
@@ -983,10 +1002,18 @@ export class RunnerService {
       })
       .groupBy('sandbox.runnerId')
       .addGroupBy('runner.gpu')
-      .having('COUNT(*) >= runner.gpu')
+      .having('SUM(sandbox.gpu) + :requestedGpu > runner.gpu', { requestedGpu })
       .getRawMany()
 
     return rows.map((r) => r.runnerId).filter((id): id is string => !!id)
+  }
+
+  async canRunnerFitGpu(runnerId: string, requestedGpu: number): Promise<boolean> {
+    if (requestedGpu <= 0) {
+      return true
+    }
+    const runnersWithoutCapacity = await this.getRunnersWithoutGpuCapacity(requestedGpu)
+    return !runnersWithoutCapacity.includes(runnerId)
   }
 
   async getRunnersBySnapshotRef(ref: string): Promise<RunnerSnapshotDto[]> {
@@ -1209,8 +1236,7 @@ export class GetRunnerParams {
   excludedRunnerIds?: string[]
   availabilityScoreThreshold?: number
   // When > 0, only consider runners that have at least this much GPU capacity
-  // and have not yet reached their GPU sandbox capacity (a runner with
-  // runner.gpu = N can host up to N concurrent GPU sandboxes).
+  // and whose remaining GPU capacity can fit the complete request.
   gpu: number
   /**
    * GPU type filter. Three forms accepted:

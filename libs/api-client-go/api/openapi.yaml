@@ -12452,6 +12452,13 @@ components:
       - healthy
       - serviceName
       type: object
+    RunnerCapabilities:
+      description: Capabilities supported by this runner version
+      properties:
+        multiGpuPerSandbox:
+          description: Whether the runner supports assigning multiple GPUs to one sandbox
+          type: boolean
+      type: object
     RunnerHealthcheck:
       example:
         appVersion: v0.0.0-dev
@@ -12492,6 +12499,10 @@ components:
           description: Runner app version
           example: v0.0.0-dev
           type: string
+        capabilities:
+          allOf:
+          - $ref: "#/components/schemas/RunnerCapabilities"
+          description: Capabilities supported by this runner version
       required:
       - appVersion
       type: object

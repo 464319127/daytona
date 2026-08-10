@@ -1867,11 +1867,22 @@ const docTemplate = `{
                 }
             }
         },
+        "RunnerCapabilities": {
+            "type": "object",
+            "properties": {
+                "multiGpuPerSandbox": {
+                    "type": "boolean"
+                }
+            }
+        },
         "RunnerInfoResponseDTO": {
             "type": "object",
             "properties": {
                 "appVersion": {
                     "type": "string"
+                },
+                "capabilities": {
+                    "$ref": "#/definitions/RunnerCapabilities"
                 },
                 "metrics": {
                     "$ref": "#/definitions/RunnerMetrics"

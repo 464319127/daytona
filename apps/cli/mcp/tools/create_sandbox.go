@@ -50,7 +50,7 @@ func GetCreateSandboxTool() mcp.Tool {
 		mcp.WithObject("labels", mcp.Description("Labels for the sandbox. Format: {\"key\": \"value\", \"key2\": \"value2\"}"), mcp.AdditionalProperties(map[string]any{"type": "string"})),
 		mcp.WithBoolean("public", mcp.Description("Whether the sandbox http preview is publicly accessible.")),
 		mcp.WithNumber("cpu", mcp.Description("CPU cores allocated to the sandbox. Cannot specify sandbox resources when using a snapshot."), mcp.Max(4)),
-		mcp.WithNumber("gpu", mcp.Description("GPU units allocated to the sandbox. Cannot specify sandbox resources when using a snapshot."), mcp.Max(1)),
+		mcp.WithNumber("gpu", mcp.Description("Number of physical GPUs allocated to the sandbox. May override a snapshot's default GPU count."), mcp.Min(0)),
 		mcp.WithNumber("memory", mcp.Description("Memory allocated to the sandbox in GB. Cannot specify sandbox resources when using a snapshot."), mcp.Max(8)),
 		mcp.WithNumber("disk", mcp.Description("Disk space allocated to the sandbox in GB. Cannot specify sandbox resources when using a snapshot."), mcp.Max(10)),
 		mcp.WithNumber("autoStopInterval", mcp.DefaultNumber(15), mcp.Min(0), mcp.Description("Auto-stop interval in minutes (0 means disabled) for the sandbox.")),
@@ -130,8 +130,8 @@ func createSandboxRequest(args CreateSandboxArgs) (*apiclient.CreateSandbox, err
 			return nil, fmt.Errorf("cannot specify a snapshot when using a build info entry")
 		}
 	} else {
-		if args.Cpu != nil || args.Gpu != nil || args.Memory != nil || args.Disk != nil {
-			return nil, fmt.Errorf("cannot specify sandbox resources when using a snapshot")
+		if args.Cpu != nil || args.Memory != nil || args.Disk != nil {
+			return nil, fmt.Errorf("cannot specify CPU, memory, or disk resources when using a snapshot")
 		}
 	}
 
@@ -173,6 +173,10 @@ func createSandboxRequest(args CreateSandboxArgs) (*apiclient.CreateSandbox, err
 
 	if args.Cpu != nil {
 		createSandbox.SetCpu(*args.Cpu)
+	}
+
+	if args.Gpu != nil {
+		createSandbox.SetGpu(*args.Gpu)
 	}
 
 	if args.Memory != nil {

@@ -770,7 +770,10 @@ export class SnapshotManager implements TrackableJobExecutions, OnApplicationShu
                   )
                   await this.redisLockProvider.unlock(sandboxLockKey)
                 } catch (e) {
-                  if (e instanceof BadRequestError && e.message.startsWith('No available runners')) {
+                  if (
+                    e instanceof BadRequestError &&
+                    (e.message.startsWith('No available runners') || e.message.startsWith('No runner has'))
+                  ) {
                     this.logger.warn(
                       `No available runners found in region ${sandbox.region} for sandbox ${sandbox.id} snapshot migration`,
                     )

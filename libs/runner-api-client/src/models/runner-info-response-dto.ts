@@ -19,10 +19,11 @@ import type { RunnerMetrics } from './runner-metrics';
 // May contain unused imports in some cases
 // @ts-ignore
 import type { RunnerServiceInfo } from './runner-service-info';
+import type { RunnerCapabilities } from './runner-capabilities';
 
 export interface RunnerInfoResponseDTO {
     'appVersion'?: string;
+    'capabilities'?: RunnerCapabilities;
     'metrics'?: RunnerMetrics;
     'serviceHealth'?: Array<RunnerServiceInfo>;
 }
-

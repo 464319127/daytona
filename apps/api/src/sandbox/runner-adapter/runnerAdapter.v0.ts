@@ -172,6 +172,7 @@ export class RunnerAdapterV0 implements RunnerAdapter {
       serviceHealth: response.data.serviceHealth,
       metrics: response.data.metrics,
       appVersion: response.data.appVersion,
+      capabilities: response.data.capabilities,
     }
   }
 
