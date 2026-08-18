@@ -15,6 +15,7 @@ Optional environment:
   DAYTONA_RUNNER_TOKEN_FILE default: /etc/daytona/runner.token
   RUNNER_CONTAINER_NAME    default: daytona-runner-<runner-name>
   RUNNER_DOCKER_NETWORK    Docker network name for same-host control planes
+  RUNNER_EXTRA_HOSTS       whitespace-separated hostname:address mappings
   RUNNER_CDI_SPEC          CDI file for GPU DinD mode
   RUNNER_PRELOAD_IMAGES    whitespace-separated local image refs for inner Docker
   REPLACE_EXISTING         true only after explicitly approving replacement
@@ -112,6 +113,17 @@ run_args=(
   -v "${container_name}-docker:/var/lib/docker"
   -v "${container_name}-data:/home/daytona"
 )
+
+if [[ -n "${RUNNER_EXTRA_HOSTS:-}" ]]; then
+  read -r -a extra_hosts <<< "$RUNNER_EXTRA_HOSTS"
+  for host_mapping in "${extra_hosts[@]}"; do
+    [[ "$host_mapping" == *:* && "$host_mapping" != :* && "$host_mapping" != *: ]] || {
+      echo "invalid RUNNER_EXTRA_HOSTS entry: $host_mapping (expected hostname:address)" >&2
+      exit 1
+    }
+    run_args+=(--add-host "$host_mapping")
+  done
+fi
 
 if [[ -n "${RUNNER_DOCKER_NETWORK:-}" ]]; then
   docker network inspect "$RUNNER_DOCKER_NETWORK" >/dev/null || {

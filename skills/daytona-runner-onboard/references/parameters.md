@@ -45,6 +45,8 @@ sudo stat -c '%U:%G %a %n' /etc/daytona/runner.token
 | --- | --- | --- |
 | `RUNNER_CONTAINER_NAME` | `daytona-runner-$RUNNER_NAME` | 同一机器运行多个 Runner，或需要固定运维名称时。 |
 | `RUNNER_DOCKER_NETWORK` | Docker 默认 bridge | 只有 Runner 与控制面在同一 Docker 主机时才填写服务网络，例如 `daytona_daytona-network`。远端机器不能加入另一台主机的 bridge 网络。 |
+| `RUNNER_EXTRA_HOSTS` | 空 | Runner 无法通过 DNS 解析内部服务时使用，空格分隔 `主机名:地址`，例如 `registry:10.127.2.18`。它会持久化为 Docker `--add-host`；地址变化后必须重建 Runner。 |
+| `RUNNER_REGISTRY_URL` | 空 | 验收时从 Runner 容器访问的 Registry 基础 URL，例如 `http://registry:6000`；只用于 `verify-runner.sh` 连通性检查。 |
 | `AWS_ENDPOINT_URL` | 空 | 使用快照、备份或 S3 兼容存储时。远端 Runner 必须能访问该地址。 |
 | `AWS_REGION` | 空 | 使用对象存储时。 |
 | `AWS_ACCESS_KEY_ID` | 空 | 使用对象存储时，通过秘密文件或环境注入。 |

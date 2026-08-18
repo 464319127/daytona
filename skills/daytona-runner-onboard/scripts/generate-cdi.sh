@@ -6,9 +6,10 @@ usage() {
 Usage: generate-cdi.sh [--output FILE]
 
 Generate an NVIDIA CDI spec for a privileged Docker-in-Docker Runner. The
-result rewrites Debian/Ubuntu multiarch and /lib64 host paths to /usr/lib64,
-where --gpus all injects host libraries into the Alpine Runner container,
-and removes the host-side nvidia-ctk hook that cannot run inside it.
+
+result rewrites native and Debian multiarch host library paths to /usr/lib64,
+which is where --gpus all injects host libraries into the Alpine Runner
+container, and removes the host-side nvidia-ctk hook that cannot run there.
 EOF
 }
 
@@ -34,8 +35,8 @@ trap 'rm -rf "$tmp_dir"' EXIT
 nvidia-ctk cdi generate --output "$raw"
 awk '
   function adapt_host_path(line) {
-    gsub(/hostPath: \/(usr\/)?lib\/x86_64-linux-gnu\//, "hostPath: /usr/lib64/", line)
     gsub(/hostPath: \/lib64\//, "hostPath: /usr/lib64/", line)
+    gsub(/hostPath: \/(usr\/)?lib\/x86_64-linux-gnu\//, "hostPath: /usr/lib64/", line)
     return line
   }
   function print_alias(path) {
@@ -83,7 +84,7 @@ awk '
     indent = RLENGTH
     sub(/^ */, "", line)
     if (indent < hook_indent ||
-        (indent == hook_indent && line ~ /^[A-Za-z0-9_-]+:/)) {
+      (indent == hook_indent && line ~ /^[A-Za-z0-9_-]+:/)) {
       skip = 0
     } else {
       next
@@ -95,7 +96,8 @@ awk '
     print
     next
   }
-  in_mounts && $0 ~ /^[A-Za-z0-9_-]+:/ {
+
+  in_mounts && $0 ~ /^[A-Za-z0-9_-]+:[[:space:]]*/ {
     flush_mount()
     in_mounts = 0
     print
@@ -120,7 +122,8 @@ awk '
     }
     next
   }
-  { $0 = adapt_host_path($0); print }
+
+  { print adapt_host_path($0) }
   END { flush_mount() }
 ' "$raw" > "$adapted"
 
@@ -133,7 +136,7 @@ if grep -Eq '^ *hooks: *$' "$adapted"; then
   exit 1
 fi
 if grep -Eq 'hostPath: /((usr/)?lib/x86_64-linux-gnu|lib64)/' "$adapted"; then
-  echo 'generated CDI spec still contains an unadapted host library path' >&2
+  echo 'generated CDI spec still contains an unadapted driver library host path' >&2
   exit 1
 fi
 bad_mounts=$(grep 'hostPath:' "$adapted" | \

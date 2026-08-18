@@ -58,7 +58,7 @@ scripts/bundle-images.sh \
 ### 3. 在目标机器加载镜像
 
 ```bash
-sudo bash scripts/load-images.sh \
+scripts/load-images.sh \
   --archive /path/daytona-runner-gpu-v0.187.0.tar.gz
 ```
 
@@ -74,6 +74,7 @@ sudo bash scripts/generate-cdi.sh --output /etc/daytona/nvidia-cdi.yaml
 
 检查生成文件包含 `kind: nvidia.com/gpu`、目标 GPU 设备以及目标驱动路径。该脚本会把 Debian/Ubuntu multiarch 和 `/lib64` 下的驱动 `hostPath` 调整为 Alpine Runner 中 NVIDIA runtime 实际注入的 `/usr/lib64`，并删除不能在内层容器执行的宿主 hooks。
 
+
 ### 5. 安装 Runner
 
 确认用户已在目标机准备标准 Token 文件，再以 `sudo env` 提供非秘密配置。`install-runner.sh` 默认读取 `/etc/daytona/runner.token`：
@@ -85,6 +86,7 @@ sudo env \
   RUNNER_DOMAIN='10.127.2.19' \
   RUNNER_API_PORT='3004' \
   RUNNER_IMAGE='daytona-runner-gpu-current-server:v0.187.0' \
+  RUNNER_EXTRA_HOSTS='registry:10.127.2.18' \
   GPU_ENABLED='true' \
   RUNNER_CDI_SPEC='/etc/daytona/nvidia-cdi.yaml' \
   RUNNER_PRELOAD_IMAGES='daytonaio/sandbox:0.5.0-slim' \
@@ -93,16 +95,25 @@ sudo env \
 
 先在相同命令中加入 `DRY_RUN=true` 检查命令；输出不得出现 Token 或 AWS Secret。仅在非标准部署确有需要时才覆盖 `DAYTONA_RUNNER_TOKEN_FILE`。远端机器使用受信任的 HTTPS；只有控制面与 Runner 位于同一 Docker 主机时，才可设置 `RUNNER_DOCKER_NETWORK` 并使用 `http://api:3000/api`。
 
+`RUNNER_EXTRA_HOSTS` 用于持久化 Runner 容器所需的静态解析，多个 `主机名:地址` 以空格分隔。等价的 Compose 配置是：
+
+```yaml
+services:
+  runner:
+    extra_hosts:
+      - "registry:10.127.2.18"
+```
+
 ### 6. 验证完整链路
 
 ```bash
-sudo env \
-  DAYTONA_API_URL='https://host:8999/api' \
-  RUNNER_NAME='runner-2' \
-  EXPECTED_REGION='custom-region-id' \
-  GPU_ENABLED='true' \
-  GPU_SMOKE_IMAGE='daytonaio/sandbox:0.5.0-slim' \
-  bash scripts/verify-runner.sh
+DAYTONA_API_URL='https://host:8999/api' \
+RUNNER_NAME='runner-2' \
+EXPECTED_REGION='custom-region-id' \
+GPU_ENABLED='true' \
+RUNNER_REGISTRY_URL='http://registry:6000' \
+GPU_SMOKE_IMAGE='daytonaio/sandbox:0.5.0-slim' \
+scripts/verify-runner.sh
 ```
 
 完成条件：
@@ -112,6 +123,7 @@ sudo env \
 3. GPU 模式下，控制面 GPU 数与 Runner 容器可见数量一致且大于 0；
 4. 内层 Docker 使用 `nvidia.com/gpu=0` 启动 smoke image，容器内恰好只看到一张 GPU；
 5. Dashboard 对应 Custom Region 中可看到同名 Runner，`lastChecked` 持续更新。
+6. 配置 `RUNNER_REGISTRY_URL` 时，Runner 容器访问 Registry `/v2/` 成功。
 
 V100 在当前控制面可报告 GPU 数量，但 `gpuType` 会是 `null`；这不代表 GPU 失效。不要宣称成功，除非 CDI 单卡 smoke test 已通过。
 
