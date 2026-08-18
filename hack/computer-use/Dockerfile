@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install Go and system dependencies in optimized layers
-COPY --from=golang:1.23 /usr/local/go /usr/local/go
+COPY --from=docker.1ms.run/library/golang:1.25.7-alpine /usr/local/go /usr/local/go
 ENV PATH="/usr/local/go/bin:${PATH}"
 
 # Install all system dependencies in a single layer for better caching
