@@ -28,6 +28,17 @@ staticPasswords:
   - email: 'dev@daytona.io'
     # password generated with:
     # echo password | htpasswd -BinC 10 admin | cut -d: -f2
-    hash: '$2a$10$2b2cU8CPhOTaGrs1HRQuAueS7JTT5ZHsHSzYiFPm1leZck7Mc8T4W'
+    hash: '$2a$10$mSes6cWbTYYE9ZkfYU5yyunEV3G63ybCSzINzD6RWXnleaSpxlVom'
     username: 'admin'
     userID: '1234'
+  - email: 'model-arch@baidu.com'
+    hash: '$2y$10$Nm4RYFY2efqrluwQCDELcu0u4u0bBneEJ5DFj5ebPBUwI9v50/LcK'
+    username: 'search-user'
+    userID: '1235'
+
+oauth2:
+  grantTypes:
+    - authorization_code
+    - refresh_token
+    - password
+  passwordConnector: local
