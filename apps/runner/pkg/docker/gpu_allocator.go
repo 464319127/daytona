@@ -6,16 +6,22 @@ package docker
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/docker/docker/api/types/container"
 )
 
-// GpuIndexLabel is set on every GPU sandbox container with the index of the
-// physical GPU the container has been pinned to. The allocator scans this
-// label on existing containers to determine which indices are still free.
-const GpuIndexLabel = "daytona.gpu_index"
+const (
+	// GpuIndicesLabel is the canonical allocation label. Its value is a sorted,
+	// comma-separated list of physical GPU indices assigned to the container.
+	GpuIndicesLabel = "daytona.gpu_indices"
+	// GpuIndexLabel is retained for containers created by older runners and is
+	// also written for new single-GPU containers.
+	GpuIndexLabel = "daytona.gpu_index"
+)
 
 // gpuAllocator hands out GPU device indices to GPU sandboxes on a runner.
 // Allocation is serialized by a mutex so concurrent sandbox creations cannot
@@ -29,52 +35,107 @@ func newGpuAllocator(total int) *gpuAllocator {
 	return &gpuAllocator{total: total}
 }
 
-// Acquire locks the allocator, scans all containers on the runner for the
-// daytona.gpu_index label, and returns the lowest free GPU index in
-// [0, total). The caller MUST defer the returned release() and MUST call
-// ContainerCreate (which sets the label on the new container) BEFORE
-// release() runs so concurrent allocators see the new label on their next
-// scan.
-func (a *gpuAllocator) Acquire(ctx context.Context, d *DockerClient) (int, func(), error) {
+// Acquire returns the lowest count free GPU indices while keeping the allocator
+// locked. The caller must create the labelled container before calling release.
+func (a *gpuAllocator) Acquire(ctx context.Context, d *DockerClient, count int) ([]int, func(), error) {
 	a.mu.Lock()
 	release := func() { a.mu.Unlock() }
 
-	if a.total <= 0 {
+	if count <= 0 {
 		release()
-		return 0, nil, fmt.Errorf("runner has no GPUs to assign")
+		return nil, nil, fmt.Errorf("GPU allocation count must be greater than zero")
+	}
+	if a.total <= 0 || count > a.total {
+		release()
+		return nil, nil, fmt.Errorf("invalid GPU allocation count: requested %d, capacity %d", count, a.total)
 	}
 
 	containers, err := d.apiClient.ContainerList(ctx, container.ListOptions{All: true})
 	if err != nil {
 		release()
-		return 0, nil, fmt.Errorf("list containers for GPU allocation: %w", err)
+		return nil, nil, fmt.Errorf("list containers for GPU allocation: %w", err)
 	}
 
-	// Only containers whose process is alive can actually hold a GPU - Docker
-	// detaches the CDI device cgroup on exit, so an exited / dead / removing
-	// sandbox no longer occupies its physical card and its index must be
-	// reusable by the next allocation. (A subsequent restart of a stopped GPU
-	// sandbox is handled at start time by the per-card collision check rather
-	// than by keeping the slot reserved here.)
+	allocated, err := selectFreeGpuIndices(containers, a.total, count)
+	if err != nil {
+		release()
+		return nil, nil, err
+	}
+	return allocated, release, nil
+}
+
+func selectFreeGpuIndices(containers []container.Summary, total, count int) ([]int, error) {
+	if count <= 0 || count > total {
+		return nil, fmt.Errorf("invalid GPU allocation count: requested %d, capacity %d", count, total)
+	}
+
 	used := make(map[int]struct{}, len(containers))
 	for _, c := range containers {
-		switch c.State {
-		case "exited", "dead", "removing":
-			continue
+		indices, err := parseGpuAllocationLabels(c.Labels, total)
+		if err != nil {
+			return nil, fmt.Errorf("invalid GPU allocation labels on container %s: %w", c.ID, err)
 		}
-		if v, ok := c.Labels[GpuIndexLabel]; ok {
-			if n, err := strconv.Atoi(v); err == nil {
-				used[n] = struct{}{}
+		for _, index := range indices {
+			used[index] = struct{}{}
+		}
+	}
+
+	available := total - len(used)
+	if available < count {
+		return nil, fmt.Errorf(
+			"insufficient free GPUs on runner: requested %d, available %d, capacity %d",
+			count,
+			available,
+			total,
+		)
+	}
+
+	allocated := make([]int, 0, count)
+	for i := 0; i < total; i++ {
+		if _, taken := used[i]; !taken {
+			allocated = append(allocated, i)
+			if len(allocated) == count {
+				return allocated, nil
 			}
 		}
 	}
 
-	for i := 0; i < a.total; i++ {
-		if _, taken := used[i]; !taken {
-			return i, release, nil
-		}
+	return nil, fmt.Errorf("failed to allocate GPUs despite sufficient reported capacity")
+}
+
+func parseGpuAllocationLabels(labels map[string]string, total int) ([]int, error) {
+	value, ok := labels[GpuIndicesLabel]
+	if !ok {
+		value, ok = labels[GpuIndexLabel]
+	}
+	if !ok {
+		return nil, nil
+	}
+	if value == "" {
+		return nil, fmt.Errorf("GPU allocation label is empty")
 	}
 
-	release()
-	return 0, nil, fmt.Errorf("no free GPU on runner (capacity %d)", a.total)
+	parts := strings.Split(value, ",")
+	indices := make([]int, 0, len(parts))
+	seen := make(map[int]struct{}, len(parts))
+	for _, part := range parts {
+		if part == "" || strings.TrimSpace(part) != part {
+			return nil, fmt.Errorf("invalid GPU index %q", part)
+		}
+		index, err := strconv.Atoi(part)
+		if err != nil {
+			return nil, fmt.Errorf("invalid GPU index %q", part)
+		}
+		if index < 0 || index >= total {
+			return nil, fmt.Errorf("GPU index %d is outside runner capacity %d", index, total)
+		}
+		if _, exists := seen[index]; exists {
+			return nil, fmt.Errorf("duplicate GPU index %d", index)
+		}
+		seen[index] = struct{}{}
+		indices = append(indices, index)
+	}
+
+	sort.Ints(indices)
+	return indices, nil
 }

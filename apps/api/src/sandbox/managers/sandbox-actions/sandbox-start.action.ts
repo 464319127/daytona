@@ -225,7 +225,13 @@ export class SandboxStartAction extends SandboxAction {
         if (runner.gpu === null || runner.gpu < sandbox.gpu) {
           continue
         }
+        if (sandbox.gpu > 1 && runner.capabilities?.multiGpuPerSandbox !== true) {
+          continue
+        }
         if (sandbox.gpuType && runner.gpuType !== sandbox.gpuType) {
+          continue
+        }
+        if (!(await this.runnerService.canRunnerFitGpu(runner.id, sandbox.gpu))) {
           continue
         }
       } else if (runner.gpu !== null && runner.gpu > 0) {

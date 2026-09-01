@@ -11,6 +11,7 @@ Required environment:
 
 Optional environment:
   RUNNER_CONTAINER_NAME      default daytona-runner-<runner-name>
+  RUNNER_REGISTRY_URL        registry base URL checked from the Runner container
   GPU_SMOKE_IMAGE            image already loaded in the inner Docker daemon
 EOF
 }
@@ -45,6 +46,15 @@ configured_api=$(docker inspect --format '{{range .Config.Env}}{{println .}}{{en
   echo "configured API URL does not match expected URL: $configured_api" >&2
   exit 1
 }
+if [[ -n "${RUNNER_REGISTRY_URL:-}" ]]; then
+  registry_url=${RUNNER_REGISTRY_URL%/}
+  [[ "$registry_url" =~ ^https?://[^/]+$ ]] || {
+    echo 'RUNNER_REGISTRY_URL must be an http(s) registry base URL without a path' >&2
+    exit 1
+  }
+  docker exec "$container_name" curl -fsS "$registry_url/v2/" >/dev/null
+  echo "Runner registry connectivity passed: $registry_url/v2/"
+fi
 runner_json=$(docker exec "$container_name" sh -c 'curl -fsS "$DAYTONA_API_URL/runners/me" -H "Authorization: Bearer $DAYTONA_RUNNER_TOKEN"')
 safe_json=$(printf '%s' "$runner_json" | sed -E 's/"apiKey":"[^"]*"/"apiKey":"<redacted>"/')
 printf '%s\n' "$safe_json" | grep -oE '"(name|region|state|apiVersion|appVersion|gpu|gpuType|lastChecked)"[^,}]+' || true
@@ -97,10 +107,14 @@ if [[ "$gpu_enabled" == true ]]; then
     --device nvidia.com/gpu=0 \
     --entrypoint sh \
     "$GPU_SMOKE_IMAGE" \
-    -c 'nvidia-smi -L; test -c /dev/nvidia0' >/dev/null
-  smoke_output=$(docker exec "$container_name" docker start -a "$smoke_name")
+    -c 'nvidia-smi -L; set -- /dev/nvidia[0-9]*; [ "$#" -eq 1 ] && [ -c "$1" ]' >/dev/null
+  if ! smoke_output=$(docker exec "$container_name" docker start -a "$smoke_name"); then
+    printf '%s\n' "$smoke_output"
+    echo 'GPU CDI smoke container failed' >&2
+    exit 1
+  fi
   printf '%s\n' "$smoke_output"
-  smoke_gpu_count=$(printf '%s\n' "$smoke_output" | grep -c '^GPU [0-9]')
+  smoke_gpu_count=$(printf '%s\n' "$smoke_output" | grep -c '^GPU [0-9]' || true)
   [[ "$smoke_gpu_count" -eq 1 ]] || {
     echo "GPU CDI isolation failed: smoke container saw $smoke_gpu_count GPUs" >&2
     exit 1

@@ -106,6 +106,7 @@ func (s *Service) sendHealthcheck(ctx context.Context) error {
 
 	// Build healthcheck request
 	healthcheck := apiclient.NewRunnerHealthcheck(internal.Version)
+	healthcheck.SetCapabilities(apiclient.RunnerCapabilities{MultiGpuPerSandbox: true})
 	healthcheck.SetDomain(s.domain)
 
 	proxyUrl := fmt.Sprintf("http://%s:%d", s.domain, s.proxyPort)

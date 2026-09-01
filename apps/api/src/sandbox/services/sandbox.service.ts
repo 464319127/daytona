@@ -517,8 +517,12 @@ export class SandboxService {
       const cpu = snapshot.cpu
       const mem = snapshot.mem
       const disk = snapshot.disk
-      const gpu = snapshot.gpu
-      const gpuType = snapshot.gpuType ?? null
+      const gpu = createSandboxDto.gpu ?? snapshot.gpu
+      const regionQuota = region.enforceQuotas
+        ? await this.organizationService.getRegionQuota(organization.id, region.id, snapshot.sandboxClass)
+        : null
+      const requestedGpuTypes = createSandboxDto.gpuType ?? (snapshot.gpuType ? [snapshot.gpuType] : undefined)
+      const gpuTypePreferences = resolveGpuTypePreferences(gpu, requestedGpuTypes, regionQuota?.allowedGpuTypes)
 
       // GPU sandboxes are always ephemeral.
       if (gpu > 0 && !isEphemeral(createSandboxDto)) {
@@ -551,6 +555,8 @@ export class SandboxService {
           disk,
           gpu,
           isEphemeral(createSandboxDto),
+          undefined,
+          regionQuota,
         )
 
       if (pendingCpuIncremented) {
@@ -569,10 +575,8 @@ export class SandboxService {
       // Resolve volume names to UUIDs before runner assignment, so invalid references fail fast
       const resolvedVolumes = await this.resolveVolumes(organization.id, createSandboxDto.volumes)
 
-      // GPU sandboxes are always ephemeral: they get exclusive ownership of a
-      // runner for their lifetime and are auto-deleted on first stop. Skip the
-      // warm-pool path entirely so we always provision a fresh container on a
-      // currently-unoccupied GPU runner.
+      // GPU sandboxes are always ephemeral and skip the warm-pool path so their
+      // complete GPU request is scheduled against current runner capacity.
       if (gpu <= 0 && !linkedSandbox && (!createSandboxDto.volumes || createSandboxDto.volumes.length === 0)) {
         const skipWarmPool = (await this.redis.exists(`warm-pool:skip:${snapshot.id}`)) === 1
 
@@ -596,7 +600,7 @@ export class SandboxService {
         }
       }
 
-      // Serialize GPU runner assignment per region: getRunnersAtGpuCapacity reads
+      // Serialize GPU runner assignment per region: the capacity query reads
       // the DB to find runners at capacity, but the just-assigned runnerId on a
       // concurrent request is not yet persisted, so two concurrent creates can
       // pick the same already-full runner. Hold the lock until the runnerId is
@@ -618,15 +622,32 @@ export class SandboxService {
           )
         }
 
-        this.runnerService.assertRunnerCanHost(runner)
+        await this.runnerService.assertRunnerCanHost(runner, gpu)
+        if (
+          gpu > 0 &&
+          gpuTypePreferences?.length &&
+          (!runner.gpuType || !gpuTypePreferences.includes(runner.gpuType))
+        ) {
+          throw new BadRequestError(`Runner hosting linked sandbox does not provide a requested GPU type`)
+        }
       } else {
-        runner = await this.runnerService.getRandomAvailableRunner({
+        const runnerParams = {
           regions: [region.id],
           sandboxClass: snapshot.sandboxClass,
-          snapshotRef: snapshot.ref,
           gpu,
-          gpuType,
-        })
+          gpuType: gpuTypePreferences ?? null,
+        }
+        try {
+          runner = await this.runnerService.getRandomAvailableRunner({
+            ...runnerParams,
+            snapshotRef: snapshot.ref,
+          })
+        } catch (error) {
+          if (!(error instanceof BadRequestError)) {
+            throw error
+          }
+          runner = await this.runnerService.getRandomAvailableRunner(runnerParams)
+        }
       }
 
       const sandbox = new Sandbox({ region: region.id, name: createSandboxDto.name })
@@ -642,7 +663,7 @@ export class SandboxService {
 
       sandbox.cpu = cpu
       sandbox.gpu = gpu
-      sandbox.gpuType = gpuType
+      sandbox.gpuType = gpu > 0 ? runner.gpuType : null
       sandbox.mem = mem
       sandbox.disk = disk
 
@@ -944,7 +965,7 @@ export class SandboxService {
 
       let runner: Runner
 
-      // Serialize GPU runner assignment per region: getRunnersAtGpuCapacity reads
+      // Serialize GPU runner assignment per region: the capacity query reads
       // the DB to find runners at capacity, but the just-assigned runnerId on a
       // concurrent request is not yet persisted, so two concurrent creates can
       // pick the same already-full runner. Hold the lock until the runnerId is
@@ -984,7 +1005,7 @@ export class SandboxService {
       } catch (error) {
         if (
           error instanceof BadRequestError == false ||
-          !error.message.startsWith('No available runners') ||
+          (!error.message.startsWith('No available runners') && !error.message.startsWith('No runner has')) ||
           !createSandboxDto.buildInfo
         ) {
           throw error

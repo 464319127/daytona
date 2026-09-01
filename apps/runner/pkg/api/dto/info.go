@@ -21,8 +21,13 @@ type RunnerServiceInfo struct {
 	ErrorReason *string `json:"errorReason,omitempty"`
 } //	@name	RunnerServiceInfo
 
+type RunnerCapabilities struct {
+	MultiGpuPerSandbox bool `json:"multiGpuPerSandbox"`
+} //	@name	RunnerCapabilities
+
 type RunnerInfoResponseDTO struct {
 	ServiceHealth []*RunnerServiceInfo `json:"serviceHealth,omitempty"`
 	Metrics       *RunnerMetrics       `json:"metrics,omitempty"`
+	Capabilities  RunnerCapabilities   `json:"capabilities"`
 	AppVersion    string               `json:"appVersion"`
 } //	@name	RunnerInfoResponseDTO

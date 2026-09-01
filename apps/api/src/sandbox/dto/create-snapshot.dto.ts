@@ -11,10 +11,10 @@ import {
   IsArray,
   IsEnum,
   IsObject,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString,
-  Max,
   Min,
 } from 'class-validator'
 import { CreateBuildInfoDto } from './create-build-info.dto'
@@ -65,11 +65,11 @@ export class CreateSnapshotDto {
     description: 'GPU units allocated to the resulting sandbox',
     example: 0,
     type: 'integer',
+    minimum: 0,
   })
   @IsOptional()
-  @IsNumber()
+  @IsInt({ message: 'GPU count must be an integer' })
   @Min(0)
-  @Max(1)
   gpu?: number
 
   @ApiPropertyOptional({

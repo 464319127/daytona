@@ -267,10 +267,17 @@ definitions:
       registry:
         $ref: '#/definitions/RegistryDTO'
     type: object
+  RunnerCapabilities:
+    properties:
+      multiGpuPerSandbox:
+        type: boolean
+    type: object
   RunnerInfoResponseDTO:
     properties:
       appVersion:
         type: string
+      capabilities:
+        $ref: '#/definitions/RunnerCapabilities'
       metrics:
         $ref: '#/definitions/RunnerMetrics'
       serviceHealth:

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SGLang Daytona Deploy"
+  short_description: "通过 Daytona API 部署 GPU SGLang 服务"
+  default_prompt: "Use $sglang-daytona-deploy to deploy an SGLang inference service in a Daytona GPU Sandbox."

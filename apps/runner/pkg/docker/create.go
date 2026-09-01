@@ -17,6 +17,7 @@ import (
 	"github.com/daytonaio/runner/pkg/api/dto"
 	"github.com/daytonaio/runner/pkg/common"
 	"github.com/daytonaio/runner/pkg/models/enums"
+	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
 	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 
@@ -25,6 +26,9 @@ import (
 
 func (d *DockerClient) Create(ctx context.Context, sandboxDto dto.CreateSandboxDTO) (string, string, error) {
 	defer timer.Timer()()
+	if sandboxDto.GpuQuota < 0 {
+		return "", "", fmt.Errorf("GPU sandbox requested invalid GPU count %d", sandboxDto.GpuQuota)
+	}
 
 	startTime := time.Now()
 	defer func() {
@@ -37,6 +41,15 @@ func (d *DockerClient) Create(ctx context.Context, sandboxDto dto.CreateSandboxD
 	state, err := d.GetSandboxState(ctx, sandboxDto.Id)
 	if err != nil && state == enums.SandboxStateError {
 		return "", "", err
+	}
+
+	if sandboxDto.GpuQuota > 0 {
+		if !d.gpuEnabled {
+			return "", "", fmt.Errorf("GPU sandbox requested %d GPUs but GPU support is disabled on runner", sandboxDto.GpuQuota)
+		}
+		if sandboxDto.GpuQuota > int64(d.gpuCount) {
+			return "", "", fmt.Errorf("GPU sandbox requested %d GPUs but runner capacity is %d", sandboxDto.GpuQuota, d.gpuCount)
+		}
 	}
 
 	if state == enums.SandboxStatePullingSnapshot {
@@ -73,6 +86,9 @@ func (d *DockerClient) Create(ctx context.Context, sandboxDto dto.CreateSandboxD
 		if err != nil {
 			return "", "", err
 		}
+		if err := d.validateContainerGpuAllocation(c, sandboxDto.GpuQuota); err != nil {
+			return "", "", err
+		}
 
 		// Re-assert link-network wiring on retries so idempotent creates still end
 		// up with both sandboxes connected to the shared network.
@@ -104,6 +120,14 @@ func (d *DockerClient) Create(ctx context.Context, sandboxDto dto.CreateSandboxD
 	}
 
 	if state == enums.SandboxStateStopped || state == enums.SandboxStateCreating {
+		c, err := d.ContainerInspect(ctx, sandboxDto.Id)
+		if err != nil {
+			return "", "", err
+		}
+		if err := d.validateContainerGpuAllocation(c, sandboxDto.GpuQuota); err != nil {
+			return "", "", err
+		}
+
 		// A follower whose first Create attempt crashed between ContainerCreate and
 		// NetworkConnect lands here on retry. Reconcile the link network BEFORE Start
 		if _, err := d.reconcileFollowerLinkNetwork(ctx, sandboxDto); err != nil {
@@ -157,18 +181,18 @@ func (d *DockerClient) Create(ctx context.Context, sandboxDto dto.CreateSandboxD
 		}
 	}
 
-	// Pin GPU sandboxes to a single physical card. The allocator mutex must
+	// Pin GPU sandboxes to physical cards. The allocator mutex must
 	// be held across ContainerCreate so concurrent creators see the new
 	// daytona.gpu_index label on their next scan and skip this index, but it
 	// must NOT be held across the subsequent Start() / network setup which
 	// can take seconds and would otherwise serialize every GPU sandbox
 	// creation on the runner.
 	var (
-		gpuIndex   *int
+		gpuIndices []int
 		releaseGpu func()
 	)
-	if d.gpuEnabled && sandboxDto.GpuQuota > 0 {
-		idx, release, err := d.gpuAllocator.Acquire(ctx, d)
+	if sandboxDto.GpuQuota > 0 {
+		indices, release, err := d.gpuAllocator.Acquire(ctx, d, int(sandboxDto.GpuQuota))
 		if err != nil {
 			return "", "", err
 		}
@@ -180,10 +204,16 @@ func (d *DockerClient) Create(ctx context.Context, sandboxDto dto.CreateSandboxD
 				releaseGpu()
 			}
 		}()
-		gpuIndex = &idx
+		gpuIndices = indices
+		d.logger.InfoContext(ctx, "Allocated GPUs for sandbox",
+			"sandboxId", sandboxDto.Id,
+			"requestedGpuCount", sandboxDto.GpuQuota,
+			"allocatedGpuIndices", gpuIndices,
+			"runnerGpuCapacity", d.gpuCount,
+		)
 	}
 
-	containerConfig, hostConfig, networkingConfig, err := d.getContainerConfigs(sandboxDto, image, volumeMountPathBinds, gpuIndex)
+	containerConfig, hostConfig, networkingConfig, err := d.getContainerConfigs(sandboxDto, image, volumeMountPathBinds, gpuIndices)
 	if err != nil {
 		return "", "", err
 	}
@@ -195,6 +225,13 @@ func (d *DockerClient) Create(ctx context.Context, sandboxDto dto.CreateSandboxD
 	if err != nil {
 		// Container already exists and is being created by another process
 		if errdefs.IsConflict(err) {
+			existing, inspectErr := d.ContainerInspect(ctx, sandboxDto.Id)
+			if inspectErr != nil {
+				return "", "", inspectErr
+			}
+			if validateErr := d.validateContainerGpuAllocation(existing, sandboxDto.GpuQuota); validateErr != nil {
+				return "", "", validateErr
+			}
 			return sandboxDto.Id, "", nil
 		}
 		return "", "", err
@@ -265,6 +302,25 @@ func (d *DockerClient) Create(ctx context.Context, sandboxDto dto.CreateSandboxD
 	}
 
 	return c.ID, daemonVersion, nil
+}
+
+func (d *DockerClient) validateContainerGpuAllocation(c *container.InspectResponse, requested int64) error {
+	if c == nil || c.Config == nil {
+		return fmt.Errorf("cannot validate GPU allocation for missing container config")
+	}
+	indices, err := parseGpuAllocationLabels(c.Config.Labels, d.gpuCount)
+	if err != nil {
+		return fmt.Errorf("invalid GPU allocation for sandbox %s: %w", c.ID, err)
+	}
+	if int64(len(indices)) != requested {
+		return fmt.Errorf(
+			"GPU allocation mismatch for sandbox %s: requested %d, existing container has %d",
+			c.ID,
+			requested,
+			len(indices),
+		)
+	}
+	return nil
 }
 
 func (p *DockerClient) validateImageArchitecture(image *image.InspectResponse) error {

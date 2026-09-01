@@ -8,6 +8,7 @@ import { SandboxClass } from '../enums/sandbox-class.enum'
 import { GpuType } from '../enums/gpu-type.enum'
 import { RunnerState } from '../enums/runner-state.enum'
 import { RunnerServiceInfo } from '../common/runner-service-info'
+import { RunnerCapabilities } from '../common/runner-capabilities'
 
 @Entity()
 @Unique(['region', 'name'])
@@ -181,6 +182,12 @@ export class Runner {
     default: null,
   })
   serviceHealth: RunnerServiceInfo[] | null
+
+  @Column({
+    type: 'jsonb',
+    default: () => "'{}'::jsonb",
+  })
+  capabilities: RunnerCapabilities = {}
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

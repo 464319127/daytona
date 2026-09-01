@@ -291,13 +291,12 @@ export class SandboxController {
       }
       sandbox = await this.sandboxService.createFromBuildInfo(createSandboxDto, organization)
     } else {
-      if (createSandboxDto.cpu || createSandboxDto.gpu || createSandboxDto.memory || createSandboxDto.disk) {
-        throw new BadRequestError('Cannot specify Sandbox resources when using a snapshot')
-      }
-      if (createSandboxDto.gpuType && createSandboxDto.gpuType.length > 0) {
-        throw new BadRequestError(
-          'Cannot specify GPU type when creating sandbox from snapshot. GPU type is inherited from snapshot.',
-        )
+      if (
+        createSandboxDto.cpu !== undefined ||
+        createSandboxDto.memory !== undefined ||
+        createSandboxDto.disk !== undefined
+      ) {
+        throw new BadRequestError('Cannot specify CPU, memory, or disk resources when using a snapshot')
       }
       sandbox = await this.sandboxService.createFromSnapshot(createSandboxDto, organization)
       if (sandbox.state === SandboxState.STARTED) {

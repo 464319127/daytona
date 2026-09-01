@@ -14,6 +14,7 @@ export * from './recover-sandbox-dto';
 export * from './registry-dto';
 export * from './resize-sandbox-dto';
 export * from './runner-info-response-dto';
+export * from './runner-capabilities';
 export * from './runner-metrics';
 export * from './runner-service-info';
 export * from './sandbox-info-response';

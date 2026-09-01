@@ -12,7 +12,7 @@ import {
   IsNumber,
   IsBoolean,
   IsArray,
-  Max,
+  IsInt,
   Min,
   ValidateNested,
 } from 'class-validator'
@@ -116,11 +116,11 @@ export class CreateSandboxDto {
     description: 'GPU units allocated to the sandbox',
     example: 1,
     type: 'integer',
+    minimum: 0,
   })
   @IsOptional()
-  @IsNumber()
+  @IsInt({ message: 'GPU count must be an integer' })
   @Min(0)
-  @Max(1)
   gpu?: number
 
   @ApiPropertyOptional({
